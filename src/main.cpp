@@ -1,9 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
-#include "Window.h"
 #include "resources/strings/L10n.h"
-#include "Texture.h"
-#include "State.h"
+
+#include "Application.h"
 
 int main() {
 
@@ -12,30 +11,10 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    State gameState;
-
-    Window window("Test");
-    window.attachRenderer();
-    window.show();
-
-    Texture texture("resources/bitmaps/bricks.bmp", window.getRenderer());
-
-    while (gameState.running) {
-        SDL_Event event;
-        while(SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    gameState.running = false;
-                    break;
-            }
-        }
-
-        SDL_RenderClear(window.getRenderer());
-        SDL_RenderCopy(window.getRenderer(), texture.get(), nullptr, nullptr);
-        SDL_RenderPresent(window.getRenderer());
-    }
+    Application app;
+    int retCode = app.run();
 
     SDL_Quit();
 
-    return 0;
+    return retCode;
 }

@@ -7,7 +7,7 @@ void Window::show() {
     SDL_ShowWindow(window);
 }
 
-void Window::attachRenderer() {
+void Window::createRenderer() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 

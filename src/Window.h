@@ -24,7 +24,7 @@ public:
         renderer = nullptr;
     }
 
-    void attachRenderer();
+    void createRenderer();
 
     void show();
 
