@@ -13,8 +13,10 @@ Application::Application() : window(Window(L10n::appName)) {
 int Application::run() {
     window.show();
 
-    Game game(window);
+    Game game(window.getRenderer());
 
+    game.loadTestEntities();
     while (game.render());
 
+    return EXIT_SUCCESS;
 }

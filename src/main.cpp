@@ -11,8 +11,11 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    Application app;
-    int retCode = app.run();
+    int retCode;
+    {
+        Application app;
+        retCode = app.run();
+    } // Call app destructor before SDL_Quit
 
     SDL_Quit();
 

@@ -2,29 +2,33 @@
 
 #include <SDL2/SDL.h>
 #include "resources/strings/L10n.h"
-#include <cassert>
+#include "Game.h"
 #include <iostream>
+#include "Constants.h"
 
-Texture::Texture(const std::string &path, SDL_Renderer *renderer) {
+SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     SDL_Surface *surface = SDL_LoadBMP(path.c_str());
     if (surface == nullptr) {
         SDL_Log(L10n::cannotLoadBitmap, SDL_GetError());
-        return;
+        return nullptr;
     }
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    if (useWhiteAsAlpha) {
+        SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr), SDL_MapRGB(surface->format, 255, 255, 255));
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(Game::getRenderer(), surface);
     if (texture == nullptr) {
         SDL_Log(L10n::cannotLoadBitmap, SDL_GetError());
-        return;
+        return nullptr;
     }
     SDL_FreeSurface(surface);
-}
-
-SDL_Texture *Texture::get() {
-    assert(texture != nullptr);
     return texture;
 }
 
-Texture::~Texture() {
-    SDL_DestroyTexture(texture);
-    texture = nullptr;
+
+Vec Texture::getAdjustedSize(SDL_Texture *texture) {
+    Vec size;
+    SDL_QueryTexture(texture, nullptr, nullptr, &size.x, &size.y);
+    return size * REAL_PIXEL_SIZE;
 }

@@ -3,16 +3,13 @@
 
 #include <SDL2/SDL.h>
 #include <string>
+#include <memory>
+#include "Vec.h"
 
 class Texture {
-
-private:
-    SDL_Texture *texture = nullptr;
 public:
-    Texture(const std::string &path, SDL_Renderer *renderer);
-
-    SDL_Texture *get();
-    ~Texture();
+    static SDL_Texture * create(const std::string &path, bool useWhiteAsAlpha = false);
+    static Vec getAdjustedSize(SDL_Texture * texture);
 };
 
 

@@ -16,7 +16,6 @@ public:
     }
 
     ~Window() {
-        SDL_HideWindow(window);
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
 
