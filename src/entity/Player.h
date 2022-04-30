@@ -11,14 +11,16 @@ private:
     Vec direction;
 public:
 
+    Vec getNextPosition(Vec currentPosition) const {
+        return currentPosition + direction;
+    }
+
     explicit Player() :
             Entity(Texture::create("resources/bitmaps/player.bmp", true)) {}
 
     void setDirection(int dx, int dy);
 
     void updateState(GameState &state) override;
-
-    void render(GameState &state) override;
 };
 
 

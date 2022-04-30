@@ -1,9 +1,12 @@
 #include "Game.h"
 
 #include "FPSController.h"
-#include "enitity/Grass.h"
+#include "entity/Grass.h"
+#include "entity/Tree.h"
+#include "entity/Bricks.h"
+#include <iostream>
 
-bool Game::render() {
+bool Game::loop() {
     FPSController::renderStart();
 
     SDL_Event event;
@@ -20,12 +23,11 @@ bool Game::render() {
 void Game::onRender() {
     SDL_RenderClear(getRenderer());
 
+    gameMap.getCurrentSection().render(gameState);
 
-    for (const auto &item: entities) {
-        item->render(gameState);
-    }
+    player->render(gameState, gameState.playerPosition);
 
-    player->render(gameState);
+    inventory->render(gameState, Vec(0, SCREEN_HEIGHT));
 
     SDL_RenderPresent(getRenderer());
 }
@@ -34,7 +36,7 @@ void Game::onRender() {
 void Game::onEvent(SDL_Event event) {
     if (event.type == SDL_QUIT) {
         gameState.running = false;
-    } else if (event.type == SDL_KEYDOWN) {
+    } else if (event.type == SDL_KEYDOWN && !gameState.turnFinished) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
                 player->setDirection(0, -1);
@@ -55,19 +57,23 @@ void Game::onEvent(SDL_Event event) {
             case SDLK_DOWN:
             case SDLK_LEFT:
             case SDLK_RIGHT:
-                player->setDirection(0, 0);
+                gameState.turnFinished = false;
                 break;
         }
+    }
+
+
+    Vec playerNexPos = player->getNextPosition(gameState.playerPosition);
+    if (gameMap.getCurrentSection().isEdge(playerNexPos)) {
+        // TODO Set new section
+        player->setDirection(0, 0);
+    } else if (gameMap.getCurrentSection().wouldCollide(playerNexPos) &&
+               gameMap.getCurrentSection().get(playerNexPos)->onCollision(gameState)) {
+        player->setDirection(0, 0);
     }
 
 }
 
 void Game::loadTestEntities() {
-    for (int x = 0; x < 5; x++) {
-        for (int y = 0; y < 5; y++) {
-            Entity * entity = new Grass();
-            entity->setPosition(x, y);
-            entities.emplace_back(entity);
-        }
-    }
+    gameMap.test();
 }

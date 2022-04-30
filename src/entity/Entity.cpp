@@ -2,7 +2,7 @@
 #include "../Game.h"
 #include <iostream>
 
-void Entity::render(GameState &state) {
+void Entity::render(GameState &state, Vec position) {
 
     updateState(state);
 

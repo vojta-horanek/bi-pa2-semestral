@@ -13,30 +13,38 @@ struct Vec {
 
     Vec(int x, int y) : x(x), y(y) {}
 
-    Vec operator+(const Vec &other) const {
+    inline bool isOrigin() const {
+        return x == 0 && y == 0;
+    }
+
+    inline Vec operator+(const Vec &other) const {
         return {this->x + other.x, this->y + other.y};
     }
 
-    Vec &operator+=(const Vec &other) {
+    inline Vec &operator+=(const Vec &other) {
         this->x += other.x;
         this->y += other.y;
         return *this;
     }
 
-    Vec operator-(const Vec &other) const {
+    inline Vec operator-(const Vec &other) const {
         return {this->x - other.x, this->y - other.y};
     }
 
-    Vec operator+(int other) const {
+    inline Vec operator+(int other) const {
         return {this->x + other, this->y + other};
     }
 
-    Vec operator-(int other) const {
+    inline Vec operator-(int other) const {
         return *this + (-other);
     }
 
-    Vec operator*(int other) const {
+    inline Vec operator*(int other) const {
         return {this->x * other, this->y * other};
+    }
+
+    inline bool operator==(const Vec &lhs) const {
+        return lhs.x == x && lhs.y == y;
     }
 
     // TODO Check correctness
@@ -52,6 +60,15 @@ struct Vec {
 
     SDL_Point point() const {
         return SDL_Point{x, y};
+    }
+
+
+    inline bool operator<(const Vec &p1) const {
+        if (p1.x != x) {
+            return x < p1.x;
+        } else {
+            return y < p1.y;
+        }
     }
 };
 

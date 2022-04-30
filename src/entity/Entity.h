@@ -10,10 +10,10 @@ class Entity {
 
 protected:
     SDL_Texture *texture;
-    Vec position;
 
 public:
     bool hasCollision = false;
+    bool removeOnNextRender = false;
 
     explicit Entity(SDL_Texture *texture) : texture(texture) {}
 
@@ -22,20 +22,19 @@ public:
         texture = nullptr;
     }
 
-    // A default implementation of the render method draws the texture at the current position of this entity
-    virtual void render(GameState &state);
+    // A default implementation of the loop method draws the texture at the current position of this entity
+    virtual void render(GameState &state, Vec position);
 
     virtual void updateState(GameState &state) {}
 
-    void setPosition(Vec _position) {
-        position = _position;
+    /**
+     *
+     * @param state
+     * @return true if the collision should block the player, false otherwise
+     */
+    virtual bool onCollision(GameState &state) {
+        return hasCollision;
     }
-
-    void setPosition(int x, int y) {
-        position.x = x;
-        position.y = y;
-    }
-
 };
 
 

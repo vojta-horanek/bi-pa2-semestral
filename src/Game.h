@@ -3,7 +3,9 @@
 
 #include "Window.h"
 #include "GameState.h"
-#include "enitity/Player.h"
+#include "entity/Player.h"
+#include "Map.h"
+#include "entity/Inventory.h"
 #include <vector>
 #include <memory>
 #include <cassert>
@@ -12,8 +14,11 @@ class Game {
 private:
     GameState gameState;
 
-    Player *player;
+    std::unique_ptr<Player> player;
+    std::unique_ptr<Inventory> inventory;
     std::vector<std::unique_ptr<Entity>> entities;
+
+    Map gameMap;
 
     inline static SDL_Renderer *_renderer;
 
@@ -26,10 +31,11 @@ public:
 
     explicit Game(SDL_Renderer *renderer) {
         _renderer = renderer;
-        player = new Player();
+        inventory = std::make_unique<Inventory>(SCREEN_WIDTH);
+        player = std::make_unique<Player>();
     }
 
-    bool render();
+    bool loop();
 
     void onRender();
 

@@ -3,11 +3,20 @@
 
 
 #include "Vec.h"
+#include "entity/Entity.fwd.h"
+#include <vector>
+#include <memory>
 
 class GameState {
 public:
     bool running = true;
+
     Vec playerPosition;
+    std::vector<std::unique_ptr<Entity>> inventory;
+
+    std::unique_ptr<Entity> weapon;
+
+    bool turnFinished = false;
 };
 
 

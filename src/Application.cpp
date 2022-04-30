@@ -16,7 +16,7 @@ int Application::run() {
     Game game(window.getRenderer());
 
     game.loadTestEntities();
-    while (game.render());
+    while (game.loop());
 
     return EXIT_SUCCESS;
 }
