@@ -5,7 +5,7 @@
 
 class FPSController {
 
-    static const Uint32 FPS = 30;
+    static const Uint32 FPS = 60;
     static const Uint32 delayTicks = 1000 / FPS;
     inline static Uint32 startTicks;
 

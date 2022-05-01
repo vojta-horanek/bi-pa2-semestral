@@ -8,16 +8,21 @@ void Player::setDirection(int dx, int dy) {
 void Player::updateState(GameState &state) {
     state.playerPosition = getNextPosition(state.playerPosition);
 
-    // TODO Improve performance
-    if (state.weapon != nullptr) {
-        texture = Texture::create("resources/bitmaps/player-sword.bmp", true);
-    } else {
-        texture = Texture::create("resources/bitmaps/player.bmp", true);
-    }
-
     if (!direction.isOrigin()) {
         state.turnFinished = true;
     }
 
     setDirection(0, 0);
+}
+
+void Player::render(GameState &state, Vec position) {
+    AnimatedEntity::render(state, position);
+    if (state.weapon != nullptr) {
+        state.weapon->syncWith(*this);
+        state.weapon->renderOnPlayer(state, state.playerPosition);
+    }
+}
+
+Vec Player::getDirection() {
+    return direction;
 }

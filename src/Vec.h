@@ -47,6 +47,14 @@ struct Vec {
         return lhs.x == x && lhs.y == y;
     }
 
+    inline Vec withX(int addedX) const {
+        return {x + addedX, y};
+    }
+
+    inline Vec withY(int addedY) const {
+        return {x, y + addedY};
+    }
+
     // TODO Check correctness
     double distanceTo(const Vec &other) const {
         int a = abs(other.x - x);

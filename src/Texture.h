@@ -9,7 +9,8 @@
 class Texture {
 public:
     static SDL_Texture * create(const std::string &path, bool useWhiteAsAlpha = false);
-    static Vec getAdjustedSize(SDL_Texture * texture);
+    static void renderBlock(SDL_Texture * texture, Vec position);
+    static void renderBlock(SDL_Texture * texture, Vec position, int xOffset);
 };
 
 

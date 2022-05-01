@@ -1,10 +1,6 @@
 #include "Game.h"
 
 #include "FPSController.h"
-#include "entity/Grass.h"
-#include "entity/Tree.h"
-#include "entity/Bricks.h"
-#include <iostream>
 
 bool Game::loop() {
     FPSController::renderStart();
@@ -27,7 +23,9 @@ void Game::onRender() {
 
     player->render(gameState, gameState.playerPosition);
 
-    inventory->render(gameState, Vec(0, SCREEN_HEIGHT));
+    inventory->render(gameState, Vec(3, height));
+
+    stats->render(gameState, Vec(0, height));
 
     SDL_RenderPresent(getRenderer());
 }
@@ -65,10 +63,27 @@ void Game::onEvent(SDL_Event event) {
 
     Vec playerNexPos = player->getNextPosition(gameState.playerPosition);
     if (gameMap.getCurrentSection().isEdge(playerNexPos)) {
-        // TODO Set new section
+
+        Vec direction = player->getDirection();
+
         player->setDirection(0, 0);
+
+        if (gameMap.tryNavigateToSection(direction)) {
+            if (direction.x != 0) {
+                int newX = 0;
+                if (direction.x < 0) {
+                    // Going from left screen to right screen
+                    newX = width - 1;
+                }
+                gameState.playerPosition = Vec(newX, gameState.playerPosition.y);
+            } else if (direction.y != 0) {
+                gameState.playerPosition = Vec(gameState.playerPosition.x, 0);
+            }
+        }
+
     } else if (gameMap.getCurrentSection().wouldCollide(playerNexPos) &&
-               gameMap.getCurrentSection().get(playerNexPos)->onCollision(gameState)) {
+               gameMap.getCurrentSection().get(playerNexPos)->onCollision(gameState)
+            ) {
         player->setDirection(0, 0);
     }
 

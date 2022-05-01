@@ -6,7 +6,6 @@
 class Inventory : public Entity {
 
 private:
-    void renderBackground(Vec position);
     size_t maxWidth;
 
 public:

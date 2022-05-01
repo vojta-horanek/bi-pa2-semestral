@@ -6,6 +6,7 @@
 #include "entity/Player.h"
 #include "Map.h"
 #include "entity/Inventory.h"
+#include "entity/Stats.h"
 #include <vector>
 #include <memory>
 #include <cassert>
@@ -16,9 +17,12 @@ private:
 
     std::unique_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
+    std::unique_ptr<Stats> stats;
     std::vector<std::unique_ptr<Entity>> entities;
 
     Map gameMap;
+
+    int width, height;
 
     inline static SDL_Renderer *_renderer;
 
@@ -29,10 +33,13 @@ public:
         return _renderer;
     }
 
-    explicit Game(SDL_Renderer *renderer) {
+    explicit Game(SDL_Renderer *renderer, int width, int height) {
         _renderer = renderer;
-        inventory = std::make_unique<Inventory>(SCREEN_WIDTH);
+        inventory = std::make_unique<Inventory>(width);
         player = std::make_unique<Player>();
+        stats = std::make_unique<Stats>(3);
+        this->width = width;
+        this->height = height;
     }
 
     bool loop();

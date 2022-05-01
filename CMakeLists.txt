@@ -21,6 +21,6 @@ add_executable(${PROJECT_NAME}
         src/entity/Grass.cpp
         src/entity/Tree.cpp
         src/entity/Bricks.cpp
-        src/entity/Inventory.cpp src/entity/Inventory.h src/entity/Sword.h)
+        src/entity/Inventory.cpp src/entity/Inventory.h src/entity/Sword.h src/entity/Sword.cpp src/entity/Axe.cpp src/entity/Axe.h src/entity/Weapon.h src/entity/Weapon.cpp src/entity/Weapon.fwd.h src/entity/Hearth.h src/entity/Stats.cpp src/entity/Stats.h src/SDL_Helper.cpp src/SDL_Helper.h src/entity/AnimatedEntity.cpp src/entity/AnimatedEntity.h)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
 

@@ -26,9 +26,36 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     return texture;
 }
 
+void Texture::renderBlock(SDL_Texture *texture, Vec position) {
 
-Vec Texture::getAdjustedSize(SDL_Texture *texture) {
-    Vec size;
-    SDL_QueryTexture(texture, nullptr, nullptr, &size.x, &size.y);
-    return size * REAL_PIXEL_SIZE;
+    Vec coords = position.getScaled();
+
+    SDL_Rect dstRect;
+    dstRect.w = BLOCK_SIZE * REAL_PIXEL_SIZE;
+    dstRect.h = BLOCK_SIZE * REAL_PIXEL_SIZE;
+    dstRect.x = coords.x;
+    dstRect.y = coords.y;
+
+    SDL_RenderCopy(Game::getRenderer(), texture, nullptr, &dstRect);
+
+}
+
+void Texture::renderBlock(SDL_Texture *texture, Vec position, int xOffset) {
+
+    Vec coords = position.getScaled();
+
+    SDL_Rect dstRect;
+    dstRect.w = BLOCK_SIZE * REAL_PIXEL_SIZE;
+    dstRect.h = BLOCK_SIZE * REAL_PIXEL_SIZE;
+    dstRect.x = coords.x;
+    dstRect.y = coords.y;
+
+    SDL_Rect srcRect;
+    srcRect.w = BLOCK_SIZE;
+    srcRect.h = BLOCK_SIZE * REAL_PIXEL_SIZE;
+    srcRect.x = xOffset * BLOCK_SIZE;
+    srcRect.y = 0;
+
+    SDL_RenderCopy(Game::getRenderer(), texture, &srcRect, &dstRect);
+
 }
