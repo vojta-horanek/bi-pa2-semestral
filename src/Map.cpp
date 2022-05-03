@@ -52,12 +52,11 @@ Map::MapSection &Map::getCurrentSection() {
     return currentSection->second;
 }
 
-Map Map::loadFromFile(const std::string &fileName) {
+Map Map::loadFromFile(const std::string &fileName, GameState &gameState) {
 
     enum state {
         none,
         define,
-        background,
         _sections,
         section,
         default_section,
@@ -69,10 +68,7 @@ Map Map::loadFromFile(const std::string &fileName) {
 
     Map m;
     std::map<int, EntityType> types;
-    int backgroundId = -1;
-
     std::string line;
-
     std::map<Vec, MapSection>::iterator currentSec;
 
     state currentState = none;
@@ -91,29 +87,68 @@ Map Map::loadFromFile(const std::string &fileName) {
                 unexpected(line, lineNum);
             }
             currentState = define;
-        } else if (line == "BACKGROUND") {
-            if (currentState != none) {
-                unexpected(line, lineNum);
-            }
-            currentState = background;
         } else if (line == "SECTIONS") {
             if (currentState != none) {
                 unexpected(line, lineNum);
             }
             currentState = _sections;
+        } else if (line == "DEFAULT SECTION") {
+            if (currentState != none) {
+                unexpected(line, lineNum);
+            }
+            currentState = default_section;
+        } else if (line == "PLAYER") {
+            if (currentState != none) {
+                unexpected(line, lineNum);
+            }
+            currentState = player;
+        } else if (currentState == player) {
+            if (line == "END PLAYER") {
+                currentState = none;
+            } else {
+                std::string command;
+                int x, y;
+                lineStream >> command >> x >> y;
+                if (command != "SET" || !lineStream) {
+                    unexpected(line, lineNum);
+                }
+                gameState.playerPosition = Vec(x, y);
+            }
+        } else if (currentState == default_section) {
+            if (line == "END DEFAULT SECTION") {
+                currentState = none;
+            } else {
+                std::string command;
+                int x, y;
+                lineStream >> command >> x >> y;
+                if (command != "SET" || !lineStream) {
+                    unexpected(line, lineNum);
+                }
+                m.currentSection = m.sections.find(Vec(x, y));
+                if (m.currentSection == m.sections.end()) {
+                    std::cerr << "Invalid section: " << x << " " << y << std::endl;
+                }
+            }
         } else if (currentState == _sections) {
             if (line == "END SECTIONS") {
                 currentState = none;
             } else {
                 std::string typeDef;
-                int x, y;
-                lineStream >> typeDef >> x >> y;
-                if (typeDef != "SECTION") {
+                int x, y, background = -1;
+                lineStream >> typeDef >> x >> y >> background;
+                if (typeDef != "SECTION" || !lineStream) {
                     unexpected(line, lineNum);
                 }
                 currentState = section;
-                auto back = toNewEntity(types[backgroundId]);
-                auto in = m.sections.emplace(Vec(x,y), MapSection(11, 7, std::move(back)));
+
+                auto backgroundType = types.find(background);
+
+                if (backgroundType == types.end()) {
+                    unexpected(line, lineNum);
+                }
+
+                auto back = toNewEntity(backgroundType->second);
+                auto in = m.sections.emplace(Vec(x, y), MapSection(SCREEN_WIDTH, SCREEN_HEIGHT, std::move(back)));
                 if (!in.second) {
                     unexpected(line, lineNum);
                 }
@@ -135,13 +170,13 @@ Map Map::loadFromFile(const std::string &fileName) {
                     if (!tokenStream || eType == types.end()) {
                         unexpected(token, lineNum);
                     } else {
-                        row.emplace_back(toNewEntity(eType->second));
+                        row.emplace_back(std::move(toNewEntity(eType->second)));
                     }
                 }
                 currentSec->second.entities.emplace_back(std::move(row));
 
             }
-        }  else if (currentState == define) {
+        } else if (currentState == define) {
             if (line == "END DEFINE") {
                 currentState = none;
             } else {
@@ -155,55 +190,25 @@ Map Map::loadFromFile(const std::string &fileName) {
                     unexpected(line, lineNum);
                 }
             }
-        } else if (currentState == background) {
-            if (line == "END BACKGROUND") {
-                currentState = none;
-            } else {
-                int number = -1;
-                std::string action;
-                lineStream >> action >> number;
-                if (action == "SET"
-                    && number >= 0
-                    && types.find(number) != types.end()
-                    && lineStream) {
-                    backgroundId = number;
-                } else {
-                    unexpected(line, lineNum);
-                }
-
-            }
         }
     }
 
+    mapFile.close();
 
-    for (
-        const auto &item
-            : types) {
-        std::cout << item.first << " " << item.second <<
-                  std::endl;
-    }
-
-    std::cout << backgroundId << std::endl;
-
-    mapFile.
-
-            close();
-
-    return
-            std::move(m);
+    return std::move(m);
 }
 
 
 void Map::MapSection::render(GameState &state) {
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
             if (backgroundEntity != nullptr) {
-                backgroundEntity->render(state, Vec(i, j));
+                backgroundEntity->render(state, Vec(x, y));
             }
-            if (entities[i][j] != nullptr) {
-                entities[i][j]->render(state, Vec(i, j));
-                if (entities[i][j]->removeOnNextRender) {
-                    entities[i][j] = nullptr;
+            if (entities[y][x] != nullptr) {
+                entities[y][x]->render(state, Vec(x, y));
+                if (entities[y][x]->removeOnNextRender) {
+                    entities[y][x] = nullptr;
                 }
             }
         }

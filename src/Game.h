@@ -35,7 +35,7 @@ public:
 
     explicit Game(SDL_Renderer *renderer, int width, int height) {
         _renderer = renderer;
-        gameMap = Map::loadFromFile("../examples/map");
+        gameMap = Map::loadFromFile("../examples/map", gameState);
         inventory = std::make_unique<Inventory>(width);
         player = std::make_unique<Player>();
         stats = std::make_unique<Stats>(3);
