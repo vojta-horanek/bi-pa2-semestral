@@ -7,7 +7,7 @@
 class Apple : public Entity {
 
 public:
-    Apple() : Entity(Texture::create("resources/bitmaps/apple.bmp", true)) {
+    Apple() : Entity(Texture("resources/bitmaps/apple.bmp", true)) {
         hasCollision = true;
     }
 

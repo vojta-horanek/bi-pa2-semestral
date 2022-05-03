@@ -10,7 +10,7 @@ private:
 
 public:
 
-    explicit Inventory(size_t maxWidth) : Entity(Texture::create("resources/bitmaps/inventory.bmp")) {
+    explicit Inventory(size_t maxWidth) : Entity(Texture("resources/bitmaps/inventory.bmp")) {
         this->maxWidth = maxWidth;
     }
 

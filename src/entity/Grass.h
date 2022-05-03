@@ -6,7 +6,7 @@
 class Grass : public Entity {
 
 public:
-    Grass() : Entity(Texture::create("resources/bitmaps/grass-n.bmp")) {
+    Grass() : Entity(Texture("resources/bitmaps/grass-n.bmp")) {
 
     }
 };

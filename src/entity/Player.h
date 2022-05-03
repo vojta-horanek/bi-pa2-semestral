@@ -16,7 +16,7 @@ public:
     }
 
     explicit Player() :
-            AnimatedEntity(Texture::create("resources/bitmaps/player-anim.bmp", true), 2) {}
+            AnimatedEntity(Texture("resources/bitmaps/player-anim.bmp", true), 2) {}
 
     void setDirection(int dx, int dy);
     Vec getDirection();

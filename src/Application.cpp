@@ -17,6 +17,7 @@ int Application::run() {
         return EXIT_FAILURE;
     } else {
         while (game.loop());
+        Texture::clearTextureStore();
         return EXIT_SUCCESS;
     }
 }

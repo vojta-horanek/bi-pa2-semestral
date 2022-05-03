@@ -14,7 +14,7 @@ private:
 
 public:
 
-    explicit Stats(int maxHealth) : Entity(Texture::create("resources/bitmaps/stats.bmp")) {
+    explicit Stats(int maxHealth) : Entity(Texture("resources/bitmaps/stats.bmp")) {
         this->maxHealth = maxHealth;
         hearth = std::make_unique<Hearth>();
     }

@@ -52,7 +52,7 @@ private:
     static std::unique_ptr<Entity> typeToNewEntity(EntityType type) {
         switch (type) {
             case VOID:
-                return std::move(std::make_unique<Entity>(nullptr));
+                return std::move(std::make_unique<Entity>());
             case TREE:
                 return std::move(std::make_unique<Tree>());
             case APPLE:

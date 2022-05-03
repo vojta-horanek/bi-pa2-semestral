@@ -9,18 +9,16 @@
 class Entity {
 
 protected:
-    SDL_Texture *texture;
+    Texture texture;
 
 public:
     bool hasCollision = false;
     bool removeOnNextRender = false;
 
-    explicit Entity(SDL_Texture *texture) : texture(texture) {}
+    Entity() : texture(Texture()) {}
+    explicit Entity(Texture texture) : texture(std::move(texture)) {}
 
-    virtual ~Entity() {
-        SDL_DestroyTexture(texture);
-        texture = nullptr;
-    }
+    virtual ~Entity() = default;
 
     // A default implementation of the loop method draws the texture at the current position of this entity
     virtual void render(GameState &state, Vec position);

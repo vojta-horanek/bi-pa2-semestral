@@ -6,7 +6,7 @@
 
 class Bricks : public Entity {
 public:
-    Bricks() : Entity(Texture::create("resources/bitmaps/bricks.bmp")) {
+    Bricks() : Entity(Texture("resources/bitmaps/bricks.bmp")) {
         hasCollision = true;
     }
 

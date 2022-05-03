@@ -6,11 +6,12 @@
 
 class Weapon : public AnimatedEntity {
 
-    SDL_Texture *playerTexture;
+    Texture playerTexture;
 
 protected:
-    Weapon(SDL_Texture *texture, SDL_Texture *playerTexture) : AnimatedEntity(texture, 2, true) {
-        this->playerTexture = playerTexture;
+    Weapon(Texture texture, Texture playerTexture) :
+            AnimatedEntity(std::move(texture), 2, true),
+            playerTexture(std::move(playerTexture)) {
         hasCollision = true;
     }
 
@@ -18,12 +19,6 @@ public:
     int damage = 0;
 
     virtual void renderOnPlayer(GameState &state, Vec position);
-
-    ~Weapon() override {
-        SDL_DestroyTexture(playerTexture);
-        playerTexture = nullptr;
-    }
-
 };
 
 #endif //TPOHB_WEAPON_H

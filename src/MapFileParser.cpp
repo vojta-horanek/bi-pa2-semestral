@@ -14,6 +14,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         } else {
             return Result::error("Unexpected state change");
         }
+    } else if (currentState == State::none) {
+        return Result::error("Unexpected token");
     }
 
     // Line begins with END

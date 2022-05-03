@@ -6,7 +6,7 @@
 class Hearth : public Entity {
 
 public:
-    Hearth() : Entity(Texture::create("resources/bitmaps/hearth.bmp", true)) {
+    Hearth() : Entity(Texture("resources/bitmaps/hearth.bmp", true)) {
 
     }
 

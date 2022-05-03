@@ -14,17 +14,17 @@ protected:
 
     int frame = 0;
 
-    AnimatedEntity(SDL_Texture *texture,
+    AnimatedEntity(Texture texture,
                    int frameCount,
                    bool synchronized = false,
                    int speed = 15) :
-            Entity(texture),
+            Entity(std::move(texture)),
             frameCount(frameCount),
             speed(speed),
             synchronized(synchronized) {
     }
 
-    void nextAnimatedRender(SDL_Texture *texture, Vec position);
+    void nextAnimatedRender(Texture & texture, Vec position);
 
 public:
     void render(GameState &state, Vec position) override;

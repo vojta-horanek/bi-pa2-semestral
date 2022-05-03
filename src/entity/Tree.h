@@ -8,7 +8,7 @@
 class Tree : public Entity {
 
 public:
-    Tree() : Entity(Texture::create("resources/bitmaps/tree-w.bmp", true)) {
+    Tree() : Entity(Texture("resources/bitmaps/tree-w.bmp", true)) {
         hasCollision = true;
     }
 

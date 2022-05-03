@@ -8,8 +8,8 @@
 class Sword : public Weapon {
 
 public:
-    Sword() : Weapon(Texture::create("resources/bitmaps/sword.bmp", true),
-                     Texture::create("resources/bitmaps/player-sword.bmp", true)) {
+    Sword() : Weapon(Texture("resources/bitmaps/sword.bmp", true),
+                     Texture("resources/bitmaps/player-sword.bmp", true)) {
         damage = 15;
     }
 

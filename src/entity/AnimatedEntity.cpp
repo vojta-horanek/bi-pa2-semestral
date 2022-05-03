@@ -7,7 +7,7 @@ void AnimatedEntity::render(GameState &state, Vec position) {
     nextAnimatedRender(texture, position);
 }
 
-void AnimatedEntity::nextAnimatedRender(SDL_Texture * texture, Vec position) {
+void AnimatedEntity::nextAnimatedRender(Texture & texture, Vec position) {
     // If this entity is not synchronized, it handles the animation frames itself
     if (!synchronized) {
         if (delay >= speed) {
@@ -18,7 +18,7 @@ void AnimatedEntity::nextAnimatedRender(SDL_Texture * texture, Vec position) {
         }
     }
 
-    Texture::renderBlock(texture, position, frame);
+    texture.renderBlock(position, frame);
 }
 
 void AnimatedEntity::syncWith(AnimatedEntity &other) {
