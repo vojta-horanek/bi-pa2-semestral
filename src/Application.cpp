@@ -11,10 +11,12 @@ Application::Application() : window(Window(L10n::appName)) {
 int Application::run() {
     window.show();
 
-    Game game(window.getRenderer(), SCREEN_WIDTH, SCREEN_HEIGHT);
+    Game game(window.getRenderer(), GAME_WIDTH, GAME_HEIGHT);
 
-    game.loadTestEntities();
-    while (game.loop());
-
-    return EXIT_SUCCESS;
+    if (!game.loadMap("../examples/map")) {
+        return EXIT_FAILURE;
+    } else {
+        while (game.loop());
+        return EXIT_SUCCESS;
+    }
 }

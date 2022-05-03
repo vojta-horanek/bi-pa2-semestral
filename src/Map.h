@@ -14,48 +14,15 @@
 #include "entity/Apple.h"
 #include "entity/Sword.h"
 #include "entity/Axe.h"
+#include "MapSection.h"
+#include "Result.h"
+#include <utility>
 
 class Map {
 private:
-    class MapSection {
-    private:
-        std::unique_ptr<Entity> backgroundEntity = nullptr;
-        size_t width;
-        size_t height;
-    public:
-        std::vector<std::vector<std::unique_ptr<Entity>>> entities;
-
-        explicit MapSection(size_t width, size_t height, std::unique_ptr<Entity> background) {
-            this->width = width;
-            this->height = height;
-            backgroundEntity = std::move(background);
-        }
-
-        Entity *get(Vec at) const {
-            return entities[at.y][at.x].get();
-        }
-
-        void set(Vec at, std::unique_ptr<Entity> entity) {
-            entities[at.y][at.x] = std::move(entity);
-        }
-
-        void render(GameState &state);
-
-        bool isEdge(Vec position) const {
-            return position.x < 0 ||
-                   position.x >= width ||
-                   position.y >= height ||
-                   position.y < 0;
-        }
-
-        bool wouldCollide(Vec player) const {
-            return get(player) != nullptr && get(player)->hasCollision;
-        }
-    };
-
+public:
     std::map<Vec, MapSection> sections;
     std::map<Vec, MapSection>::iterator currentSection = sections.end();
-public:
     MapSection &getCurrentSection();
 
      bool tryNavigateToSection(Vec inPlayerDirection);

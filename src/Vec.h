@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <SDL2/SDL.h>
+#include <ostream>
 #include "Constants.h"
 
 struct Vec {
@@ -77,6 +78,11 @@ struct Vec {
         } else {
             return y < p1.y;
         }
+    }
+
+    friend std::ostream & operator<<(std::ostream & s, const Vec & vec) {
+        s << "(" << vec.x << ", " << vec.y << ")";
+        return s;
     }
 };
 

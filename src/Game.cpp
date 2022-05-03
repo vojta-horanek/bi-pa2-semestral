@@ -94,6 +94,12 @@ void Game::onEvent(SDL_Event event) {
 
 }
 
-void Game::loadTestEntities() {
-//    gameMap.test();
+bool Game::loadMap(const std::string &file) {
+    try {
+        gameMap = Map::loadFromFile(file, gameState);
+        return true;
+    } catch (std::invalid_argument &ex) {
+        std::cerr << ex.what() << std::endl;
+        return false;
+    }
 }

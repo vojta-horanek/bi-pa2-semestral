@@ -13,8 +13,8 @@ public:
     explicit Window(const std::string &title) {
         window = SDL_CreateWindow(
                 title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                SCREEN_WIDTH * BLOCK_SIZE * REAL_PIXEL_SIZE,
-                (SCREEN_HEIGHT + 1) * BLOCK_SIZE * REAL_PIXEL_SIZE, 0
+                GAME_WIDTH * BLOCK_SIZE * REAL_PIXEL_SIZE,
+                (GAME_HEIGHT + 1) * BLOCK_SIZE * REAL_PIXEL_SIZE, 0
         );
     }
 

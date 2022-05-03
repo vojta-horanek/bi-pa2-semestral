@@ -10,6 +10,8 @@
 #include <vector>
 #include <memory>
 #include <cassert>
+#include <stdexcept>
+#include <iostream>
 
 class Game {
 private:
@@ -18,7 +20,6 @@ private:
     std::unique_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
-    std::vector<std::unique_ptr<Entity>> entities;
 
     Map gameMap;
 
@@ -35,7 +36,6 @@ public:
 
     explicit Game(SDL_Renderer *renderer, int width, int height) {
         _renderer = renderer;
-        gameMap = Map::loadFromFile("../examples/map", gameState);
         inventory = std::make_unique<Inventory>(width);
         player = std::make_unique<Player>();
         stats = std::make_unique<Stats>(3);
@@ -43,13 +43,13 @@ public:
         this->height = height;
     }
 
+    bool loadMap(const std::string &file);
+
     bool loop();
 
     void onRender();
 
     void onEvent(SDL_Event event);
-
-    void loadTestEntities();
 };
 
 

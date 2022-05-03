@@ -27,7 +27,7 @@ SECTION 0 0 6
 1 1 1 1 1 0 1 1 1 1 1
 END SECTION
 
-SECTION 0 -1
+SECTION 0 -1 6
 1 1 1 1 1 0 1 1 1 1 1
 1 0 0 0 0 0 0 0 0 0 1
 1 0 0 0 0 0 0 0 0 0 1
@@ -40,9 +40,9 @@ END SECTION
 END SECTIONS
 
 ; A default section is the section shown on start
-DEFAULT SECTION
+DEFAULT_SECTION
 SET 0 0
-END DEFAULT SECTION
+END DEFAULT_SECTION
 
 ; A player position
 PLAYER
