@@ -1,0 +1,53 @@
+; All map sections are sized 11 x 7
+
+; Definition of block types
+; A void entity is an empty space
+DEFINE
+0 VOID
+1 TREE
+2 APPLE
+3 SWORD
+4 AXE
+5 BRICK
+6 GRASS
+END DEFINE
+
+; Background entity is implicitly drawn behind all entities
+BACKGROUND
+SET 6
+END BACKGROUND
+
+SECTIONS
+; Section definitions
+; SECTION x y
+SECTION 0 0
+1 1 1 1 1 1 1 1 1 1 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 2 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 1 1 1 1 0 1 1 1 1 1
+END SECTION
+
+SECTION 0 -1
+1 1 1 1 1 0 1 1 1 1 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 0 0 0 0 0 0 0 0 0 1
+1 3 0 0 0 0 0 0 0 0 1
+1 1 1 1 1 0 1 1 1 1 1
+END SECTION
+
+END SECTIONS
+
+; A default section is the section shown on start
+DEFAULT SECTION
+SET 0 0
+END DEFAULT SECTION
+
+; A player position
+PLAYER
+SET 2 3
+END PLAYER

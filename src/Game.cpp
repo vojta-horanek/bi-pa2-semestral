@@ -77,7 +77,12 @@ void Game::onEvent(SDL_Event event) {
                 }
                 gameState.playerPosition = Vec(newX, gameState.playerPosition.y);
             } else if (direction.y != 0) {
-                gameState.playerPosition = Vec(gameState.playerPosition.x, 0);
+                int newY = 0;
+                if (direction.y < 0) {
+                    // Going from bottom screen to top screen
+                    newY = height - 1;
+                }
+                gameState.playerPosition = Vec(gameState.playerPosition.x, newY);
             }
         }
 
@@ -90,5 +95,5 @@ void Game::onEvent(SDL_Event event) {
 }
 
 void Game::loadTestEntities() {
-    gameMap.test();
+//    gameMap.test();
 }
