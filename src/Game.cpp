@@ -2,6 +2,19 @@
 
 #include "FPSController.h"
 
+SDL_Renderer *Game::renderer;
+
+Game::Game(SDL_Renderer *_renderer, int width, int height) : width(width), height(height) {
+    renderer = _renderer;
+    inventory = std::make_unique<Inventory>(width);
+    player = std::make_unique<Player>();
+    stats = std::make_unique<Stats>(3);
+}
+
+Game::~Game() {
+    Texture::clearStore();
+}
+
 bool Game::loop() {
     FPSController::renderStart();
 
@@ -102,4 +115,9 @@ bool Game::loadMap(const std::string &file) {
         std::cerr << ex.what() << std::endl;
         return false;
     }
+}
+
+SDL_Renderer *Game::getRenderer() {
+    assert(renderer != nullptr);
+    return renderer;
 }

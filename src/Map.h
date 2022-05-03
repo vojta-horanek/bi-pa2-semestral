@@ -19,15 +19,15 @@
 #include <utility>
 
 class Map {
-private:
 public:
     std::map<Vec, MapSection> sections;
     std::map<Vec, MapSection>::iterator currentSection = sections.end();
+
     MapSection &getCurrentSection();
 
-     bool tryNavigateToSection(Vec inPlayerDirection);
+    bool tryNavigateToSection(Vec inPlayerDirection);
 
-     static Map loadFromFile(const std::string & fileName, GameState & gameState);
+    static Map loadFromFile(const std::string &fileName, GameState &gameState);
 };
 
 

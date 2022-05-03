@@ -5,6 +5,7 @@
 #include "../GameState.h"
 #include "../Texture.h"
 #include <SDL2/SDL.h>
+#include <iostream>
 
 class Entity {
 
@@ -16,6 +17,7 @@ public:
     bool removeOnNextRender = false;
 
     Entity() : texture(Texture()) {}
+
     explicit Entity(Texture texture) : texture(std::move(texture)) {}
 
     virtual ~Entity() = default;

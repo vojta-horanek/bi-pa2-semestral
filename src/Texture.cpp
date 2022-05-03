@@ -5,7 +5,8 @@
 #include "Game.h"
 #include <SDL2/SDL.h>
 #include <iostream>
-#include <cassert>
+
+std::map<std::pair<std::string, bool>, SDL_Texture *> Texture::textureStore;
 
 Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
     texture = create(path, useWhiteAsAlpha);
@@ -15,19 +16,12 @@ Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
     }
 }
 
-Texture::~Texture() {
-//    if (texture != nullptr)
-//        SDL_DestroyTexture(texture);
-}
-
 SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
-    auto existing = textureStore.find(path);
-    if (existing != textureStore.end()) {
-        std::cout << "Getting old" << std::endl;
-        return existing->second;
-    }
-    std::cout << "Creating new" << std::endl;
+    // If texture has been saved in the store, retrieve it
+    auto existing = textureStore.find(std::make_pair(path, useWhiteAsAlpha));
+    if (existing != textureStore.end()) return existing->second;
 
+    // Otherwise, create the texture
     SDL_Surface *surface = SDL_LoadBMP(path.c_str());
     if (surface == nullptr) {
         SDL_Log(L10n::cannotLoadBitmap, SDL_GetError());
@@ -45,7 +39,7 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     }
     SDL_FreeSurface(surface);
 
-    textureStore[path] = texture;
+    textureStore[std::make_pair(path, useWhiteAsAlpha)] = texture;
 
     return texture;
 }
@@ -76,27 +70,9 @@ void Texture::renderBlock(Vec position, int xOffset) const {
 
 }
 
-//Texture::Texture(Texture &&other) noexcept: texture(other.texture) {
-//    other.texture = nullptr;
-//}
-//
-//
-//Texture &Texture::operator=(Texture &&other) noexcept {
-//    if (&other == this)
-//        return *this;
-//    if (texture != nullptr)
-//        SDL_DestroyTexture(texture);
-//    texture = other.texture;
-//    other.texture = nullptr;
-//    return *this;
-//}
-
-void Texture::clearTextureStore() {
-    for (const auto &item: textureStore) {
-        if (item.second != nullptr)
-            SDL_DestroyTexture(item.second);
-        std::cout << "Deleting" << std::endl;
-    }
+void Texture::clearStore() {
+    for (const auto &item: textureStore)
+        if (item.second != nullptr) SDL_DestroyTexture(item.second);
 
     textureStore.clear();
 }

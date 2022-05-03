@@ -9,7 +9,7 @@
 
 class Texture {
 private:
-    static inline std::map<std::string, SDL_Texture *> textureStore;
+    static std::map<std::pair<std::string, bool>, SDL_Texture *> textureStore;
 
     SDL_Texture *texture = nullptr;
 
@@ -20,19 +20,11 @@ public:
 
     explicit Texture(const std::string &path, bool useWhiteAsAlpha = false);
 
-    ~Texture();
-//
-//    Texture(Texture&& other) noexcept;
-//    Texture& operator=(Texture&& other) noexcept;
-//
-//    Texture(const Texture& other) = delete;
-//    Texture& operator=(const Texture& other) = delete;
-
     void renderBlock(Vec position) const;
 
     void renderBlock(Vec position, int xOffset) const;
 
-    static void clearTextureStore();
+    static void clearStore();
 };
 
 

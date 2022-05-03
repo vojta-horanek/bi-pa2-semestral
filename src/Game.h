@@ -25,23 +25,15 @@ private:
 
     int width, height;
 
-    inline static SDL_Renderer *_renderer;
+    static SDL_Renderer *renderer;
 
 public:
 
-    static SDL_Renderer *getRenderer() {
-        assert(_renderer != nullptr);
-        return _renderer;
-    }
+    static SDL_Renderer *getRenderer();
 
-    explicit Game(SDL_Renderer *renderer, int width, int height) {
-        _renderer = renderer;
-        inventory = std::make_unique<Inventory>(width);
-        player = std::make_unique<Player>();
-        stats = std::make_unique<Stats>(3);
-        this->width = width;
-        this->height = height;
-    }
+    explicit Game(SDL_Renderer *renderer, int width, int height);
+
+    ~Game();
 
     bool loadMap(const std::string &file);
 
