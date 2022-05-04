@@ -1,0 +1,19 @@
+stages:
+  - build
+
+image: gcc
+
+build:
+  stage: build
+  before_script:
+    - apt update && apt -y install make autoconf libsdl2-dev doxygen zip
+  script:
+    - make 
+    - make zip
+  artifacts:
+    name: "TPOHB"
+    paths:
+      - horanvoj
+      - horanvoj.zip
+    expire_in: 1 week
+
