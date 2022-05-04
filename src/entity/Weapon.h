@@ -2,6 +2,7 @@
 #define TPOHB_WEAPON_H
 
 #include "Entity.h"
+#include "../GameState.h"
 #include "AnimatedEntity.h"
 
 class Weapon : public AnimatedEntity {
@@ -9,11 +10,7 @@ class Weapon : public AnimatedEntity {
     Texture playerTexture;
 
 protected:
-    Weapon(Texture texture, Texture playerTexture) :
-            AnimatedEntity(std::move(texture), 2, true),
-            playerTexture(std::move(playerTexture)) {
-        hasCollision = true;
-    }
+    Weapon(Texture texture, Texture playerTexture);
 
 public:
     int damage = 0;

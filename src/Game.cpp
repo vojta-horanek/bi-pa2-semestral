@@ -95,7 +95,7 @@ SDL_Renderer *Game::getRenderer() {
 
 void Game::nextTurn() {
     avoidPlayerCollision();
-    player->onTurn(gameState);
+    player->onTurn(gameState, gameMap.getCurrentSection());
 
     gameMap.getCurrentSection().onTurn(gameState);
 }

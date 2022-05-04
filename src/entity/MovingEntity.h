@@ -1,8 +1,8 @@
 #ifndef TPOHB_MOVINGENTITY_H
 #define TPOHB_MOVINGENTITY_H
 
-
 #include "AnimatedEntity.h"
+#include "../MapSection.fwd.h"
 
 class MovingEntity : public AnimatedEntity {
 public:
@@ -16,7 +16,7 @@ public:
 
     explicit MovingEntity(Texture texture);
 
-    virtual void onTurn(GameState & state);
+    virtual void onTurn(GameState & state, MapSection & section);
 };
 
 

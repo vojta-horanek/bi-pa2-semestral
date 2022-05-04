@@ -10,13 +10,9 @@ private:
 
 public:
 
-    explicit Inventory(size_t maxWidth) : Entity(Texture("resources/bitmaps/inventory.bmp")) {
-        this->maxWidth = maxWidth;
-    }
+    explicit Inventory(size_t maxWidth);
 
     void render(GameState &state, Vec position) override;
-
-
 };
 
 

@@ -4,11 +4,8 @@
 #include "Entity.h"
 
 class Grass : public Entity {
-
 public:
-    Grass() : Entity(Texture("resources/bitmaps/grass-n.bmp")) {
-
-    }
+    Grass();
 };
 
 

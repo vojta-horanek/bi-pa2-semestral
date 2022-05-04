@@ -1,5 +1,15 @@
 #include "MapSection.h"
 
+#include "entity/MovingEntity.h"
+
+MapSection::MapSection(int width, int height, std::unique_ptr<Entity> background) {
+    this->width = width;
+    this->height = height;
+    backgroundEntity = std::move(background);
+    this->entities.reserve(height);
+
+}
+
 void MapSection::render(GameState &state) {
 
     for (int x = 0; x < width; x++) {
@@ -30,7 +40,7 @@ void MapSection::onTurn(GameState &state) {
     }
 
     for (const auto &entity: movingEntities) {
-        entity->onTurn(state);
+        entity->onTurn(state, *this);
     }
 }
 
@@ -41,8 +51,8 @@ bool MapSection::isEdge(Vec position) const {
            position.y < 0;
 }
 
-bool MapSection::wouldCollide(Vec player) const {
-    return get(player) != nullptr && get(player)->hasCollision;
+bool MapSection::wouldCollide(Vec position) const {
+    return get(position) != nullptr && get(position)->hasCollision;
 }
 
 void MapSection::set(Vec at, std::unique_ptr<Entity> entity) {

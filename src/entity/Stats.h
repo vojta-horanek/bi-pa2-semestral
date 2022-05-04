@@ -7,17 +7,12 @@
 #include "../SDL_Helper.h"
 #include <memory>
 
-class Stats : Entity {
+class Stats : public Entity {
 private:
     int maxHealth;
     std::unique_ptr<Hearth> hearth;
-
 public:
-
-    explicit Stats(int maxHealth) : Entity(Texture("resources/bitmaps/stats.bmp")) {
-        this->maxHealth = maxHealth;
-        hearth = std::make_unique<Hearth>();
-    }
+    explicit Stats(int maxHealth);
 
     void render(GameState &state, Vec position) override;
 };

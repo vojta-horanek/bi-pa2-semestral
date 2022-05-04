@@ -1,0 +1,6 @@
+#ifndef TPOHB_MAPSECTION_FWD_H
+#define TPOHB_MAPSECTION_FWD_H
+
+class MapSection;
+
+#endif //TPOHB_MAPSECTION_FWD_H

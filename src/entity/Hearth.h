@@ -6,10 +6,7 @@
 class Hearth : public Entity {
 
 public:
-    Hearth() : Entity(Texture("resources/bitmaps/hearth.bmp", true)) {
-
-    }
-
+    Hearth();
 };
 
 #endif //TPOHB_HEARTH_H

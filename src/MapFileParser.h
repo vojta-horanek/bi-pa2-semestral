@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
-#include <locale>
 #include <memory>
 #include <utility>
 #include <stdexcept>

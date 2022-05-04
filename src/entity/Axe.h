@@ -8,13 +8,9 @@
 class Axe : public Weapon {
 
 public:
-    Axe() : Weapon(Texture("resources/bitmaps/axe.bmp", true),
-                   Texture("resources/bitmaps/player-axe.bmp", true)) {
-        damage = 10;
-    }
+    Axe();
 
     bool onCollision(GameState &state) override;
-
 };
 
 

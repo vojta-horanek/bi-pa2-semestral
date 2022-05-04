@@ -1,16 +1,11 @@
 #ifndef TPOHB_BRICKS_H
 #define TPOHB_BRICKS_H
 
-
 #include "Entity.h"
 
 class Bricks : public Entity {
 public:
-    Bricks() : Entity(Texture("resources/bitmaps/bricks.bmp")) {
-        hasCollision = true;
-    }
-
+    Bricks();
 };
-
 
 #endif //TPOHB_BRICKS_H

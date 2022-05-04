@@ -2,12 +2,19 @@
 
 #include <cassert>
 
+AnimatedEntity::AnimatedEntity(Texture texture, int frameCount, bool synchronized, int speed) :
+        Entity(texture),
+        speed(speed),
+        frameCount(frameCount),
+        synchronized(synchronized) {
+}
+
 void AnimatedEntity::render(GameState &state, Vec position) {
     updateState(state);
     nextAnimatedRender(texture, position);
 }
 
-void AnimatedEntity::nextAnimatedRender(Texture & texture, Vec position) {
+void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
     // If this entity is not synchronized, it handles the animation frames itself
     if (!synchronized) {
         if (delay >= speed) {
@@ -26,3 +33,4 @@ void AnimatedEntity::syncWith(AnimatedEntity &other) {
     assert(synchronized);
     this->frame = other.frame;
 }
+

@@ -13,7 +13,7 @@ int Application::run() {
 
     Game game(window.getRenderer(), GAME_WIDTH, GAME_HEIGHT);
 
-    if (!game.loadMap("../examples/map")) {
+    if (!game.loadMap("examples/map")) {
         return EXIT_FAILURE;
     } else {
         while (game.loop());

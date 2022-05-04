@@ -20,17 +20,12 @@ class MapSection {
 private:
     std::unique_ptr<Entity> backgroundEntity = nullptr;
 public:
-    size_t width;
-    size_t height;
+    int width;
+    int height;
     std::vector<std::vector<std::unique_ptr<Entity>>> entities;
     std::vector<std::unique_ptr<MovingEntity>> movingEntities;
 
-    explicit MapSection(size_t width, size_t height, std::unique_ptr<Entity> background) {
-        this->width = width;
-        this->height = height;
-        backgroundEntity = std::move(background);
-        this->entities.reserve(height);
-    }
+    explicit MapSection(int width, int height, std::unique_ptr<Entity> background);
 
     Entity *get(Vec at) const;
 
@@ -42,7 +37,7 @@ public:
 
     bool isEdge(Vec position) const;
 
-    bool wouldCollide(Vec player) const;
+    bool wouldCollide(Vec position) const;
 };
 
 

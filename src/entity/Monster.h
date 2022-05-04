@@ -11,7 +11,7 @@ class Monster : public MovingEntity {
 public:
     Monster();
 
-    void onTurn(GameState &state) override;
+    void onTurn(GameState &state, MapSection & section) override;
 };
 
 

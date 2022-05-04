@@ -12,21 +12,19 @@ private:
     Vec direction;
 public:
 
-    Vec getNextPosition(Vec currentPosition) const {
-        return currentPosition + direction;
-    }
+    Vec getNextPosition(Vec currentPosition) const;
 
-    explicit Player() :
-            MovingEntity(Texture("resources/bitmaps/player-anim.bmp", true), 2) {}
+    explicit Player();
 
     void setDirection(int dx, int dy);
+
     Vec getDirection();
 
     void updateState(GameState &state) override;
 
     void render(GameState &state, Vec position) override;
 
-    void onTurn(GameState & state) override;
+    void onTurn(GameState &state, MapSection &section) override;
 };
 
 

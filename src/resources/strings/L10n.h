@@ -11,7 +11,7 @@ namespace L10n_en {
     static constexpr str appName = "The planet of Hieronymus Bosch";
     // section Errors
     static constexpr str cannotInitializeSDL = "SDL Could not be initialized! (%s)";
-    static constexpr str cannotLoadBitmap = "Could not load bitmap! (%s)";
+    static constexpr str cannotLoadBitmap = "Could not load bitmap from %s! (%s)";
     // section Game
     static constexpr str welcomeMessage = "Welcome";
 }

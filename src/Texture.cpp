@@ -2,9 +2,9 @@
 
 #include "Constants.h"
 #include "resources/strings/L10n.h"
+#include "resources/strings/Paths.h"
 #include "Game.h"
 #include <SDL2/SDL.h>
-#include <iostream>
 
 std::map<std::pair<std::string, bool>, SDL_Texture *> Texture::textureStore;
 
@@ -12,7 +12,7 @@ Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
     texture = create(path, useWhiteAsAlpha);
     if (texture == nullptr) {
         // Try to create a bitmap of last resort
-        texture = create("resources/bitmaps/invalid.bmp", true);
+        texture = create(Paths::Bitmaps::invalid, true);
     }
 }
 
@@ -24,7 +24,7 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     // Otherwise, create the texture
     SDL_Surface *surface = SDL_LoadBMP(path.c_str());
     if (surface == nullptr) {
-        SDL_Log(L10n::cannotLoadBitmap, SDL_GetError());
+        SDL_Log(L10n::cannotLoadBitmap, path.c_str(), SDL_GetError());
         return nullptr;
     }
 
@@ -34,7 +34,7 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(Game::getRenderer(), surface);
     if (texture == nullptr) {
-        SDL_Log(L10n::cannotLoadBitmap, SDL_GetError());
+        SDL_Log(L10n::cannotLoadBitmap, path.c_str(), SDL_GetError());
         return nullptr;
     }
     SDL_FreeSurface(surface);

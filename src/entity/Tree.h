@@ -8,10 +8,7 @@
 class Tree : public Entity {
 
 public:
-    Tree() : Entity(Texture("resources/bitmaps/tree-w.bmp", true)) {
-        hasCollision = true;
-    }
-
+    Tree();
 };
 
 

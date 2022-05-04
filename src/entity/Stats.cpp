@@ -1,4 +1,10 @@
 #include "Stats.h"
+#include "../resources/strings/Paths.h"
+
+Stats::Stats(int maxHealth) : Entity(Texture(Paths::Bitmaps::stats)) {
+    this->maxHealth = maxHealth;
+    hearth = std::make_unique<Hearth>();
+}
 
 void Stats::render(GameState &state, Vec position) {
     int i;

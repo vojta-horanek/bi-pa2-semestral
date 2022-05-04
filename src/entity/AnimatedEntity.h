@@ -14,15 +14,7 @@ protected:
 
     int frame = 0;
 
-    AnimatedEntity(Texture texture,
-                   int frameCount,
-                   bool synchronized = false,
-                   int speed = 15) :
-            Entity(texture),
-            frameCount(frameCount),
-            speed(speed),
-            synchronized(synchronized) {
-    }
+    AnimatedEntity(Texture texture, int frameCount, bool synchronized = false, int speed = 15);
 
     void nextAnimatedRender(Texture &texture, Vec position);
 

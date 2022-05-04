@@ -6,15 +6,10 @@
 #include "Weapon.h"
 
 class Sword : public Weapon {
-
 public:
-    Sword() : Weapon(Texture("resources/bitmaps/sword.bmp", true),
-                     Texture("resources/bitmaps/player-sword.bmp", true)) {
-        damage = 15;
-    }
+    Sword();
 
     bool onCollision(GameState &state) override;
-
 };
 
 

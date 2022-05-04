@@ -9,4 +9,4 @@ MovingEntity::MovingEntity(Texture texture,
 
 MovingEntity::MovingEntity(Texture texture) : AnimatedEntity(texture, 1, true, 0) {}
 
-void MovingEntity::onTurn(GameState &state) {}
+void MovingEntity::onTurn(GameState &state, MapSection & section) {}

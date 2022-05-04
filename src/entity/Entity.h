@@ -16,25 +16,23 @@ public:
     bool hasCollision = false;
     bool removeOnNextTurn = false;
 
-    Entity() : texture(Texture()) {}
+    Entity();
 
-    explicit Entity(Texture texture) : texture(texture) {}
+    explicit Entity(Texture texture);
 
     virtual ~Entity() = default;
 
     // A default implementation of the loop method draws the texture at the current position of this entity
     virtual void render(GameState &state, Vec position);
 
-    virtual void updateState(GameState &state) {}
+    virtual void updateState(GameState &state);
 
     /**
      *
      * @param state
      * @return true if the collision should block the player, false otherwise
      */
-    virtual bool onCollision(GameState &state) {
-        return hasCollision;
-    }
+    virtual bool onCollision(GameState &state);
 };
 
 

@@ -5,17 +5,10 @@
 #include "../GameState.h"
 
 class Apple : public Entity {
-
 public:
-    Apple() : Entity(Texture("resources/bitmaps/apple.bmp", true)) {
-        hasCollision = true;
-    }
+    Apple();
 
-    bool onCollision(GameState &state) override {
-        removeOnNextTurn = true;
-        state.inventory.emplace_back(new Apple());
-        return false;
-    }
+    bool onCollision(GameState &state) override;
 };
 
 #endif //TPOHB_APPLE_H
