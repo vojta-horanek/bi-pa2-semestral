@@ -1,6 +1,7 @@
 #include "MapSection.h"
 
 void MapSection::render(GameState &state) {
+
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             if (backgroundEntity != nullptr) {
@@ -8,11 +9,28 @@ void MapSection::render(GameState &state) {
             }
             if (entities[y][x] != nullptr) {
                 entities[y][x]->render(state, Vec(x, y));
-                if (entities[y][x]->removeOnNextRender) {
-                    entities[y][x] = nullptr;
-                }
             }
         }
+    }
+
+    for (const auto &entity: movingEntities) {
+        entity->render(state, entity->position);
+    }
+
+}
+
+void MapSection::onTurn(GameState &state) {
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            if (entities[y][x] != nullptr
+                && entities[y][x]->removeOnNextTurn) {
+                entities[y][x] = nullptr;
+            }
+        }
+    }
+
+    for (const auto &entity: movingEntities) {
+        entity->onTurn(state);
     }
 }
 

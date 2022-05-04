@@ -14,6 +14,7 @@
 #include "entity/Apple.h"
 #include "entity/Sword.h"
 #include "entity/Axe.h"
+#include "entity/MovingEntity.h"
 
 class MapSection {
 private:
@@ -22,6 +23,7 @@ public:
     size_t width;
     size_t height;
     std::vector<std::vector<std::unique_ptr<Entity>>> entities;
+    std::vector<std::unique_ptr<MovingEntity>> movingEntities;
 
     explicit MapSection(size_t width, size_t height, std::unique_ptr<Entity> background) {
         this->width = width;
@@ -35,6 +37,8 @@ public:
     void set(Vec at, std::unique_ptr<Entity> entity);
 
     void render(GameState &state);
+
+    void onTurn(GameState & state);
 
     bool isEdge(Vec position) const;
 

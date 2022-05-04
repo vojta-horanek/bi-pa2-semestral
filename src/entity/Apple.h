@@ -12,7 +12,7 @@ public:
     }
 
     bool onCollision(GameState &state) override {
-        removeOnNextRender = true;
+        removeOnNextTurn = true;
         state.inventory.emplace_back(new Apple());
         return false;
     }

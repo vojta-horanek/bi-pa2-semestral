@@ -14,11 +14,11 @@ protected:
 
 public:
     bool hasCollision = false;
-    bool removeOnNextRender = false;
+    bool removeOnNextTurn = false;
 
     Entity() : texture(Texture()) {}
 
-    explicit Entity(Texture texture) : texture(std::move(texture)) {}
+    explicit Entity(Texture texture) : texture(texture) {}
 
     virtual ~Entity() = default;
 

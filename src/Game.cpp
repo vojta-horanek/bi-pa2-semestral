@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "FPSController.h"
+#include "entity/Monster.h"
 
 SDL_Renderer *Game::renderer;
 
@@ -47,7 +48,7 @@ void Game::onRender() {
 void Game::onEvent(SDL_Event event) {
     if (event.type == SDL_QUIT) {
         gameState.running = false;
-    } else if (event.type == SDL_KEYDOWN && !gameState.turnFinished) {
+    } else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
                 player->setDirection(0, -1);
@@ -68,12 +69,38 @@ void Game::onEvent(SDL_Event event) {
             case SDLK_DOWN:
             case SDLK_LEFT:
             case SDLK_RIGHT:
-                gameState.turnFinished = false;
+                nextTurn();
                 break;
         }
     }
+}
 
+bool Game::loadMap(const std::string &file) {
+    try {
+        gameMap = Map::loadFromFile(file, gameState);
 
+        gameMap.getCurrentSection().movingEntities.push_back(std::make_unique<Monster>());
+
+        return true;
+    } catch (std::invalid_argument &ex) {
+        std::cerr << ex.what() << std::endl;
+        return false;
+    }
+}
+
+SDL_Renderer *Game::getRenderer() {
+    assert(renderer != nullptr);
+    return renderer;
+}
+
+void Game::nextTurn() {
+    avoidPlayerCollision();
+    player->onTurn(gameState);
+
+    gameMap.getCurrentSection().onTurn(gameState);
+}
+
+void Game::avoidPlayerCollision() {
     Vec playerNexPos = player->getNextPosition(gameState.playerPosition);
     if (gameMap.getCurrentSection().isEdge(playerNexPos)) {
 
@@ -104,20 +131,4 @@ void Game::onEvent(SDL_Event event) {
             ) {
         player->setDirection(0, 0);
     }
-
-}
-
-bool Game::loadMap(const std::string &file) {
-    try {
-        gameMap = Map::loadFromFile(file, gameState);
-        return true;
-    } catch (std::invalid_argument &ex) {
-        std::cerr << ex.what() << std::endl;
-        return false;
-    }
-}
-
-SDL_Renderer *Game::getRenderer() {
-    assert(renderer != nullptr);
-    return renderer;
 }

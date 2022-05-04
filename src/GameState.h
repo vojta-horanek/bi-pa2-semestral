@@ -18,7 +18,6 @@ public:
 
     std::unique_ptr<Weapon> weapon;
 
-    bool turnFinished = false;
 };
 
 

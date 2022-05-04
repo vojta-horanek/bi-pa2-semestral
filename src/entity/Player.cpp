@@ -6,13 +6,6 @@ void Player::setDirection(int dx, int dy) {
 }
 
 void Player::updateState(GameState &state) {
-    state.playerPosition = getNextPosition(state.playerPosition);
-
-    if (!direction.isOrigin()) {
-        state.turnFinished = true;
-    }
-
-    setDirection(0, 0);
 }
 
 void Player::render(GameState &state, Vec position) {
@@ -25,4 +18,9 @@ void Player::render(GameState &state, Vec position) {
 
 Vec Player::getDirection() {
     return direction;
+}
+
+void Player::onTurn(GameState & state) {
+    state.playerPosition = getNextPosition(state.playerPosition);
+    setDirection(0, 0);
 }

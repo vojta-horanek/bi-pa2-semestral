@@ -1,7 +1,7 @@
 #include "Axe.h"
 
 bool Axe::onCollision(GameState &state) {
-    removeOnNextRender = true;
+    removeOnNextTurn = true;
     state.weapon = std::make_unique<Axe>();
     return false;
 }

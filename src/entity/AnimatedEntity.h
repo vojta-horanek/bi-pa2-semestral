@@ -18,15 +18,16 @@ protected:
                    int frameCount,
                    bool synchronized = false,
                    int speed = 15) :
-            Entity(std::move(texture)),
+            Entity(texture),
             frameCount(frameCount),
             speed(speed),
             synchronized(synchronized) {
     }
 
-    void nextAnimatedRender(Texture & texture, Vec position);
+    void nextAnimatedRender(Texture &texture, Vec position);
 
 public:
+
     void render(GameState &state, Vec position) override;
 
     /**

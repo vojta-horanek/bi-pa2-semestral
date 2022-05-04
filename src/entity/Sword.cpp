@@ -1,7 +1,7 @@
 #include "Sword.h"
 
 bool Sword::onCollision(GameState &state) {
-    removeOnNextRender = true;
+    removeOnNextTurn = true;
     state.weapon = std::make_unique<Sword>();
     return false;
 }

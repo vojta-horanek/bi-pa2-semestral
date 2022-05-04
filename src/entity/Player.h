@@ -5,8 +5,9 @@
 #include <SDL2/SDL.h>
 #include "../GameState.h"
 #include "../Texture.h"
+#include "MovingEntity.h"
 
-class Player : public AnimatedEntity {
+class Player : public MovingEntity {
 private:
     Vec direction;
 public:
@@ -16,7 +17,7 @@ public:
     }
 
     explicit Player() :
-            AnimatedEntity(Texture("resources/bitmaps/player-anim.bmp", true), 2) {}
+            MovingEntity(Texture("resources/bitmaps/player-anim.bmp", true), 2) {}
 
     void setDirection(int dx, int dy);
     Vec getDirection();
@@ -24,6 +25,8 @@ public:
     void updateState(GameState &state) override;
 
     void render(GameState &state, Vec position) override;
+
+    void onTurn(GameState & state) override;
 };
 
 

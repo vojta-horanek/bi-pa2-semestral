@@ -27,6 +27,14 @@ private:
 
     static SDL_Renderer *renderer;
 
+    void onRender();
+
+    void onEvent(SDL_Event event);
+
+    void nextTurn();
+
+    void avoidPlayerCollision();
+
 public:
 
     static SDL_Renderer *getRenderer();
@@ -39,9 +47,6 @@ public:
 
     bool loop();
 
-    void onRender();
-
-    void onEvent(SDL_Event event);
 };
 
 
