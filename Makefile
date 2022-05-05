@@ -36,7 +36,7 @@ doc/index.html: DOCUMENTATION.md Doxyfile $(wildcard src/* src/entity/*)
 	doxygen Doxyfile
 
 count:
-	wc -l src/* src/entity/* src/resources/strings/*
+	wc -l src/*.h src/*.cpp src/entity/*.h src/entity/*.cpp src/resources/strings/*.h
 
 clean:
 	rm -rf build doc

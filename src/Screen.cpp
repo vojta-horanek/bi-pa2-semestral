@@ -23,7 +23,6 @@ bool Screen::loop() {
     onRender();
     Renderer::getInstance().present();
 
-
     FPSController::renderEnd();
 
     return shouldContinue();
