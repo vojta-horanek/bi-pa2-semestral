@@ -24,14 +24,14 @@ MapSection &Map::getCurrentSection() {
     return currentSection->second;
 }
 
-Map Map::loadFromFile(const std::string &fileName, GameState &gameState) {
+Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int width, int height) {
 
     std::ifstream mapFile(fileName);
     if (!mapFile) throw std::invalid_argument("Could not open file " + fileName);
 
     int lineNum = 0;
 
-    MapFileParser parser;
+    MapFileParser parser(width, height);
 
     std::string line;
 

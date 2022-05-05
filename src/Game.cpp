@@ -2,11 +2,10 @@
 
 #include "FPSController.h"
 #include "entity/Monster.h"
+#include "Renderer.h"
 
-SDL_Renderer *Game::renderer;
 
-Game::Game(SDL_Renderer *_renderer, int width, int height) : width(width), height(height) {
-    renderer = _renderer;
+Game::Game(int width, int height) : width(width), height(height) {
     inventory = std::make_unique<Inventory>(width);
     player = std::make_unique<Player>();
     stats = std::make_unique<Stats>(3);
@@ -31,7 +30,7 @@ bool Game::loop() {
 }
 
 void Game::onRender() {
-    SDL_RenderClear(getRenderer());
+    Renderer::getInstance().clear();
 
     gameMap.getCurrentSection().render(gameState);
 
@@ -41,7 +40,7 @@ void Game::onRender() {
 
     stats->render(gameState, Vec(0, height));
 
-    SDL_RenderPresent(getRenderer());
+    Renderer::getInstance().present();
 }
 
 
@@ -77,20 +76,12 @@ void Game::onEvent(SDL_Event event) {
 
 bool Game::loadMap(const std::string &file) {
     try {
-        gameMap = Map::loadFromFile(file, gameState);
-
-        gameMap.getCurrentSection().movingEntities.push_back(std::make_unique<Monster>());
-
+        gameMap = Map::loadFromFile(file, gameState, width, height);
         return true;
     } catch (std::invalid_argument &ex) {
         std::cerr << ex.what() << std::endl;
         return false;
     }
-}
-
-SDL_Renderer *Game::getRenderer() {
-    assert(renderer != nullptr);
-    return renderer;
 }
 
 void Game::nextTurn() {

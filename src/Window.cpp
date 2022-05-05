@@ -11,23 +11,14 @@ Window::Window(const std::string &title) {
 }
 
 Window::~Window() {
-    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-
     window = nullptr;
-    renderer = nullptr;
 }
 
 void Window::show() {
-    assert(renderer != nullptr);
     SDL_ShowWindow(window);
 }
 
-void Window::createRenderer() {
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-}
-
-SDL_Renderer *Window::getRenderer() const {
-    assert(renderer != nullptr);
-    return renderer;
+SDL_Window *Window::getWindow() const {
+    return window;
 }

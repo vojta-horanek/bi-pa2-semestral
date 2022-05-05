@@ -27,7 +27,7 @@ public:
 
     bool tryNavigateToSection(Vec inPlayerDirection);
 
-    static Map loadFromFile(const std::string &fileName, GameState &gameState);
+    static Map loadFromFile(const std::string &fileName, GameState &gameState, int width, int height);
 };
 
 

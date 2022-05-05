@@ -4,6 +4,8 @@
 #include "resources/strings/L10n.h"
 #include "resources/strings/Paths.h"
 #include "Game.h"
+#include "Rect.h"
+#include "Renderer.h"
 #include <SDL2/SDL.h>
 
 std::map<std::pair<std::string, bool>, SDL_Texture *> Texture::textureStore;
@@ -32,7 +34,8 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
         SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr), SDL_MapRGB(surface->format, 255, 255, 255));
     }
 
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(Game::getRenderer(), surface);
+    SDL_Texture *texture = Renderer::getInstance().createTexture(surface);
+
     if (texture == nullptr) {
         SDL_Log(L10n::cannotLoadBitmap, path.c_str(), SDL_GetError());
         return nullptr;
@@ -52,22 +55,17 @@ void Texture::renderBlock(Vec position, int xOffset) const {
 
     if (texture == nullptr) return;
 
-    Vec coords = position.getScaled();
+    Rect dstRect{
+            position.getScaled(),
+            Vec(BLOCK_SIZE * REAL_PIXEL_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE)
+    };
 
-    SDL_Rect dstRect;
-    dstRect.w = BLOCK_SIZE * REAL_PIXEL_SIZE;
-    dstRect.h = BLOCK_SIZE * REAL_PIXEL_SIZE;
-    dstRect.x = coords.x;
-    dstRect.y = coords.y;
+    Rect srcRect{
+            Vec(xOffset * BLOCK_SIZE, 0),
+            Vec(BLOCK_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE)
+    };
 
-    SDL_Rect srcRect;
-    srcRect.w = BLOCK_SIZE;
-    srcRect.h = BLOCK_SIZE * REAL_PIXEL_SIZE;
-    srcRect.x = xOffset * BLOCK_SIZE;
-    srcRect.y = 0;
-
-    SDL_RenderCopy(Game::getRenderer(), texture, &srcRect, &dstRect);
-
+    Renderer::getInstance().render(texture, srcRect, dstRect);
 }
 
 void Texture::clearStore() {

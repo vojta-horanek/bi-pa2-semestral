@@ -25,8 +25,6 @@ private:
 
     int width, height;
 
-    static SDL_Renderer *renderer;
-
     void onRender();
 
     void onEvent(SDL_Event event);
@@ -37,9 +35,7 @@ private:
 
 public:
 
-    static SDL_Renderer *getRenderer();
-
-    explicit Game(SDL_Renderer *renderer, int width, int height);
+    explicit Game(int width, int height);
 
     ~Game();
 
