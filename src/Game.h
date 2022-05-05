@@ -7,41 +7,47 @@
 #include "Map.h"
 #include "entity/Inventory.h"
 #include "entity/Stats.h"
+#include "Screen.h"
 #include <vector>
 #include <memory>
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
 
-class Game {
+class Game : public Screen {
 private:
     GameState gameState;
 
     std::unique_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
+    std::unique_ptr<Screen> nextScreen = nullptr;
 
     Map gameMap;
 
-    int width, height;
+    int gameWidth, gameHeight;
 
-    void onRender();
+    void onRender() override;
 
-    void onEvent(SDL_Event event);
+    void onEvent(SDL_Event event) override;
 
     void nextTurn();
 
     void avoidPlayerCollision();
+protected:
+    bool shouldContinue() override;
 
 public:
 
     explicit Game(int width, int height);
 
-    ~Game();
+    explicit Game(int width, int height, const std::string & saveFile);
+
+    ~Game() override;
+
+    std::unique_ptr<Screen> getNextScreen() override;
 
     bool loadMap(const std::string &file);
-
-    bool loop();
 
 };
 

@@ -3,51 +3,37 @@
 #include "FPSController.h"
 #include "entity/Monster.h"
 #include "Renderer.h"
+#include "Menu.h"
 
-
-Game::Game(int width, int height) : width(width), height(height) {
+Game::Game(int width, int height) : Screen(width, height),
+                                    gameWidth(width / (REAL_PIXEL_SIZE * BLOCK_SIZE)),
+                                    gameHeight(height / (REAL_PIXEL_SIZE * BLOCK_SIZE)) {
     inventory = std::make_unique<Inventory>(width);
     player = std::make_unique<Player>();
     stats = std::make_unique<Stats>(3);
+    loadMap("../examples/map"); // TODO
 }
 
-Game::~Game() {
-    Texture::clearStore();
+Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
+    // TODO Load save file
 }
 
-bool Game::loop() {
-    FPSController::renderStart();
+Game::~Game() = default;
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        onEvent(event);
-    }
-    onRender();
-
-    FPSController::renderEnd();
-
-    return gameState.running;
-}
 
 void Game::onRender() {
-    Renderer::getInstance().clear();
 
     gameMap.getCurrentSection().render(gameState);
 
     player->render(gameState, gameState.playerPosition);
 
-    inventory->render(gameState, Vec(3, height));
+    inventory->render(gameState, Vec(3, gameHeight));
 
-    stats->render(gameState, Vec(0, height));
-
-    Renderer::getInstance().present();
+    stats->render(gameState, Vec(0, gameHeight));
 }
 
-
 void Game::onEvent(SDL_Event event) {
-    if (event.type == SDL_QUIT) {
-        gameState.running = false;
-    } else if (event.type == SDL_KEYDOWN) {
+    if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
                 player->setDirection(0, -1);
@@ -70,13 +56,16 @@ void Game::onEvent(SDL_Event event) {
             case SDLK_RIGHT:
                 nextTurn();
                 break;
+            case SDLK_ESCAPE:
+                nextScreen = std::make_unique<Menu>(width, height);
+                break;
         }
     }
 }
 
 bool Game::loadMap(const std::string &file) {
     try {
-        gameMap = Map::loadFromFile(file, gameState, width, height);
+        gameMap = Map::loadFromFile(file, gameState, gameWidth, gameHeight);
         return true;
     } catch (std::invalid_argument &ex) {
         std::cerr << ex.what() << std::endl;
@@ -104,14 +93,14 @@ void Game::avoidPlayerCollision() {
                 int newX = 0;
                 if (direction.x < 0) {
                     // Going from left screen to right screen
-                    newX = width - 1;
+                    newX = gameWidth - 1;
                 }
                 gameState.playerPosition = Vec(newX, gameState.playerPosition.y);
             } else if (direction.y != 0) {
                 int newY = 0;
                 if (direction.y < 0) {
                     // Going from bottom screen to top screen
-                    newY = height - 1;
+                    newY = gameHeight - 1;
                 }
                 gameState.playerPosition = Vec(gameState.playerPosition.x, newY);
             }
@@ -122,4 +111,12 @@ void Game::avoidPlayerCollision() {
             ) {
         player->setDirection(0, 0);
     }
+}
+
+bool Game::shouldContinue() {
+    return gameState.running;
+}
+
+std::unique_ptr<Screen> Game::getNextScreen() {
+    return std::move(nextScreen);
 }

@@ -68,6 +68,22 @@ void Texture::renderBlock(Vec position, int xOffset) const {
     Renderer::getInstance().render(texture, srcRect, dstRect);
 }
 
+
+void Texture::render(Vec position, int scale) const {
+
+    if (texture == nullptr) return;
+
+    SDL_Point size;
+    SDL_QueryTexture(texture, nullptr, nullptr, &size.x, &size.y);
+
+    Rect dstRect{
+            position,
+            Vec(size.x, size.y) * scale
+    };
+
+    Renderer::getInstance().render(texture, dstRect);
+}
+
 void Texture::clearStore() {
     for (const auto &item: textureStore)
         if (item.second != nullptr) SDL_DestroyTexture(item.second);

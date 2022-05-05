@@ -20,6 +20,8 @@ public:
 
     explicit Texture(const std::string &path, bool useWhiteAsAlpha = false);
 
+    void render(Vec position, int scale = 1) const;
+
     void renderBlock(Vec position) const;
 
     void renderBlock(Vec position, int xOffset) const;

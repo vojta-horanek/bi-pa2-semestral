@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Texture.h"
 
 #include <cassert>
 
@@ -11,6 +12,7 @@ Window::Window(const std::string &title) {
 }
 
 Window::~Window() {
+    Texture::clearStore();
     SDL_DestroyWindow(window);
     window = nullptr;
 }

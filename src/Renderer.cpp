@@ -43,14 +43,31 @@ void Renderer::render(SDL_Texture *texture, const Rect &sourceRect, const Rect &
 
 }
 
-void Renderer::clear() {
+void Renderer::render(SDL_Texture *texture, const Rect &destinationRect) const {
+    assert(renderer != nullptr);
+
+    SDL_Rect dst{
+            destinationRect.position.x,
+            destinationRect.position.y,
+            destinationRect.size.x,
+            destinationRect.size.y
+    };
+
+    SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
+void Renderer::clear() const {
     SDL_RenderClear(renderer);
 }
 
-void Renderer::present() {
+void Renderer::present() const {
     SDL_RenderPresent(renderer);
 }
 
-SDL_Texture *Renderer::createTexture(SDL_Surface *surface) {
+SDL_Texture *Renderer::createTexture(SDL_Surface *surface) const {
     return SDL_CreateTextureFromSurface(renderer, surface);
+}
+
+void Renderer::selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const {
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }

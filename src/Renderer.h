@@ -22,11 +22,15 @@ public:
 
     void render(SDL_Texture *texture, const Rect &sourceRect, const Rect &destinationRect) const;
 
-    void clear();
+    void render(SDL_Texture *texture, const Rect &destinationRect) const;
 
-    void present();
+    void selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;
 
-    SDL_Texture * createTexture(SDL_Surface * surface);
+    void clear() const;
+
+    void present() const;
+
+    SDL_Texture *createTexture(SDL_Surface *surface) const;
 };
 
 
