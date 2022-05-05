@@ -8,16 +8,12 @@
 #include <vector>
 #include <memory>
 
-class GameState {
-public:
+struct GameState {
     bool running = true;
-
-    Vec playerPosition = Vec(1,1);
+    Vec playerPosition;
     int health = 3;
     std::vector<std::unique_ptr<Entity>> inventory;
-
     std::unique_ptr<Weapon> weapon;
-
 };
 
 

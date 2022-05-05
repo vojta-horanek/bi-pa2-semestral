@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../Game.h"
 #include "../resources/strings/Paths.h"
+#include "../Vec.h"
 
 Player::Player() : MovingEntity(Texture(Paths::Bitmaps::player_anim, true), 2) {}
 

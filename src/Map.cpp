@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include "Vec.h"
 
 bool Map::tryNavigateToSection(Vec inPlayerDirection) {
     // If player is going up/down its direction is negative/positive. Multiply by -1 to convert to map coordinates

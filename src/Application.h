@@ -1,8 +1,10 @@
 #ifndef TPOHB_APPLICATION_H
 #define TPOHB_APPLICATION_H
 
-
 #include "Window.h"
+
+#include <vector>
+#include <string>
 
 class Application {
 private:
@@ -10,7 +12,7 @@ private:
 public:
 
     Application();
-    int run();
+    int run(const std::vector<std::string> & args);
 
 };
 

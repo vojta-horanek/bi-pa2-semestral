@@ -1,4 +1,5 @@
 #include "MapFileParser.h"
+#include "Constants.h"
 
 Result MapFileParser::parseNextLine(const std::string &line) {
 
@@ -81,12 +82,23 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         currentSection = insert.first;
     } else if (currentState == State::section) {
 
+        if (currentSection->second.entities.size() == (size_t)currentSection->second.height) {
+            return Result::error("Unexpected line, height exceeded");
+        }
+
         std::vector<std::unique_ptr<Entity>> row;
         row.reserve(currentSection->second.width);
 
         std::string entityString;
+
+        int entityRowCount = 0;
+
         // For every space separated string
         while (std::getline(lineStream, entityString, ' ')) {
+
+            if (entityRowCount == currentSection->second.width) {
+                return Result::error("Unexpected entity, width exceeded: " + entityString);
+            }
 
             int entityIdentifier = -1;
             std::istringstream tmpStream(entityString);
@@ -102,6 +114,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             } else {
                 row.emplace_back(std::move(typeToNewEntity(it->second)));
             }
+
+            entityRowCount++;
         }
 
         currentSection->second.entities.emplace_back(std::move(row));

@@ -1,11 +1,9 @@
 #ifndef TPOHB_STRINGUTILS_H
 #define TPOHB_STRINGUTILS_H
 
-
 #include <string>
 
-class StringUtils {
-public:
+struct StringUtils {
     // trim from start (in place)
     static void ltrim(std::string &s);
 

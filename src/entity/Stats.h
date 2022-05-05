@@ -4,7 +4,6 @@
 
 #include "Entity.h"
 #include "Hearth.h"
-#include "../SDL_Helper.h"
 #include <memory>
 
 class Stats : public Entity {

@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "../MapSection.h"
 #include "../resources/strings/Paths.h"
+#include "../Vec.h"
 
 Monster::Monster() : MovingEntity(Texture(Paths::Bitmaps::monster)) {}
 
