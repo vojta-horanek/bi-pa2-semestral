@@ -1,11 +1,9 @@
 #ifndef TPOHB_TREE_H
 #define TPOHB_TREE_H
 
+#include "BlockEntity.h"
 
-#include "Entity.h"
-#include "../Texture.h"
-
-class Tree : public Entity {
+class Tree : public BlockEntity {
 
 public:
     Tree();

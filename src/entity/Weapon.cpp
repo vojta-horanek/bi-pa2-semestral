@@ -5,7 +5,10 @@ void Weapon::renderOnPlayer(GameState &state, Vec position) {
 }
 
 Weapon::Weapon(Texture texture, Texture playerTexture) :
-        AnimatedEntity(texture, 2, true),
+        PickupEntity(texture, 2, true),
         playerTexture(playerTexture) {
-    collisionType = Collision::SOFT;
+}
+
+void Weapon::onPickup(GameState &state) {
+    PickupEntity::onPickup(state);
 }

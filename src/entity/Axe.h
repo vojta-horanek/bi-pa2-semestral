@@ -10,7 +10,7 @@ class Axe : public Weapon {
 public:
     Axe();
 
-    void onCollision(GameState &state) override;
+    void onPickup(GameState &state) override;
     int getDamage() override;
 };
 

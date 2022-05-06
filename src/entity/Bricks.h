@@ -1,9 +1,9 @@
 #ifndef TPOHB_BRICKS_H
 #define TPOHB_BRICKS_H
 
-#include "Entity.h"
+#include "BlockEntity.h"
 
-class Bricks : public Entity {
+class Bricks : public BlockEntity {
 public:
     Bricks();
 };

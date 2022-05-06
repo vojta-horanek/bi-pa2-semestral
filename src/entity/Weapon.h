@@ -3,9 +3,9 @@
 
 #include "Entity.h"
 #include "../GameState.h"
-#include "AnimatedEntity.h"
+#include "PickupEntity.h"
 
-class Weapon : public AnimatedEntity {
+class Weapon : public PickupEntity {
 
     Texture playerTexture;
 
@@ -14,6 +14,8 @@ protected:
 
 public:
     virtual int getDamage() = 0;
+
+    void onPickup(GameState &state) override;
 
     virtual void renderOnPlayer(GameState &state, Vec position);
 };

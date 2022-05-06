@@ -1,7 +1,6 @@
 #include "Tree.h"
 #include "../resources/strings/Paths.h"
 
-Tree::Tree() : Entity(Texture(Paths::Bitmaps::tree, true)) {
-    collisionType = Collision::HARD;
+Tree::Tree() : BlockEntity(Texture(Paths::Bitmaps::tree, true)) {
 }
 

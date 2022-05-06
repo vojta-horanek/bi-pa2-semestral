@@ -28,6 +28,8 @@ public:
      * @param other an entity to synchronize with
      */
     void syncWith(AnimatedEntity &other);
+
+    void onCollision(GameState &state) override;
 };
 
 

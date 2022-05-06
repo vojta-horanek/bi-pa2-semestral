@@ -1,14 +1,14 @@
 #ifndef TPOHB_APPLE_H
 #define TPOHB_APPLE_H
 
-#include "Entity.h"
+#include "PickupEntity.h"
 #include "../GameState.h"
 
-class Apple : public Entity {
+class Apple : public PickupEntity {
 public:
     Apple();
 
-    void onCollision(GameState &state) override;
+    void onPickup(GameState &state) override;
 };
 
 #endif //TPOHB_APPLE_H

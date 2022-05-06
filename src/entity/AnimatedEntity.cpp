@@ -34,3 +34,7 @@ void AnimatedEntity::syncWith(AnimatedEntity &other) {
     this->frame = other.frame;
 }
 
+void AnimatedEntity::onCollision(GameState &state) {
+    Entity::onCollision(state);
+}
+
