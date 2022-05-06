@@ -22,6 +22,8 @@ void MainMenu::onItemSelected(size_t activeIndex) {
         case MenuItem::Item::QUIT:
             userInMenu = false;
             break;
+        default:
+            break;
     }
 }
 

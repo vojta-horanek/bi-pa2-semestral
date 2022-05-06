@@ -14,9 +14,14 @@ public:
 
     explicit Monster(Texture texture);
 
+    explicit Monster(Texture texture,
+                     int animationFrameCount,
+                     bool animationSynchronized = false,
+                     int animationSpeed = 15);
+
     void onTurn(GameState &state, MapSection &section) override;
 
-    virtual void onFight(GameState & state) = 0;
+    virtual void onFight(GameState &state) = 0;
 
     virtual int getDamage() = 0;
 

@@ -19,6 +19,8 @@ void ResumeMenu::onItemSelected(size_t activeIndex) {
             goToMainMenu = true;
             nextScreen = std::make_unique<MainMenu>(width, height);
             break;
+        default:
+            break;
     }
 }
 

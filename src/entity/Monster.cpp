@@ -3,7 +3,10 @@
 #include <ctime>
 #include <cstdlib>
 
-Monster::Monster(Texture texture) : MovingEntity(texture) {
+Monster::Monster(Texture texture) : Monster(texture, 1, true, 0) {}
+
+Monster::Monster(Texture texture, int animationFrameCount, bool animationSynchronized, int animationSpeed)
+        : MovingEntity(texture, animationFrameCount, animationSynchronized, animationSpeed) {
     srand(time(nullptr));
 }
 
