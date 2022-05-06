@@ -25,7 +25,7 @@ void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
         }
     }
 
-    texture.renderBlock(position, frame);
+    texture.renderBlockWithOffset(position, frame, scale);
 }
 
 void AnimatedEntity::syncWith(AnimatedEntity &other) {

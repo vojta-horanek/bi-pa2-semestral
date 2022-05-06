@@ -26,6 +26,10 @@ public:
     virtual int getDamage() = 0;
 
     virtual int getMaxHealth() = 0;
+
+    void onFightBegin();
+
+    void onFightEnd();
 };
 
 

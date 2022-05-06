@@ -82,9 +82,7 @@ void Game::nextTurn() {
     gameMap.getCurrentSection().onTurn(gameState);
 
     if (gameState.fight != nullptr) {
-        return;
-        nextScreen = std::make_unique<FightScreen>(std::move(gameState.fight), width, height);
-        gameState.fight = nullptr;
+        nextScreen = std::make_unique<FightScreen>(&gameState, &*player, width, height);
     }
 }
 

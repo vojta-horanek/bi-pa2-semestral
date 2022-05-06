@@ -16,7 +16,8 @@ void Player::render(GameState &state, Vec position) {
     AnimatedEntity::render(state, position);
     if (state.weapon != nullptr) {
         state.weapon->syncWith(*this);
-        state.weapon->renderOnPlayer(state, state.playerPosition);
+        state.weapon->scale = scale;
+        state.weapon->renderOnPlayer(state, position);
     }
 }
 
@@ -31,4 +32,12 @@ void Player::onTurn(GameState &state, MapSection &section) {
 
 Vec Player::getNextPosition(Vec currentPosition) const {
     return currentPosition + direction;
+}
+
+void Player::onFightBegin() {
+    scale = 2;
+}
+
+void Player::onFightEnd() {
+    scale = 1;
 }

@@ -47,17 +47,17 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     return texture;
 }
 
-void Texture::renderBlock(Vec position) const {
-    Texture::renderBlock(position, 0);
+void Texture::renderBlock(Vec position, int scale) const {
+    Texture::renderBlockWithOffset(position, 0, scale);
 }
 
-void Texture::renderBlock(Vec position, int xOffset) const {
+void Texture::renderBlockWithOffset(Vec position, int xOffset, int scale) const {
 
     if (texture == nullptr) return;
 
     Rect dstRect{
             position.getScaled(),
-            Vec(BLOCK_SIZE * REAL_PIXEL_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE)
+            Vec(BLOCK_SIZE * REAL_PIXEL_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE) * scale
     };
 
     Rect srcRect{
@@ -89,4 +89,10 @@ void Texture::clearStore() {
         if (item.second != nullptr) SDL_DestroyTexture(item.second);
 
     textureStore.clear();
+}
+
+void Texture::renderFullscreen() const {
+    if (texture == nullptr) return;
+
+    Renderer::getInstance().render(texture);
 }

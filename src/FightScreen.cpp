@@ -1,14 +1,24 @@
 #include "FightScreen.h"
 
 #include "Renderer.h"
+#include "resources/strings/Paths.h"
 
-FightScreen::FightScreen(std::unique_ptr<Monster> withMonster, int width, int height) : Screen(width, height) {
-    Renderer::getInstance().selectDrawColor(0, 0xff, 0, 0xff);
-    monster = std::move(withMonster);
+// TODO Figure out how to pass around the weapon...
+FightScreen::FightScreen(
+        GameState *gameState,
+        Player *player,
+        int width, int height) : Screen(width, height),
+                                 gameState(gameState),
+                                 player(player) {
+    background = Texture(Paths::Bitmaps::fighting_background);
+    gameState->fight->onFightBegin();
+    player->onFightBegin();
 }
 
 void FightScreen::onRender() {
-
+    background.renderFullscreen();
+    gameState->fight->render(*gameState, Vec(2, 4));
+    player->render(*gameState, Vec(width / 2 / REAL_PIXEL_SIZE / BLOCK_SIZE + 2, 4));
 }
 
 
@@ -38,4 +48,9 @@ bool FightScreen::popSelf() {
 
 bool FightScreen::clearBackStack() {
     return false;
+}
+
+FightScreen::~FightScreen() {
+    player->onFightEnd();
+    gameState->fight = nullptr;
 }

@@ -3,15 +3,21 @@
 
 
 #include "Screen.h"
+#include "GameState.h"
 #include "entity/Monster.h"
+#include "entity/Player.h"
 #include <memory>
 
 class FightScreen : public Screen {
 private:
     bool fighting = true;
-    std::unique_ptr<Monster> monster;
+    Texture background;
+    GameState * gameState;
+    Player * player;
 public:
-    FightScreen(std::unique_ptr<Monster> withMonster, int width, int height);
+    FightScreen(GameState * gameState, Player * player, int width, int height);
+
+    ~FightScreen() override;
 
     void onRender() override;
 

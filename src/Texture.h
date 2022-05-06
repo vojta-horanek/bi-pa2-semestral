@@ -22,9 +22,11 @@ public:
 
     void render(Vec position, int scale = 1) const;
 
-    void renderBlock(Vec position) const;
+    void renderFullscreen() const;
 
-    void renderBlock(Vec position, int xOffset) const;
+    void renderBlock(Vec position, int scale = 1) const;
+
+    void renderBlockWithOffset(Vec position, int xOffset, int scale = 1) const;
 
     static void clearStore();
 };

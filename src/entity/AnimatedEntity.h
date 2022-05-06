@@ -20,6 +20,8 @@ protected:
 
 public:
 
+    int scale = 1;
+
     void render(GameState &state, Vec position) override;
 
     /**

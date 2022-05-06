@@ -56,6 +56,11 @@ void Renderer::render(SDL_Texture *texture, const Rect &destinationRect) const {
     SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
+void Renderer::render(SDL_Texture *texture) const {
+    assert(renderer != nullptr);
+    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+}
+
 void Renderer::clear() const {
     SDL_RenderClear(renderer);
 }

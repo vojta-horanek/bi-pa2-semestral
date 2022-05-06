@@ -1,5 +1,6 @@
 #include "MapSection.h"
 
+#include <algorithm>
 #include "entity/MovingEntity.h"
 
 MapSection::MapSection(int width, int height, std::unique_ptr<Entity> background) {
@@ -7,7 +8,6 @@ MapSection::MapSection(int width, int height, std::unique_ptr<Entity> background
     this->height = height;
     backgroundEntity = std::move(background);
     this->entities.reserve(height);
-
 }
 
 void MapSection::render(GameState &state) {
@@ -42,6 +42,11 @@ void MapSection::onTurn(GameState &state) {
     for (const auto &entity: movingEntities) {
         entity->onTurn(state, *this);
     }
+
+
+    movingEntities.erase(std::remove_if(movingEntities.begin(), movingEntities.end(),
+                                        [](const auto &entity) { return entity->removeOnNextTurn; }),
+                         movingEntities.end());
 }
 
 bool MapSection::isEdge(Vec position) const {

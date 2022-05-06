@@ -25,6 +25,10 @@ public:
     void render(GameState &state, Vec position) override;
 
     void onTurn(GameState &state, MapSection &section) override;
+
+    void onFightBegin();
+
+    void onFightEnd();
 };
 
 

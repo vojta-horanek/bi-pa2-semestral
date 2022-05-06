@@ -24,6 +24,8 @@ public:
 
     void render(SDL_Texture *texture, const Rect &destinationRect) const;
 
+    void render(SDL_Texture *texture) const;
+
     void selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;
 
     void clear() const;

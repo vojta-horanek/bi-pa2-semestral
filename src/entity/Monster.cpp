@@ -39,10 +39,19 @@ void Monster::onTurn(GameState &state, MapSection &section) {
     }
 
     if (newPosition == state.playerPosition) {
+        removeOnNextTurn = true;
         onFight(state);
     } else if (!section.isEdge(newPosition) &&
                !section.collideWith(newPosition, state, false) &&
                !section.isMovingEntity(newPosition)) {
         position = newPosition;
     }
+}
+
+void Monster::onFightBegin() {
+    scale = 2;
+}
+
+void Monster::onFightEnd() {
+    scale = 1;
 }

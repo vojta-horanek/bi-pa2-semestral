@@ -5,6 +5,10 @@ void Entity::render(GameState &state, Vec position) {
     texture.renderBlock(position);
 }
 
+void Entity::render(Vec position) {
+    texture.renderBlock(position);
+}
+
 void Entity::onCollision(GameState &state) {
 
 }

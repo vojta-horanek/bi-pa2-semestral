@@ -31,6 +31,8 @@ public:
     // A default implementation of the loop method draws the texture at the current position of this entity
     virtual void render(GameState &state, Vec position);
 
+    virtual void render(Vec position);
+
     virtual void updateState(GameState &state);
 
     virtual void onCollision(GameState &state);
