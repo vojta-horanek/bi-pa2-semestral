@@ -1,4 +1,5 @@
 #include "MapFileParser.h"
+#include "entity/Zombie.h"
 
 Result MapFileParser::parseNextLine(const std::string &line) {
 
@@ -305,7 +306,7 @@ EntityManger::Type EntityManger::getType(const std::string &name) {
     if (name == "AXE") return Type::AXE;
     if (name == "BRICK") return Type::BRICK;
     if (name == "GRASS") return Type::GRASS;
-    if (name == "MONSTER") return Type::MONSTER;
+    if (name == "ZOMBIE") return Type::ZOMBIE;
     else return Type::INVALID;
 }
 
@@ -325,8 +326,8 @@ std::unique_ptr<Entity> EntityManger::getEntity(EntityManger::Type type) {
             return std::move(std::make_unique<Bricks>());
         case Type::GRASS:
             return std::move(std::make_unique<Grass>());
-        case Type::MONSTER:
-            return std::move(std::make_unique<Monster>());
+        case Type::ZOMBIE:
+            return std::move(std::make_unique<Zombie>());
         default:
             return nullptr;
     }
@@ -334,8 +335,8 @@ std::unique_ptr<Entity> EntityManger::getEntity(EntityManger::Type type) {
 
 std::unique_ptr<Monster> EntityManger::getMonster(EntityManger::Type type) {
     switch (type) {
-        case Type::MONSTER:
-            return std::move(std::make_unique<Monster>());
+        case Type::ZOMBIE:
+            return std::move(std::make_unique<Zombie>());
         default:
             return nullptr;
     }

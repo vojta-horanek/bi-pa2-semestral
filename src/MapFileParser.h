@@ -59,7 +59,7 @@ public:
 class EntityManger {
 public:
     enum class Type {
-        VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, MONSTER, INVALID
+        VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, ZOMBIE, INVALID
     };
 
     static Type getType(const std::string &name);

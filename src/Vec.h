@@ -29,9 +29,15 @@ struct Vec {
 
     bool operator==(const Vec &lhs) const;
 
+    bool operator!=(const Vec &lhs) const;
+
     Vec withX(int addedX) const;
 
     Vec withY(int addedY) const;
+
+    int xDistance(const Vec &other) const;
+
+    int yDistance(const Vec &other) const;
 
     double distanceTo(const Vec &other) const;
 

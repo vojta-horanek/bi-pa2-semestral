@@ -13,7 +13,13 @@ protected:
     Texture texture;
 
 public:
-    bool hasCollision = false;
+
+    enum class Collision {
+        NONE, SOFT, HARD
+    };
+
+    Collision collisionType = Collision::NONE;
+
     bool removeOnNextTurn = false;
 
     Entity();
@@ -27,12 +33,7 @@ public:
 
     virtual void updateState(GameState &state);
 
-    /**
-     *
-     * @param state
-     * @return true if the collision should block the player, false otherwise
-     */
-    virtual bool onCollision(GameState &state);
+    virtual void onCollision(GameState &state);
 };
 
 

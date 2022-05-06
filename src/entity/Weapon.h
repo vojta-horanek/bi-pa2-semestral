@@ -13,7 +13,7 @@ protected:
     Weapon(Texture texture, Texture playerTexture);
 
 public:
-    int damage = 0;
+    virtual int getDamage() = 0;
 
     virtual void renderOnPlayer(GameState &state, Vec position);
 };

@@ -2,11 +2,10 @@
 #include "../resources/strings/Paths.h"
 
 Apple::Apple() : Entity(Texture(Paths::Bitmaps::apple, true)) {
-    hasCollision = true;
+    collisionType = Collision::SOFT;
 }
 
-bool Apple::onCollision(GameState &state) {
+void Apple::onCollision(GameState &state) {
     removeOnNextTurn = true;
     state.inventory.emplace_back(new Apple());
-    return false;
 }

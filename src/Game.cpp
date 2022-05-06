@@ -106,9 +106,7 @@ void Game::avoidPlayerCollision() {
             }
         }
 
-    } else if (gameMap.getCurrentSection().wouldCollide(playerNexPos) &&
-               gameMap.getCurrentSection().get(playerNexPos)->onCollision(gameState)
-            ) {
+    } else if (gameMap.getCurrentSection().collideWith(playerNexPos, gameState)) {
         player->setDirection(0, 0);
     }
 }

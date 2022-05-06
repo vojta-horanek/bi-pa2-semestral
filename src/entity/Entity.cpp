@@ -5,8 +5,8 @@ void Entity::render(GameState &state, Vec position) {
     texture.renderBlock(position);
 }
 
-bool Entity::onCollision(GameState &state) {
-    return hasCollision;
+void Entity::onCollision(GameState &state) {
+
 }
 
 void Entity::updateState(GameState &state) {}

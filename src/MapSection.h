@@ -37,7 +37,9 @@ public:
 
     bool isEdge(Vec position) const;
 
-    bool wouldCollide(Vec position) const;
+    bool collideWith(Vec position, GameState & gameState, bool isPlayer = true) const;
+
+    bool isMovingEntity(Vec position) const;
 };
 
 

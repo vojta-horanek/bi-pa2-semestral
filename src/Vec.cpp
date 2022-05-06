@@ -47,6 +47,10 @@ bool Vec::operator==(const Vec &lhs) const {
     return lhs.x == x && lhs.y == y;
 }
 
+bool Vec::operator!=(const Vec &lhs) const {
+    return !(*this == lhs);
+}
+
 Vec Vec::withX(int addedX) const {
     return {x + addedX, y};
 }
@@ -80,6 +84,14 @@ std::ostream &operator<<(std::ostream &s, const Vec &vec) {
 
 void Vec::scale() {
     *this = *this * REAL_PIXEL_SIZE * BLOCK_SIZE;
+}
+
+int Vec::xDistance(const Vec &other) const {
+    return abs(this->x - other.x);
+}
+
+int Vec::yDistance(const Vec &other) const {
+    return abs(this->y - other.y);
 }
 
 

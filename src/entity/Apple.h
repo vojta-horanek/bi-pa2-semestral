@@ -8,7 +8,7 @@ class Apple : public Entity {
 public:
     Apple();
 
-    bool onCollision(GameState &state) override;
+    void onCollision(GameState &state) override;
 };
 
 #endif //TPOHB_APPLE_H

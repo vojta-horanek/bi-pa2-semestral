@@ -51,8 +51,12 @@ bool MapSection::isEdge(Vec position) const {
            position.y < 0;
 }
 
-bool MapSection::wouldCollide(Vec position) const {
-    return get(position) != nullptr && get(position)->hasCollision;
+bool MapSection::collideWith(Vec position, GameState &gameState, bool isPlayer) const {
+    Entity *atPosition = get(position);
+    if (atPosition == nullptr) return false;
+    if (isPlayer && atPosition->collisionType != Entity::Collision::NONE)
+        atPosition->onCollision(gameState);
+    return atPosition->collisionType == Entity::Collision::HARD;
 }
 
 void MapSection::set(Vec at, std::unique_ptr<Entity> entity) {
@@ -61,4 +65,11 @@ void MapSection::set(Vec at, std::unique_ptr<Entity> entity) {
 
 Entity *MapSection::get(Vec at) const {
     return entities[at.y][at.x].get();
+}
+
+bool MapSection::isMovingEntity(Vec position) const {
+    for (const auto &item: movingEntities) {
+        if (item->position == position) return true;
+    }
+    return false;
 }

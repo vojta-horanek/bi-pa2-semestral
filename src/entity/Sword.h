@@ -9,7 +9,8 @@ class Sword : public Weapon {
 public:
     Sword();
 
-    bool onCollision(GameState &state) override;
+    void onCollision(GameState &state) override;
+    int getDamage() override;
 };
 
 
