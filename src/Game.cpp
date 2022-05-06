@@ -4,6 +4,8 @@
 #include "entity/Monster.h"
 #include "Renderer.h"
 #include "Menu.h"
+#include "FightScreen.h"
+#include "ResumeMenu.h"
 
 Game::Game(int width, int height) : Screen(width, height),
                                     gameWidth(width / (REAL_PIXEL_SIZE * BLOCK_SIZE)),
@@ -57,7 +59,7 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                nextScreen = std::make_unique<Menu>(width, height);
+                nextScreen = std::make_unique<ResumeMenu>(width, height);
                 break;
         }
     }
@@ -78,6 +80,12 @@ void Game::nextTurn() {
     player->onTurn(gameState, gameMap.getCurrentSection());
 
     gameMap.getCurrentSection().onTurn(gameState);
+
+    if (gameState.fight != nullptr) {
+        return;
+        nextScreen = std::make_unique<FightScreen>(std::move(gameState.fight), width, height);
+        gameState.fight = nullptr;
+    }
 }
 
 void Game::avoidPlayerCollision() {
@@ -111,10 +119,14 @@ void Game::avoidPlayerCollision() {
     }
 }
 
-bool Game::shouldContinue() {
-    return gameState.running;
+std::unique_ptr<Screen> Game::getNavigationDestination() {
+    return std::move(nextScreen);
 }
 
-std::unique_ptr<Screen> Game::getNextScreen() {
-    return std::move(nextScreen);
+bool Game::popSelf() {
+    return !gameState.running;
+}
+
+bool Game::clearBackStack() {
+    return false;
 }

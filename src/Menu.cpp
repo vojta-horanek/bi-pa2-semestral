@@ -1,22 +1,12 @@
 #include "Menu.h"
-#include "Game.h"
-#include "MenuNew.h"
-#include "MenuLoad.h"
-#include "MenuQuit.h"
 #include "Renderer.h"
 #include <memory>
 
 Menu::Menu(int width, int height) : Screen(width, height) {
-    items.emplace_back(std::make_unique<MenuNew>());
-    items.emplace_back(std::make_unique<MenuLoad>());
-    items.emplace_back(std::make_unique<MenuQuit>());
+    Renderer::getInstance().selectDrawColor(0x59, 0x59, 0x59, 0xff);
 }
 
-bool Menu::shouldContinue() {
-    return userInMenu;
-}
-
-std::unique_ptr<Screen> Menu::getNextScreen() {
+std::unique_ptr<Screen> Menu::getNavigationDestination() {
     return std::move(nextScreen);
 }
 
@@ -35,14 +25,15 @@ void Menu::onEvent(SDL_Event event) {
     } else if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
-                onItemSelected();
+                onItemSelected(activeItem);
                 break;
+            case SDLK_ESCAPE:
+                onEscapePressed();
         }
     }
 }
 
 void Menu::onRender() {
-    Renderer::getInstance().selectDrawColor(0x59, 0x59, 0x59, 255);
 
     for (size_t item = 0; item < items.size(); item++) {
         auto &currentItem = items[item];
@@ -58,17 +49,10 @@ void Menu::onRender() {
     }
 }
 
-void Menu::onItemSelected() {
-    auto type = items[activeItem]->getType();
-    switch (type) {
-        case MenuItem::Item::NEW:
-            nextScreen = std::make_unique<Game>(width, height);
-            break;
-        case MenuItem::Item::LOAD:
-            nextScreen = std::make_unique<Game>(width, height, "examples/save");
-            break;
-        case MenuItem::Item::QUIT:
-            userInMenu = false;
-            break;
-    }
+bool Menu::popSelf() {
+    return !userInMenu;
+}
+
+bool Menu::clearBackStack() {
+    return false;
 }

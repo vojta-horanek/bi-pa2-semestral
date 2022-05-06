@@ -7,13 +7,14 @@ Screen::Screen(int width, int height) : width(width), height(height) {}
 
 Screen::~Screen() = default;
 
-bool Screen::loop() {
+void Screen::onLoop() {
     FPSController::renderStart();
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            return false;
+            applicationQuitRequested = true;
+            return;
         } else {
             onEvent(event);
         }
@@ -24,6 +25,4 @@ bool Screen::loop() {
     Renderer::getInstance().present();
 
     FPSController::renderEnd();
-
-    return shouldContinue();
 }

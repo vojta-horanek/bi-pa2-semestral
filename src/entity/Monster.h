@@ -10,11 +10,13 @@
  */
 class Monster : public MovingEntity {
 public:
-    int currentHealth;
+    int currentHealth = 0;
 
     explicit Monster(Texture texture);
 
     void onTurn(GameState &state, MapSection &section) override;
+
+    virtual void onFight(GameState & state) = 0;
 
     virtual int getDamage() = 0;
 

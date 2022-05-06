@@ -7,16 +7,21 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <stack>
 
 class Application {
 private:
     Window window;
-    std::unique_ptr<Screen> currentScreen;
+    std::stack<std::unique_ptr<Screen>> backstack;
 public:
 
     Application();
 
     int run(const std::vector<std::string> &args);
+
+    void popBackStack();
+    void navigateTo(std::unique_ptr<Screen> destination);
+    void clearBackStack();
 
 };
 

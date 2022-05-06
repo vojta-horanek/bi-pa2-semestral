@@ -8,6 +8,7 @@ public:
     Zombie();
     int getDamage() override;
     int getMaxHealth() override;
+    void onFight(GameState &state) override;
 };
 
 

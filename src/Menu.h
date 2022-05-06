@@ -9,24 +9,31 @@
 
 class Menu : public Screen {
 private:
-    bool userInMenu = true;
     size_t activeItem = 0;
-    std::unique_ptr<Screen> nextScreen = nullptr;
-    std::vector<std::unique_ptr<MenuItem>> items;
-
-    void onItemSelected();
 
 protected:
-    bool shouldContinue() override;
+    bool userInMenu = true;
+    std::unique_ptr<Screen> nextScreen = nullptr;
 
-public:
+    std::vector<std::unique_ptr<MenuItem>> items;
+
+    virtual void onItemSelected(size_t activeIndex) = 0;
+
+    virtual void onEscapePressed() = 0;
+
     Menu(int width, int height);
 
-    std::unique_ptr<Screen> getNextScreen() override;
+public:
+
+    std::unique_ptr<Screen> getNavigationDestination() override;
 
     void onEvent(SDL_Event event) override;
 
     void onRender() override;
+
+    bool popSelf() override;
+
+    bool clearBackStack() override;
 };
 
 

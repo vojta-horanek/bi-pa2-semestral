@@ -10,19 +10,23 @@ protected:
     Screen(int width, int height);
 
     int width, height;
-
-    virtual bool shouldContinue() = 0;
-
 public:
+
+    bool applicationQuitRequested = false;
+
     virtual ~Screen();
 
-    bool loop();
+    void onLoop();
 
     virtual void onRender() = 0;
 
     virtual void onEvent(SDL_Event event) = 0;
 
-    virtual std::unique_ptr<Screen> getNextScreen() = 0;
+    virtual std::unique_ptr<Screen> getNavigationDestination() = 0;
+
+    virtual bool popSelf() = 0;
+
+    virtual bool clearBackStack() = 0;
 };
 
 

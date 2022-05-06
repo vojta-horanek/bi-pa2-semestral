@@ -34,8 +34,6 @@ private:
     void nextTurn();
 
     void avoidPlayerCollision();
-protected:
-    bool shouldContinue() override;
 
 public:
 
@@ -45,9 +43,13 @@ public:
 
     ~Game() override;
 
-    std::unique_ptr<Screen> getNextScreen() override;
+    std::unique_ptr<Screen> getNavigationDestination() override;
+
+    bool popSelf() override;
 
     bool loadMap(const std::string &file);
+
+    bool clearBackStack() override;
 
 };
 

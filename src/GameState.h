@@ -5,6 +5,7 @@
 #include "Vec.h"
 #include "entity/Entity.fwd.h"
 #include "entity/Weapon.fwd.h"
+#include "entity/Monster.fwd.h"
 #include <vector>
 #include <memory>
 
@@ -14,6 +15,7 @@ struct GameState {
     int health = 3;
     std::vector<std::unique_ptr<Entity>> inventory;
     std::unique_ptr<Weapon> weapon;
+    std::unique_ptr<Monster> fight;
 };
 
 
