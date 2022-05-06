@@ -51,6 +51,8 @@ public:
 
     bool clearBackStack() override;
 
+    void onResume() override;
+
 };
 
 

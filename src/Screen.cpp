@@ -26,3 +26,19 @@ void Screen::onLoop() {
 
     FPSController::renderEnd();
 }
+
+std::unique_ptr<Screen> Screen::getNavigationDestination() {
+    return nullptr;
+}
+
+bool Screen::popSelf() {
+    return false;
+}
+
+bool Screen::clearBackStack() {
+    return false;
+}
+
+void Screen::onResume() {
+
+}

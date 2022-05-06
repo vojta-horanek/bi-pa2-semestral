@@ -33,7 +33,6 @@ public:
 
     bool popSelf() override;
 
-    bool clearBackStack() override;
 };
 
 

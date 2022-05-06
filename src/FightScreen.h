@@ -10,12 +10,14 @@
 
 class FightScreen : public Screen {
 private:
+    bool justShown = true;
     bool fighting = true;
+    bool playerTurn = true;
+    Player *player;
     Texture background;
-    GameState * gameState;
-    Player * player;
+    GameState *gameState;
 public:
-    FightScreen(GameState * gameState, Player * player, int width, int height);
+    FightScreen(GameState *gameState, Player *player, int width, int height);
 
     ~FightScreen() override;
 
@@ -23,11 +25,9 @@ public:
 
     void onEvent(SDL_Event event) override;
 
-    std::unique_ptr<Screen> getNavigationDestination() override;
-
     bool popSelf() override;
 
-    bool clearBackStack() override;
+    void attack();
 };
 
 

@@ -128,3 +128,10 @@ bool Game::popSelf() {
 bool Game::clearBackStack() {
     return false;
 }
+
+void Game::onResume() {
+    gameState.health = player->health / 85; // TODO Fixme
+    if (player->health <= 0) {
+        std::cout << "Player lost" << std::endl;
+    }
+}

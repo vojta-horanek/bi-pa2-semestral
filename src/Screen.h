@@ -22,11 +22,13 @@ public:
 
     virtual void onEvent(SDL_Event event) = 0;
 
-    virtual std::unique_ptr<Screen> getNavigationDestination() = 0;
+    virtual std::unique_ptr<Screen> getNavigationDestination();
 
-    virtual bool popSelf() = 0;
+    virtual bool popSelf();
 
-    virtual bool clearBackStack() = 0;
+    virtual bool clearBackStack();
+
+    virtual void onResume();
 };
 
 

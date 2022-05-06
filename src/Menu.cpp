@@ -6,10 +6,6 @@ Menu::Menu(int width, int height) : Screen(width, height) {
     Renderer::getInstance().selectDrawColor(0x59, 0x59, 0x59, 0xff);
 }
 
-std::unique_ptr<Screen> Menu::getNavigationDestination() {
-    return std::move(nextScreen);
-}
-
 void Menu::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
@@ -49,10 +45,11 @@ void Menu::onRender() {
     }
 }
 
+std::unique_ptr<Screen> Menu::getNavigationDestination() {
+    return std::move(nextScreen);
+}
+
 bool Menu::popSelf() {
     return !userInMenu;
 }
 
-bool Menu::clearBackStack() {
-    return false;
-}
