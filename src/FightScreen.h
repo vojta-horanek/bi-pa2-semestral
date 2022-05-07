@@ -6,6 +6,7 @@
 #include "GameState.h"
 #include "entity/Monster.h"
 #include "entity/Player.h"
+#include "entity/Stats.h"
 #include <memory>
 
 class FightScreen : public Screen {
@@ -17,6 +18,7 @@ private:
     Player *player;
     Texture background;
     GameState *gameState;
+    std::unique_ptr<Stats> stats;
 public:
     FightScreen(GameState *gameState, Player *player, int width, int height);
 

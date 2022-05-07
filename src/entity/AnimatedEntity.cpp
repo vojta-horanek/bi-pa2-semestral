@@ -7,7 +7,6 @@ AnimatedEntity::AnimatedEntity(Texture texture, int frameCount, bool synchronize
         speed(speed),
         frameCount(frameCount),
         synchronized(synchronized) {
-    texture.setBlendMode(true);
 }
 
 void AnimatedEntity::render(GameState &state, Vec position) {
@@ -45,9 +44,16 @@ void AnimatedEntity::onCollision(GameState &state) {
 
 void AnimatedEntity::fadeOut() {
     fadingOut = true;
+    texture.setBlendMode(true);
 }
 
 bool AnimatedEntity::isFadeOut() const {
     return fadingOut && alpha <= 0;
+}
+
+void AnimatedEntity::resetAlpha() {
+    fadingOut = false;
+    alpha = 255;
+    texture.setAlpha(alpha);
 }
 

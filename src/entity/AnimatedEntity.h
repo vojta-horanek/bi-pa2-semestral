@@ -28,6 +28,8 @@ public:
 
     void fadeOut();
 
+    void resetAlpha();
+
     bool isFadeOut() const;
 
     /**

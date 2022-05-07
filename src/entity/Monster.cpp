@@ -54,4 +54,5 @@ void Monster::onFightBegin() {
 
 void Monster::onFightEnd() {
     scale = 1;
+    resetAlpha();
 }

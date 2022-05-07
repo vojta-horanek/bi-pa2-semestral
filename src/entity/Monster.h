@@ -6,11 +6,12 @@
 #include "../Texture.h"
 
 /**
- * A base class for a monster. A monster is something that follows the player
+ * A base class for a monster. A monster is something that follows the player and can attack
  */
 class Monster : public MovingEntity {
 public:
     int currentHealth = 0;
+    int health = 0;
 
     explicit Monster(Texture texture);
 

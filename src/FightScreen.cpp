@@ -3,7 +3,6 @@
 #include "Renderer.h"
 #include "entity/Weapon.h"
 #include "resources/strings/Paths.h"
-#include <iostream>
 
 FightScreen::FightScreen(
         GameState *gameState,
@@ -12,6 +11,7 @@ FightScreen::FightScreen(
                                  gameState(gameState),
                                  player(player) {
     background = Texture(Paths::Bitmaps::fighting_background);
+    stats = std::make_unique<Stats>(3);
     gameState->fight->onFightBegin();
     player->onFightBegin();
 }
@@ -32,26 +32,30 @@ void FightScreen::onRender() {
         fadeFinished = true;
     }
 
+    if (player->currentHealth > 0) {
+        stats->render(
+                *gameState,
+                player->health,
+                player->currentHealth,
+                Vec(0, height / REAL_PIXEL_SIZE / BLOCK_SIZE),
+                false
+        );
+    }
+
 }
 
 
 void FightScreen::onEvent(SDL_Event event) {
-    if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.sym) {
-
-        }
-    } else if (event.type == SDL_KEYUP) {
+    if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
+            case SDLK_SPACE:
                 if (!justShown && fighting) {
                     attack();
                 } else if (justShown) {
                     justShown = false;
                     playerTurn = rand() % 2;
                 }
-                break;
-            case SDLK_ESCAPE:
-                fighting = false;
                 break;
         }
     }
@@ -62,8 +66,11 @@ bool FightScreen::popSelf() {
 }
 
 FightScreen::~FightScreen() {
-    player->onFightEnd();
-    gameState->fight = nullptr;
+    if (player != nullptr && gameState != nullptr && gameState->fight != nullptr) {
+        player->onFightEnd();
+        gameState->fight->onFightEnd();
+        gameState->fight = nullptr;
+    }
 }
 
 void FightScreen::attack() {
@@ -76,9 +83,6 @@ void FightScreen::attack() {
     } else {
         gameState->fight->currentHealth -= player->defaultDamage;
     }
-
-    std::cout << player->currentHealth << std::endl;
-    std::cout << gameState->fight->currentHealth << std::endl;
 
     if (player->currentHealth <= 0) {
         player->fadeOut();

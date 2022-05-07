@@ -40,4 +40,5 @@ void Player::onFightBegin() {
 
 void Player::onFightEnd() {
     scale = 1;
+    resetAlpha();
 }
