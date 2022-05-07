@@ -11,6 +11,7 @@
 class FightScreen : public Screen {
 private:
     bool justShown = true;
+    bool fadeFinished = false;
     bool fighting = true;
     bool playerTurn = true;
     Player *player;
@@ -28,6 +29,7 @@ public:
     bool popSelf() override;
 
     void attack();
+
 };
 
 

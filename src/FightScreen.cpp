@@ -28,6 +28,10 @@ void FightScreen::onRender() {
     player->render(*gameState, Vec(playerXPos, 4));
     gameState->fight->render(*gameState, Vec(width / 2 / REAL_PIXEL_SIZE / BLOCK_SIZE + monsterXPos, 4));
 
+    if (!fighting && (player->isFadeOut() || gameState->fight->isFadeOut())) {
+        fadeFinished = true;
+    }
+
 }
 
 
@@ -39,9 +43,9 @@ void FightScreen::onEvent(SDL_Event event) {
     } else if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
-                if (!justShown) {
+                if (!justShown && fighting) {
                     attack();
-                } else {
+                } else if (justShown) {
                     justShown = false;
                     playerTurn = rand() % 2;
                 }
@@ -54,7 +58,7 @@ void FightScreen::onEvent(SDL_Event event) {
 }
 
 bool FightScreen::popSelf() {
-    return !fighting;
+    return fadeFinished;
 }
 
 FightScreen::~FightScreen() {
@@ -65,7 +69,7 @@ FightScreen::~FightScreen() {
 void FightScreen::attack() {
     playerTurn = !playerTurn;
 
-    player->health -= gameState->fight->getDamage();
+    player->currentHealth -= gameState->fight->getDamage();
 
     if (gameState->weapon != nullptr) {
         gameState->fight->currentHealth -= gameState->weapon->getDamage();
@@ -73,10 +77,14 @@ void FightScreen::attack() {
         gameState->fight->currentHealth -= player->defaultDamage;
     }
 
-    std::cout << player->health << std::endl;
+    std::cout << player->currentHealth << std::endl;
     std::cout << gameState->fight->currentHealth << std::endl;
 
-    if (player->health <= 0 || gameState->fight->currentHealth <= 0) {
+    if (player->currentHealth <= 0) {
+        player->fadeOut();
+        fighting = false;
+    } else if (gameState->fight->currentHealth <= 0) {
+        gameState->fight->fadeOut();
         fighting = false;
     }
 }

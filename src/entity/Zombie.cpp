@@ -14,5 +14,7 @@ int Zombie::getMaxHealth() {
 }
 
 void Zombie::onFight(GameState &state) {
-    state.fight = std::make_unique<Zombie>();
+    if (state.fight == nullptr) {
+        state.fight = std::make_unique<Zombie>();
+    }
 }

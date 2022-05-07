@@ -10,6 +10,8 @@
 
 std::map<std::pair<std::string, bool>, SDL_Texture *> Texture::textureStore;
 
+Texture::Texture(): width(0), height(8) {}
+
 Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
     texture = create(path, useWhiteAsAlpha);
     if (texture == nullptr) {
@@ -55,6 +57,7 @@ void Texture::renderBlock(Vec position, int scale) const {
     Texture::renderBlockWithOffset(position, 0, scale);
 }
 
+
 void Texture::renderBlockWithOffset(Vec position, int xOffset, int scale) const {
 
     if (texture == nullptr) return;
@@ -71,7 +74,6 @@ void Texture::renderBlockWithOffset(Vec position, int xOffset, int scale) const 
 
     Renderer::getInstance().render(texture, srcRect, dstRect);
 }
-
 
 void Texture::render(Vec position, int scale) const {
 
@@ -113,4 +115,17 @@ int Texture::getWidth() const {
 
 int Texture::getHeight() const {
     return height;
+}
+
+void Texture::setAlpha(int alpha) const {
+    if (alpha < 0 || alpha > 255) return;
+    SDL_SetTextureAlphaMod(texture, alpha);
+}
+
+void Texture::setBlendMode(bool blend) const {
+    if (blend) {
+        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+    } else {
+        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_NONE);
+    }
 }

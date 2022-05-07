@@ -10,10 +10,11 @@ class Stats : public Entity {
 private:
     int maxHealth;
     std::unique_ptr<Hearth> hearth;
+    static int map(int x, int in_min, int in_max, int out_min, int out_max);
 public:
     explicit Stats(int maxHealth);
 
-    void render(GameState &state, Vec position) override;
+    void render(GameState &state, int playerHealth, int playerCurrentHealth, Vec position);
 };
 
 

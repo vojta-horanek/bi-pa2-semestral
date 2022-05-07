@@ -13,6 +13,7 @@ private:
 public:
 
     int health = 255;
+    int currentHealth = 255;
 
     int defaultDamage = 5;
 

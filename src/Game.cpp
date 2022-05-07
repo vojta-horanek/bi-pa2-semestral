@@ -31,7 +31,7 @@ void Game::onRender() {
 
     inventory->render(gameState, Vec(3, gameHeight));
 
-    stats->render(gameState, Vec(0, gameHeight));
+    stats->render(gameState, player->health, player->currentHealth, Vec(0, gameHeight));
 }
 
 void Game::onEvent(SDL_Event event) {
@@ -130,7 +130,6 @@ bool Game::clearBackStack() {
 }
 
 void Game::onResume() {
-    gameState.health = player->health / 85; // TODO Fixme
     if (player->health <= 0) {
         std::cout << "Player lost" << std::endl;
     }

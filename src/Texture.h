@@ -20,7 +20,7 @@ private:
     static std::pair<int, int> getSize(SDL_Texture *texture);
 
 public:
-    Texture() = default;
+    Texture();
 
     explicit Texture(const std::string &path, bool useWhiteAsAlpha = false);
 
@@ -37,6 +37,10 @@ public:
     int getWidth() const;
 
     int getHeight() const;
+
+    void setAlpha(int alpha) const;
+
+    void setBlendMode(bool blend) const;
 };
 
 

@@ -7,6 +7,7 @@ AnimatedEntity::AnimatedEntity(Texture texture, int frameCount, bool synchronize
         speed(speed),
         frameCount(frameCount),
         synchronized(synchronized) {
+    texture.setBlendMode(true);
 }
 
 void AnimatedEntity::render(GameState &state, Vec position) {
@@ -25,6 +26,10 @@ void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
         }
     }
 
+    if (fadingOut) {
+        texture.setAlpha(alpha);
+        alpha -= 5;
+    }
     texture.renderBlockWithOffset(position, frame, scale);
 }
 
@@ -36,5 +41,13 @@ void AnimatedEntity::syncWith(AnimatedEntity &other) {
 
 void AnimatedEntity::onCollision(GameState &state) {
     Entity::onCollision(state);
+}
+
+void AnimatedEntity::fadeOut() {
+    fadingOut = true;
+}
+
+bool AnimatedEntity::isFadeOut() const {
+    return fadingOut && alpha <= 0;
 }
 

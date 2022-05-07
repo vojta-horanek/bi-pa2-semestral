@@ -9,6 +9,8 @@ class AnimatedEntity : public Entity {
     int speed;
     int frameCount;
     bool synchronized;
+    bool fadingOut = false;
+    int alpha = 255;
 
 protected:
 
@@ -23,6 +25,10 @@ public:
     int scale = 1;
 
     void render(GameState &state, Vec position) override;
+
+    void fadeOut();
+
+    bool isFadeOut() const;
 
     /**
      * Synchronizes this animated entity with another one.

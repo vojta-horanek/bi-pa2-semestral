@@ -12,7 +12,6 @@
 struct GameState {
     bool running = true;
     Vec playerPosition;
-    int health = 3;
     std::vector<std::unique_ptr<Entity>> inventory;
     std::unique_ptr<Weapon> weapon;
     std::unique_ptr<Monster> fight;
