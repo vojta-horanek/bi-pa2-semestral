@@ -43,6 +43,8 @@ namespace Paths {
         static constexpr str title = BITMAPS_PATH "title.bmp";
         static constexpr str fighting_background = BITMAPS_PATH "fighting-background.bmp";
         static constexpr str menu_backdrop = BITMAPS_PATH "menu-backdrop.bmp";
+        static constexpr str screen_won = BITMAPS_PATH "screen-won.bmp";
+        static constexpr str screen_lost = BITMAPS_PATH "screen-lost.bmp";
     }
 }
 

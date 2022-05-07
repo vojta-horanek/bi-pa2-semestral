@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "FightScreen.h"
 #include "ResumeMenu.h"
+#include "EndScreen.h"
 
 Game::Game(int width, int height) : Screen(width, height),
                                     gameWidth(width / (REAL_PIXEL_SIZE * BLOCK_SIZE)),
@@ -84,6 +85,10 @@ void Game::nextTurn() {
     if (gameState.fight != nullptr) {
         nextScreen = std::make_unique<FightScreen>(&gameState, &*player, width, height);
     }
+
+    if (gameState.won) {
+        nextScreen = std::make_unique<EndScreen>(true, width, height);
+    }
 }
 
 void Game::avoidPlayerCollision() {
@@ -130,7 +135,7 @@ bool Game::clearBackStack() {
 }
 
 void Game::onResume() {
-    if (player->health <= 0) {
-        std::cout << "Player lost" << std::endl;
+    if (player->currentHealth <= 0) {
+        nextScreen = std::make_unique<EndScreen>(false, width, height);
     }
 }
