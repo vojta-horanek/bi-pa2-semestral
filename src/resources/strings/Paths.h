@@ -38,8 +38,11 @@ namespace Paths {
         static constexpr str menu_resume_selected = BITMAPS_PATH "resume-selected.bmp";
         static constexpr str menu_main_menu = BITMAPS_PATH "main-menu.bmp";
         static constexpr str menu_main_menu_selected = BITMAPS_PATH "main-menu-selected.bmp";
+        static constexpr str menu_save = BITMAPS_PATH "save.bmp";
+        static constexpr str menu_save_selected = BITMAPS_PATH "save-selected.bmp";
         static constexpr str title = BITMAPS_PATH "title.bmp";
         static constexpr str fighting_background = BITMAPS_PATH "fighting-background.bmp";
+        static constexpr str menu_backdrop = BITMAPS_PATH "menu-backdrop.bmp";
     }
 }
 

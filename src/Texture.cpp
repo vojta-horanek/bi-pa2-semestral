@@ -16,6 +16,10 @@ Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
         // Try to create a bitmap of last resort
         texture = create(Paths::Bitmaps::invalid, true);
     }
+
+    auto size = getSize(texture);
+    width = size.first;
+    height = size.second;
 }
 
 SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
@@ -95,4 +99,18 @@ void Texture::renderFullscreen() const {
     if (texture == nullptr) return;
 
     Renderer::getInstance().render(texture);
+}
+
+std::pair<int, int> Texture::getSize(SDL_Texture * texture) {
+    int width, height;
+    SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+    return {width, height};
+}
+
+int Texture::getWidth() const {
+    return width;
+}
+
+int Texture::getHeight() const {
+    return height;
 }

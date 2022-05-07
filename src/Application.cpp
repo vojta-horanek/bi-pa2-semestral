@@ -29,7 +29,7 @@ int Application::run(const std::vector<std::string> &args) {
             clearBackStack();
         } else if (backstack.top()->popSelf()) {
             popBackStack();
-            backstack.top()->onResume();
+            if (!backstack.empty()) backstack.top()->onResume();
         }
 
         if (nextScreen != nullptr) {

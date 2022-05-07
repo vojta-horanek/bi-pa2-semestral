@@ -1,9 +1,10 @@
 #include "Menu.h"
 #include "Renderer.h"
 #include <memory>
+#include "resources/strings/Paths.h"
 
 Menu::Menu(int width, int height) : Screen(width, height) {
-    Renderer::getInstance().selectDrawColor(0x59, 0x59, 0x59, 0xff);
+    backdrop = Texture(Paths::Bitmaps::menu_backdrop);
 }
 
 void Menu::onEvent(SDL_Event event) {
@@ -30,7 +31,7 @@ void Menu::onEvent(SDL_Event event) {
 }
 
 void Menu::onRender() {
-
+    backdrop.renderFullscreen();
     for (size_t item = 0; item < items.size(); item++) {
         auto &currentItem = items[item];
         if (item == activeItem) {

@@ -10,6 +10,7 @@
 class Menu : public Screen {
 private:
     size_t activeItem = 0;
+    Texture backdrop;
 
 protected:
     bool userInMenu = true;

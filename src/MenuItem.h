@@ -20,7 +20,7 @@ public:
     virtual ~MenuItem();
 
     enum class Item {
-        NEW, LOAD, QUIT, RESUME, MAIN_MENU
+        NEW, LOAD, QUIT, RESUME, MAIN_MENU, SAVE
     };
 
     virtual Item getType() = 0;
