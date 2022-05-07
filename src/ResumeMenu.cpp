@@ -5,9 +5,10 @@
 #include "MenuMainMenu.h"
 #include "MenuSave.h"
 
-ResumeMenu::ResumeMenu(int width, int height) : Menu(width, height) {
+ResumeMenu::ResumeMenu(int width, int height, bool saveEnabled) : Menu(width, height) {
     items.emplace_back(std::make_unique<MenuResume>());
-    items.emplace_back(std::make_unique<MenuSave>());
+    if (saveEnabled)
+        items.emplace_back(std::make_unique<MenuSave>());
     items.emplace_back(std::make_unique<MenuMainMenu>());
 
 }

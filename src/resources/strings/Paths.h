@@ -24,6 +24,8 @@ namespace Paths {
         static constexpr str player = BITMAPS_PATH "player.bmp";
         static constexpr str player_anim = BITMAPS_PATH "player-anim.bmp";
         static constexpr str stats = BITMAPS_PATH "stats.bmp";
+        static constexpr str stats_l = BITMAPS_PATH "stats-l.bmp";
+        static constexpr str stats_r = BITMAPS_PATH "stats-r.bmp";
         static constexpr str sword = BITMAPS_PATH "sword.bmp";
         static constexpr str player_sword = BITMAPS_PATH "player-sword.bmp";
         static constexpr str tree = BITMAPS_PATH "tree.bmp";

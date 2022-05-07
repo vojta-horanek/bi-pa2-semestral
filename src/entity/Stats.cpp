@@ -4,16 +4,25 @@
 Stats::Stats(int maxHealth) : Entity(Texture(Paths::Bitmaps::stats)) {
     this->maxHealth = maxHealth;
     hearth = std::make_unique<Hearth>();
+    left = Texture(Paths::Bitmaps::stats_l);
+    right = Texture(Paths::Bitmaps::stats_r);
 }
 
 void Stats::render(GameState &state, int playerHealth, int playerCurrentHealth, Vec position, bool withBackground) {
     int mappedHealth = map(playerCurrentHealth, 0, playerHealth, 1, maxHealth);
     int i;
     for (i = 0; i < mappedHealth && i < maxHealth; i++) {
+
         Vec pos = position.withX(i);
 
         if (withBackground) {
-            Entity::render(state, pos);
+            if (i == 0) {
+                left.renderBlock(pos);
+            } else if (i == maxHealth - 1) {
+                right.renderBlock(pos);
+            } else {
+                Entity::render(state, pos);
+            }
         }
 
         hearth->render(state, pos);
@@ -21,7 +30,14 @@ void Stats::render(GameState &state, int playerHealth, int playerCurrentHealth, 
 
     if (withBackground) {
         for (int j = i; j < maxHealth; j++) {
-            Entity::render(state, position.withX(j));
+            Vec pos = position.withX(j);
+            if (i == 0) {
+                left.renderBlock(pos);
+            } else if (i == maxHealth - 1) {
+                right.renderBlock(pos);
+            } else {
+                Entity::render(state, pos);
+            }
         }
     }
 }

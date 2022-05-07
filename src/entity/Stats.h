@@ -10,6 +10,7 @@ class Stats : public Entity {
 private:
     int maxHealth;
     std::unique_ptr<Hearth> hearth;
+    Texture left, right;
     static int map(int x, int in_min, int in_max, int out_min, int out_max);
 public:
     explicit Stats(int maxHealth);

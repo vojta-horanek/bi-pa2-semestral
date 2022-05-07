@@ -9,7 +9,7 @@ private:
     void onItemSelected(size_t activeIndex) override;
     void onEscapePressed() override;
 public:
-    ResumeMenu(int width, int height);
+    ResumeMenu(int width, int height, bool saveEnabled = true);
     bool clearBackStack() override;
 
 };

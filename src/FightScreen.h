@@ -19,6 +19,7 @@ private:
     Texture background;
     GameState *gameState;
     std::unique_ptr<Stats> stats;
+    std::unique_ptr<Screen> navigateTo = nullptr;
 public:
     FightScreen(GameState *gameState, Player *player, int width, int height);
 
@@ -31,6 +32,8 @@ public:
     bool popSelf() override;
 
     void attack();
+
+    std::unique_ptr<Screen> getNavigationDestination() override;
 
 };
 
