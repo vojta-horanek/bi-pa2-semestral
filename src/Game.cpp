@@ -147,6 +147,7 @@ void Game::onCreate() {
 
     if (args.empty()) {
         std::cerr << "Cannot run without a map file!" << std::endl;
+        std::cerr << "You probably meant to run it like this: ./horanvoj examples/map" << std::endl;
         gameState.running = false;
     } else if (!loadMap(args[0])) {
         gameState.running = false;
