@@ -1,3 +1,5 @@
+# "Inspiration" taken from: https://gitlab.fit.cvut.cz/husekrad/pa2-cvika-2022/tree/master/cv10/semestralka
+
 LOGIN = horanvoj
 CXX = g++
 BASIC_FLAGS = -std=c++17 -O2 -g -Wall -pedantic

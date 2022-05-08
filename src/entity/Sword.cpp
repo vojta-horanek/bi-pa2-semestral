@@ -6,7 +6,7 @@ Sword::Sword() : Weapon(Texture(Paths::Bitmaps::sword, true),
 }
 
 int Sword::getDamage() {
-    return 15;
+    return 25;
 }
 
 void Sword::onPickup(GameState &state) {

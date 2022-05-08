@@ -10,7 +10,7 @@
 #include <memory>
 
 struct GameState {
-    bool running = true;
+    bool running = false;
     bool won = false;
     Vec playerPosition = Vec::max();
     std::vector<std::unique_ptr<Entity>> inventory;

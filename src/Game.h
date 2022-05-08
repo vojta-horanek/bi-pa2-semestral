@@ -53,6 +53,8 @@ public:
 
     void onResume() override;
 
+    void onCreate() override;
+
 };
 
 

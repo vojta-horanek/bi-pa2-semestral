@@ -1,4 +1,5 @@
 #include "Screen.h"
+
 #include "FPSController.h"
 
 #include "Renderer.h"
@@ -40,5 +41,13 @@ bool Screen::clearBackStack() {
 }
 
 void Screen::onResume() {
+
+}
+
+void Screen::setArgs(const std::vector<std::string> & programArgs) {
+    args = programArgs;
+}
+
+void Screen::onCreate() {
 
 }

@@ -6,7 +6,7 @@ Axe::Axe() : Weapon(Texture(Paths::Bitmaps::axe, true),
 }
 
 int Axe::getDamage() {
-    return 10;
+    return 15;
 }
 
 void Axe::onPickup(GameState &state) {

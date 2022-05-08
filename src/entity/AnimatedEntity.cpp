@@ -34,7 +34,7 @@ void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
 
 void AnimatedEntity::syncWith(AnimatedEntity &other) {
     assert(other.frameCount == frameCount);
-    assert(synchronized);
+    this->synchronized = true;
     this->frame = other.frame;
 }
 

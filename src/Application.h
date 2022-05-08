@@ -20,7 +20,9 @@ public:
     int run(const std::vector<std::string> &args);
 
     void popBackStack();
-    void navigateTo(std::unique_ptr<Screen> destination);
+
+    void navigateTo(std::unique_ptr<Screen> destination, const std::vector<std::string> &args);
+
     void clearBackStack();
 
 };

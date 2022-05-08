@@ -11,7 +11,7 @@ class PickupEntity : public AnimatedEntity {
 private:
     void onCollision(GameState &state) override;
 public:
-    PickupEntity(Texture texture, int frameCount, bool synchronized = false, int speed = 15);
+    PickupEntity(Texture texture, int frameCount, bool synchronized = false, int speed = 25);
 
     explicit PickupEntity(Texture texture);
 

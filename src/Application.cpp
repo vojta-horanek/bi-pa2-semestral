@@ -33,7 +33,7 @@ int Application::run(const std::vector<std::string> &args) {
         }
 
         if (nextScreen != nullptr) {
-            navigateTo(std::move(nextScreen));
+            navigateTo(std::move(nextScreen), args);
         }
     }
 
@@ -44,8 +44,11 @@ void Application::popBackStack() {
     backstack.pop();
 }
 
-void Application::navigateTo(std::unique_ptr<Screen> destination) {
+void Application::navigateTo(std::unique_ptr<Screen> destination,
+                             const std::vector<std::string> &args) {
     backstack.push(std::move(destination));
+    backstack.top()->setArgs(args);
+    backstack.top()->onCreate();
 }
 
 void Application::clearBackStack() {

@@ -14,10 +14,6 @@ Game::Game(int width, int height) : Screen(width, height),
     player = std::make_unique<Player>();
     stats = std::make_unique<Stats>(3);
 
-    // TODO path
-    if (!loadMap("../examples/map")) {
-        gameState.running = false;
-    }
 }
 
 Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
@@ -41,6 +37,7 @@ void Game::onRender() {
 }
 
 void Game::onEvent(SDL_Event event) {
+    if (!gameState.running) return;
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
@@ -142,5 +139,18 @@ bool Game::clearBackStack() {
 void Game::onResume() {
     if (player->currentHealth <= 0) {
         nextScreen = std::make_unique<EndScreen>(false, width, height);
+    }
+}
+
+void Game::onCreate() {
+    // TODO path
+
+    if (args.empty()) {
+        std::cerr << "Cannot run without a map file!" << std::endl;
+        gameState.running = false;
+    } else if (!loadMap(args[0])) {
+        gameState.running = false;
+    } else {
+        gameState.running = true;
     }
 }

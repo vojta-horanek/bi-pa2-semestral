@@ -4,10 +4,14 @@
 
 #include <SDL_events.h>
 #include <memory>
+#include <vector>
+#include <string>
 
 class Screen {
 protected:
     Screen(int width, int height);
+
+    std::vector<std::string> args;
 
     int width, height;
 public:
@@ -29,6 +33,10 @@ public:
     virtual bool clearBackStack();
 
     virtual void onResume();
+
+    virtual void onCreate();
+
+    void setArgs(const std::vector<std::string> & programArgs);
 };
 
 
