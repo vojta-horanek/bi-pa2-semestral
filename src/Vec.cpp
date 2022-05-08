@@ -94,4 +94,8 @@ int Vec::yDistance(const Vec &other) const {
     return abs(this->y - other.y);
 }
 
+Vec Vec::max() {
+    return Vec(INT32_MAX, INT32_MAX);
+}
+
 

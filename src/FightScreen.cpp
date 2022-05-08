@@ -5,6 +5,7 @@
 #include "resources/strings/Paths.h"
 #include "ResumeMenu.h"
 
+// FIXME Memory leaks when closing the windows in fight screen...
 FightScreen::FightScreen(
         GameState *gameState,
         Player *player,
@@ -90,6 +91,9 @@ void FightScreen::attack() {
 
     if (player->currentHealth <= 0) {
         player->fadeOut();
+        if (gameState->weapon != nullptr) {
+            gameState->weapon->fadeOut();
+        }
         fighting = false;
     } else if (gameState->fight->currentHealth <= 0) {
         gameState->fight->fadeOut();

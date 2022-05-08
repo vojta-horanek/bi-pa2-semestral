@@ -40,6 +40,10 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         auto result = readSetCommand(line);
         if (result.first.isError) return result.first;
 
+        if (currentSection == map.sections.end()) {
+            return Result::error("No default map section has been specified yet!");
+        }
+
         if (currentSection->second.isEdge(result.second)) {
             std::stringstream str;
             str << "Position out of bounds: " << result.second;
@@ -229,6 +233,22 @@ std::tuple<Result, Vec, Vec, int> MapFileParser::readMonsterAddCommand(const std
 
 MapFileParser::MapFileParser(int width, int height) : width(width), height(height) {
 
+}
+
+Result MapFileParser::areAllValuesSet() const {
+    if (map.sections.empty()) {
+        return Result::error("No map sections defined");
+    }
+
+    if (map.currentSection == map.sections.end()) {
+        return Result::error("A default section has not been set");
+    }
+
+    if (gameState.playerPosition == Vec::max()) {
+        return Result::error("Player position has not been set");
+    }
+
+    return Result::success();
 }
 
 std::string MapParserState::toString() const {

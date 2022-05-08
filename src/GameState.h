@@ -12,7 +12,7 @@
 struct GameState {
     bool running = true;
     bool won = false;
-    Vec playerPosition;
+    Vec playerPosition = Vec::max();
     std::vector<std::unique_ptr<Entity>> inventory;
     std::unique_ptr<Weapon> weapon;
     std::unique_ptr<Monster> fight;

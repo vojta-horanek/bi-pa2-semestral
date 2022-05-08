@@ -75,7 +75,7 @@ private:
     MapParserState currentState;
     Map map;
     std::map<int, EntityManger::Type> types;
-    std::map<Vec, MapSection>::iterator currentSection;
+    std::map<Vec, MapSection>::iterator currentSection = map.sections.end();
     GameState gameState;
     int width, height;
 
@@ -89,6 +89,8 @@ public:
     Result parseNextLine(const std::string &line);
 
     Map getMap();
+
+    Result areAllValuesSet() const;
 
     GameState getState();
 };

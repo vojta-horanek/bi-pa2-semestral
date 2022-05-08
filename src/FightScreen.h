@@ -15,9 +15,9 @@ private:
     bool fadeFinished = false;
     bool fighting = true;
     bool playerTurn = true;
+    GameState *gameState;
     Player *player;
     Texture background;
-    GameState *gameState;
     std::unique_ptr<Stats> stats;
     std::unique_ptr<Screen> navigateTo = nullptr;
 public:

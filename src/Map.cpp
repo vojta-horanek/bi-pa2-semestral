@@ -57,6 +57,12 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int wid
 
     mapFile.close();
 
+    auto parsingResult = parser.areAllValuesSet();
+
+    if (parsingResult.isError) {
+        throw std::invalid_argument("Some values were not set in the map file: " + parsingResult.errorText);
+    }
+
     if (isError) throw std::invalid_argument("Map could not be loaded from file");
 
     GameState newGameState = parser.getState();

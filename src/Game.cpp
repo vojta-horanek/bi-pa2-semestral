@@ -3,7 +3,6 @@
 #include "FPSController.h"
 #include "entity/Monster.h"
 #include "Renderer.h"
-#include "Menu.h"
 #include "FightScreen.h"
 #include "ResumeMenu.h"
 #include "EndScreen.h"
@@ -14,7 +13,11 @@ Game::Game(int width, int height) : Screen(width, height),
     inventory = std::make_unique<Inventory>(width);
     player = std::make_unique<Player>();
     stats = std::make_unique<Stats>(3);
-    loadMap("../examples/map"); // TODO
+
+    // TODO path
+    if (!loadMap("../examples/map")) {
+        gameState.running = false;
+    }
 }
 
 Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
@@ -25,6 +28,8 @@ Game::~Game() = default;
 
 
 void Game::onRender() {
+
+    if (!gameState.running) return;
 
     gameMap.getCurrentSection().render(gameState);
 

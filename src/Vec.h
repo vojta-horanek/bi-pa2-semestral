@@ -11,6 +11,8 @@ struct Vec {
 
     Vec(int x, int y);
 
+    static Vec max();
+
     bool isOrigin() const;
 
     Vec operator+(const Vec &other) const;
