@@ -63,7 +63,7 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                nextScreen = std::make_unique<ResumeMenu>(width, height);
+                navigationDestination = std::make_unique<ResumeMenu>(width, height);
                 break;
         }
     }
@@ -86,11 +86,11 @@ void Game::nextTurn() {
     gameMap.getCurrentSection().onTurn(*gameState);
 
     if (gameState->fight != nullptr) {
-        nextScreen = std::make_unique<FightScreen>(player, gameState, width, height);
+        navigationDestination = std::make_unique<FightScreen>(player, gameState, width, height);
     }
 
     if (gameState->won) {
-        nextScreen = std::make_unique<EndScreen>(true, width, height);
+        navigationDestination = std::make_unique<EndScreen>(true, width, height);
     }
 }
 
@@ -125,10 +125,6 @@ void Game::avoidPlayerCollision() {
     }
 }
 
-std::unique_ptr<Screen> Game::getNavigationDestination() {
-    return std::move(nextScreen);
-}
-
 bool Game::popSelf() {
     return !gameState->running;
 }
@@ -139,7 +135,7 @@ bool Game::clearBackStack() {
 
 void Game::onResume() {
     if (player->currentHealth <= 0) {
-        nextScreen = std::make_unique<EndScreen>(false, width, height);
+        navigationDestination = std::make_unique<EndScreen>(false, width, height);
     }
 }
 

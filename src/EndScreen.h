@@ -8,7 +8,6 @@
 class EndScreen : public Screen {
 private:
     Texture background;
-    std::unique_ptr<Screen> navigateTo;
     bool hide = false;
 public:
 
@@ -19,8 +18,6 @@ public:
     void onRender() override;
 
     bool clearBackStack() override;
-
-    std::unique_ptr<Screen> getNavigationDestination() override;
 
 };
 

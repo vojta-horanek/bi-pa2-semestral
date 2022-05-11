@@ -19,7 +19,6 @@ private:
     std::shared_ptr<GameState> gameState;
     Texture background;
     std::unique_ptr<Stats> stats;
-    std::unique_ptr<Screen> navigateTo = nullptr;
 public:
     FightScreen(
             std::shared_ptr<Player> player,
@@ -37,9 +36,6 @@ public:
     bool popSelf() override;
 
     void attack();
-
-    std::unique_ptr<Screen> getNavigationDestination() override;
-
 };
 
 

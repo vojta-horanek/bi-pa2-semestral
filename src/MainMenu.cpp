@@ -16,10 +16,10 @@ void MainMenu::onItemSelected(size_t activeIndex) {
     auto type = items[activeIndex]->getType();
     switch (type) {
         case MenuItem::Item::NEW:
-            nextScreen = std::make_unique<Game>(width, height);
+            navigationDestination = std::make_unique<Game>(width, height);
             break;
         case MenuItem::Item::LOAD:
-            nextScreen = std::make_unique<Game>(width, height, "examples/save");
+            navigationDestination = std::make_unique<Game>(width, height, "examples/save");
             break;
         case MenuItem::Item::QUIT:
             userInMenu = false;

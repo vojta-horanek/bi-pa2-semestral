@@ -13,6 +13,8 @@ protected:
 
     std::vector<std::string> args;
 
+    std::unique_ptr<Screen> navigationDestination = nullptr;
+
     int width, height;
 public:
 
@@ -26,7 +28,7 @@ public:
 
     virtual void onEvent(SDL_Event event) = 0;
 
-    virtual std::unique_ptr<Screen> getNavigationDestination();
+    std::unique_ptr<Screen> getNavigationDestination();
 
     virtual bool popSelf();
 

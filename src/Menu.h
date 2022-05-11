@@ -14,7 +14,6 @@ private:
 
 protected:
     bool userInMenu = true;
-    std::unique_ptr<Screen> nextScreen = nullptr;
 
     std::vector<std::unique_ptr<MenuItem>> items;
 
@@ -25,8 +24,6 @@ protected:
     Menu(int width, int height);
 
 public:
-
-    std::unique_ptr<Screen> getNavigationDestination() override;
 
     void onEvent(SDL_Event event) override;
 

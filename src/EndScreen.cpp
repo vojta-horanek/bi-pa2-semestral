@@ -14,7 +14,7 @@ EndScreen::EndScreen(bool won, int width, int height) : Screen(width, height) {
 void EndScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
         hide = true;
-        navigateTo = std::make_unique<MainMenu>(width, height);
+        navigationDestination = std::make_unique<MainMenu>(width, height);
     }
 }
 
@@ -24,8 +24,4 @@ void EndScreen::onRender() {
 
 bool EndScreen::clearBackStack() {
     return hide;
-}
-
-std::unique_ptr<Screen> EndScreen::getNavigationDestination() {
-    return std::move(navigateTo);
 }

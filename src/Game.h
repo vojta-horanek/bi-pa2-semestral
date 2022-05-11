@@ -16,11 +16,9 @@
 
 class Game : public Screen {
 private:
-
     std::shared_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
-    std::unique_ptr<Screen> nextScreen = nullptr;
     std::shared_ptr<GameState> gameState;
 
     Map gameMap;
@@ -42,8 +40,6 @@ public:
     explicit Game(int width, int height, const std::string & saveFile);
 
     ~Game() override;
-
-    std::unique_ptr<Screen> getNavigationDestination() override;
 
     bool popSelf() override;
 

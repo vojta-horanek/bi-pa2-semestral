@@ -29,7 +29,7 @@ void Screen::onLoop() {
 }
 
 std::unique_ptr<Screen> Screen::getNavigationDestination() {
-    return nullptr;
+    return std::move(navigationDestination);
 }
 
 bool Screen::popSelf() {

@@ -46,10 +46,6 @@ void Menu::onRender() {
     }
 }
 
-std::unique_ptr<Screen> Menu::getNavigationDestination() {
-    return std::move(nextScreen);
-}
-
 bool Menu::popSelf() {
     return !userInMenu;
 }

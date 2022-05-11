@@ -53,7 +53,7 @@ void FightScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                navigateTo = std::make_unique<ResumeMenu>(width, height, false);
+                 navigationDestination = std::make_unique<ResumeMenu>(width, height, false);
                 break;
             case SDLK_RETURN:
             case SDLK_SPACE:
@@ -99,8 +99,4 @@ void FightScreen::attack() {
         gameState->fight->fadeOut();
         fighting = false;
     }
-}
-
-std::unique_ptr<Screen> FightScreen::getNavigationDestination() {
-    return std::move(navigateTo);
 }
