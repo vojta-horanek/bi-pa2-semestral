@@ -1,21 +1,23 @@
 #include "FightScreen.h"
 
+#include <utility>
+
 #include "Renderer.h"
 #include "entity/Weapon.h"
 #include "resources/strings/Paths.h"
 #include "ResumeMenu.h"
+#include "Game.h"
 
-// FIXME Memory leaks when closing the windows in fight screen...
 FightScreen::FightScreen(
-        GameState *gameState,
-        Player *player,
-        int width, int height) : Screen(width, height),
-                                 gameState(gameState),
-                                 player(player) {
+        std::shared_ptr<Player> player,
+        std::shared_ptr<GameState> gameState,
+        int width,
+        int height
+) : Screen(width, height), player(std::move(player)), gameState(std::move(gameState)) {
     background = Texture(Paths::Bitmaps::fighting_background);
     stats = std::make_unique<Stats>(3);
-    gameState->fight->onFightBegin();
-    player->onFightBegin();
+    this->gameState->fight->onFightBegin();
+    this->player->onFightBegin();
 }
 
 void FightScreen::onRender() {
@@ -71,11 +73,9 @@ bool FightScreen::popSelf() {
 }
 
 FightScreen::~FightScreen() {
-    if (player != nullptr && gameState != nullptr && gameState->fight != nullptr) {
-        player->onFightEnd();
-        gameState->fight->onFightEnd();
-        gameState->fight = nullptr;
-    }
+    player->onFightEnd();
+    gameState->fight->onFightEnd();
+    gameState->fight = nullptr;
 }
 
 void FightScreen::attack() {

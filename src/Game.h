@@ -16,12 +16,12 @@
 
 class Game : public Screen {
 private:
-    GameState gameState;
 
-    std::unique_ptr<Player> player;
+    std::shared_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
     std::unique_ptr<Screen> nextScreen = nullptr;
+    std::shared_ptr<GameState> gameState;
 
     Map gameMap;
 

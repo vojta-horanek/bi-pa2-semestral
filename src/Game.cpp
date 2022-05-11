@@ -7,13 +7,14 @@
 #include "ResumeMenu.h"
 #include "EndScreen.h"
 
+
 Game::Game(int width, int height) : Screen(width, height),
                                     gameWidth(width / (REAL_PIXEL_SIZE * BLOCK_SIZE)),
                                     gameHeight(height / (REAL_PIXEL_SIZE * BLOCK_SIZE)) {
+    gameState = std::make_shared<GameState>();
     inventory = std::make_unique<Inventory>(width);
-    player = std::make_unique<Player>();
+    player = std::make_shared<Player>();
     stats = std::make_unique<Stats>(3);
-
 }
 
 Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
@@ -25,19 +26,19 @@ Game::~Game() = default;
 
 void Game::onRender() {
 
-    if (!gameState.running) return;
+    if (!gameState->running) return;
 
-    gameMap.getCurrentSection().render(gameState);
+    gameMap.getCurrentSection().render(*gameState);
 
-    player->render(gameState, gameState.playerPosition);
+    player->render(*gameState, gameState->playerPosition);
 
-    inventory->render(gameState, Vec(3, gameHeight));
+    inventory->render(*gameState, Vec(3, gameHeight));
 
-    stats->render(gameState, player->health, player->currentHealth, Vec(0, gameHeight));
+    stats->render(*gameState, player->health, player->currentHealth, Vec(0, gameHeight));
 }
 
 void Game::onEvent(SDL_Event event) {
-    if (!gameState.running) return;
+    if (!gameState->running) return;
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
@@ -70,7 +71,7 @@ void Game::onEvent(SDL_Event event) {
 
 bool Game::loadMap(const std::string &file) {
     try {
-        gameMap = Map::loadFromFile(file, gameState, gameWidth, gameHeight);
+        gameMap = Map::loadFromFile(file, *gameState, gameWidth, gameHeight);
         return true;
     } catch (std::invalid_argument &ex) {
         std::cerr << ex.what() << std::endl;
@@ -80,21 +81,21 @@ bool Game::loadMap(const std::string &file) {
 
 void Game::nextTurn() {
     avoidPlayerCollision();
-    player->onTurn(gameState, gameMap.getCurrentSection());
+    player->onTurn(*gameState, gameMap.getCurrentSection());
 
-    gameMap.getCurrentSection().onTurn(gameState);
+    gameMap.getCurrentSection().onTurn(*gameState);
 
-    if (gameState.fight != nullptr) {
-        nextScreen = std::make_unique<FightScreen>(&gameState, &*player, width, height);
+    if (gameState->fight != nullptr) {
+        nextScreen = std::make_unique<FightScreen>(player, gameState, width, height);
     }
 
-    if (gameState.won) {
+    if (gameState->won) {
         nextScreen = std::make_unique<EndScreen>(true, width, height);
     }
 }
 
 void Game::avoidPlayerCollision() {
-    Vec playerNexPos = player->getNextPosition(gameState.playerPosition);
+    Vec playerNexPos = player->getNextPosition(gameState->playerPosition);
     if (gameMap.getCurrentSection().isEdge(playerNexPos)) {
 
         Vec direction = player->getDirection();
@@ -108,18 +109,18 @@ void Game::avoidPlayerCollision() {
                     // Going from left screen to right screen
                     newX = gameWidth - 1;
                 }
-                gameState.playerPosition = Vec(newX, gameState.playerPosition.y);
+                gameState->playerPosition = Vec(newX, gameState->playerPosition.y);
             } else if (direction.y != 0) {
                 int newY = 0;
                 if (direction.y < 0) {
                     // Going from bottom screen to top screen
                     newY = gameHeight - 1;
                 }
-                gameState.playerPosition = Vec(gameState.playerPosition.x, newY);
+                gameState->playerPosition = Vec(gameState->playerPosition.x, newY);
             }
         }
 
-    } else if (gameMap.getCurrentSection().collideWith(playerNexPos, gameState)) {
+    } else if (gameMap.getCurrentSection().collideWith(playerNexPos, *gameState)) {
         player->setDirection(0, 0);
     }
 }
@@ -129,7 +130,7 @@ std::unique_ptr<Screen> Game::getNavigationDestination() {
 }
 
 bool Game::popSelf() {
-    return !gameState.running;
+    return !gameState->running;
 }
 
 bool Game::clearBackStack() {
@@ -148,10 +149,10 @@ void Game::onCreate() {
     if (args.empty()) {
         std::cerr << "Cannot run without a map file!" << std::endl;
         std::cerr << "You probably meant to run it like this: ./horanvoj examples/map" << std::endl;
-        gameState.running = false;
+        gameState->running = false;
     } else if (!loadMap(args[0])) {
-        gameState.running = false;
+        gameState->running = false;
     } else {
-        gameState.running = true;
+        gameState->running = true;
     }
 }

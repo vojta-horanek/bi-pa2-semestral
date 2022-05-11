@@ -15,13 +15,18 @@ private:
     bool fadeFinished = false;
     bool fighting = true;
     bool playerTurn = true;
-    GameState *gameState;
-    Player *player;
+    std::shared_ptr<Player> player;
+    std::shared_ptr<GameState> gameState;
     Texture background;
     std::unique_ptr<Stats> stats;
     std::unique_ptr<Screen> navigateTo = nullptr;
 public:
-    FightScreen(GameState *gameState, Player *player, int width, int height);
+    FightScreen(
+            std::shared_ptr<Player> player,
+            std::shared_ptr<GameState> gameState,
+            int width,
+            int height
+    );
 
     ~FightScreen() override;
 
