@@ -3,6 +3,7 @@ cmake-build-debug-coverage/
 build/
 doc/
 .idea/
+.vscode/
 *.o
 horanvoj
 horanvoj.zip
