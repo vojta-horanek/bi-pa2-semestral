@@ -76,12 +76,12 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         auto it = types.find(weaponSet.second);
 
         if (it == types.end())
-            return Result::error("Invalid entity type: " + weaponSet.second);
+            return Result::error("Invalid entity type: " + std::to_string(weaponSet.second));
 
         auto weaponEntity = EntityManger::getWeapon(it->second);
 
         if (weaponEntity == nullptr)
-            return Result::error("Entity is not a weapon: " + weaponSet.second);
+            return Result::error("Entity is not a weapon: " + std::to_string(weaponSet.second));
 
         weapon = std::move(weaponEntity);
     } else if (currentState == SaveParserState::Value::mapfile) {
@@ -102,12 +102,13 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         auto it = types.find(inventoryAdd.second);
 
         if (it == types.end())
-            return Result::error("Invalid entity type: " + inventoryAdd.second);
+            return Result::error("Invalid entity type: " + std::to_string(inventoryAdd.second));
 
         auto pickupEntity = EntityManger::getPickupEntity(it->second);
 
         if (pickupEntity == nullptr)
-            return Result::error("Entity is not a pickup entity: " + inventoryAdd.second);
+            return Result::error("Entity is not a pickup entity: " +
+                                 std::to_string(inventoryAdd.second));
 
         inventory.emplace_back(std::move(pickupEntity));
     }
@@ -180,14 +181,14 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
 
     saveFile.close();
 
+    if (isError)
+        return Result::error("Save could not be loaded from file");
+
     Result parsingResult = areAllValuesSet();
 
     if (parsingResult.isError)
         return Result::error("Some required values were not set in the save file: " +
                              parsingResult.errorText);
-
-    if (isError)
-        return Result::error("Save could not be loaded from file");
 
     return Result::success();
 }

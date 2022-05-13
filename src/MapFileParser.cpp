@@ -188,11 +188,9 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
 
         auto it = types.find(entityIdentifier);
-        if (it == types.end()) {
-            std::stringstream str;
-            str << "Could not find a valid entity type: " << entityIdentifier;
-            return Result::error(str.str());
-        }
+        if (it == types.end())
+            return Result::error("Could not find a valid entity type: " +
+                                 std::to_string(entityIdentifier));
 
         auto monster = EntityManger::getMonster(it->second);
 
