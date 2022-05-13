@@ -1,16 +1,16 @@
 #include "Game.h"
 
-#include "FPSController.h"
-#include "entity/Monster.h"
-#include "Renderer.h"
-#include "FightScreen.h"
-#include "ResumeMenu.h"
 #include "EndScreen.h"
+#include "FPSController.h"
+#include "FightScreen.h"
+#include "Renderer.h"
+#include "Result.h"
+#include "ResumeMenu.h"
+#include "SaveFileParser.h"
+#include "entity/Monster.h"
 
-
-Game::Game(int width, int height) : Screen(width, height),
-                                    gameWidth(width / (REAL_PIXEL_SIZE * BLOCK_SIZE)),
-                                    gameHeight(height / (REAL_PIXEL_SIZE * BLOCK_SIZE)) {
+Game::Game(int width, int height)
+    : Screen(width, height), gameWidth(width / BLOCK_PIXELS), gameHeight(height / BLOCK_PIXELS) {
     gameState = std::make_shared<GameState>();
     inventory = std::make_unique<Inventory>(width);
     player = std::make_shared<Player>();
@@ -18,15 +18,13 @@ Game::Game(int width, int height) : Screen(width, height),
 }
 
 Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
-    // TODO Load save file
+    saveFilePath = saveFile;
 }
-
-Game::~Game() = default;
-
 
 void Game::onRender() {
 
-    if (!gameState->running) return;
+    if (!gameState->running)
+        return;
 
     gameMap.getCurrentSection().render(*gameState);
 
@@ -38,7 +36,8 @@ void Game::onRender() {
 }
 
 void Game::onEvent(SDL_Event event) {
-    if (!gameState->running) return;
+    if (!gameState->running)
+        return;
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
@@ -77,6 +76,30 @@ bool Game::loadMap(const std::string &file) {
         std::cerr << ex.what() << std::endl;
         return false;
     }
+}
+
+bool Game::loadSave() {
+
+    SaveFileParser saveFileParser;
+
+    Result saveFileResult = saveFileParser.loadSaveFromFile(saveFilePath);
+
+    if (saveFileResult.isError) {
+        std::cerr << saveFileResult.errorText << std::endl;
+        return false;
+    }
+
+    if (!loadMap(saveFileParser.getMapFilePath())) {
+        return false;
+    }
+
+    player->health = saveFileParser.getPlayerHealth();
+    player->currentHealth = saveFileParser.getPlayerCurrentHealth();
+    player->defaultDamage = saveFileParser.getPlayerDefaultDamage();
+    
+    gameState->inventory = saveFileParser.getInventory();
+    gameState->weapon = saveFileParser.getWeapon();
+    return true;
 }
 
 void Game::nextTurn() {
@@ -125,13 +148,9 @@ void Game::avoidPlayerCollision() {
     }
 }
 
-bool Game::popSelf() {
-    return !gameState->running;
-}
+bool Game::popSelf() { return !gameState->running; }
 
-bool Game::clearBackStack() {
-    return false;
-}
+bool Game::clearBackStack() { return false; }
 
 void Game::onResume() {
     if (player->currentHealth <= 0) {
@@ -140,15 +159,10 @@ void Game::onResume() {
 }
 
 void Game::onCreate() {
-    // TODO path
+    // Create a new game in case we should not load any save file
+    if (saveFilePath.empty()) {
 
-    if (args.empty()) {
-        std::cerr << "Cannot run without a map file!" << std::endl;
-        std::cerr << "You probably meant to run it like this: ./horanvoj examples/map" << std::endl;
-        gameState->running = false;
-    } else if (!loadMap(args[0])) {
-        gameState->running = false;
     } else {
-        gameState->running = true;
+        gameState->running = loadSave();
     }
 }

@@ -1,13 +1,16 @@
 #include "Map.h"
-#include "StringUtils.h"
 #include "MapFileParser.h"
+#include "StringUtils.h"
+#include "Vec.h"
+#include "entity/Monster.h"
+#include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include "Vec.h"
 
 bool Map::tryNavigateToSection(Vec inPlayerDirection) {
-    // If player is going up/down its direction is negative/positive. Multiply by -1 to convert to map coordinates
+    // If player is going up/down its direction is negative/positive. Multiply by -1 to convert to
+    // map coordinates
     inPlayerDirection.y *= -1;
     Vec newSection = currentSection->first + inPlayerDirection;
     auto it = sections.find(newSection);
@@ -27,7 +30,8 @@ MapSection &Map::getCurrentSection() {
 Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int width, int height) {
 
     std::ifstream mapFile(fileName);
-    if (!mapFile) throw std::invalid_argument("Could not open file " + fileName);
+    if (!mapFile)
+        throw std::invalid_argument("Could not open file " + fileName);
 
     int lineNum = 0;
 
@@ -44,15 +48,14 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int wid
         auto result = parser.parseNextLine(line);
 
         if (result.isError) {
-            std::cerr << "Error while parsing " << fileName << ". " << std::endl <<
-                      "Occurred on line " << lineNum << " with error:" << std::endl <<
-                      "\t" << result.errorText << std::endl <<
-                      "The invalid line:" << std::endl <<
-                      "\t" << line << std::endl;
+            std::cerr << "Error while parsing " << fileName << ". " << std::endl
+                      << "Occurred on line " << lineNum << " with error:" << std::endl
+                      << "\t" << result.errorText << std::endl
+                      << "The invalid line:" << std::endl
+                      << "\t" << line << std::endl;
             isError = true;
             break;
         }
-
     }
 
     mapFile.close();
@@ -60,10 +63,12 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int wid
     auto parsingResult = parser.areAllValuesSet();
 
     if (parsingResult.isError) {
-        throw std::invalid_argument("Some values were not set in the map file: " + parsingResult.errorText);
+        throw std::invalid_argument("Some values were not set in the map file: " +
+                                    parsingResult.errorText);
     }
 
-    if (isError) throw std::invalid_argument("Map could not be loaded from file");
+    if (isError)
+        throw std::invalid_argument("Map could not be loaded from file");
 
     GameState newGameState = parser.getState();
 

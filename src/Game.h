@@ -1,21 +1,22 @@
 #ifndef TPOHB_GAME_H
 #define TPOHB_GAME_H
 
-#include "Window.h"
 #include "GameState.h"
-#include "entity/Player.h"
 #include "Map.h"
-#include "entity/Inventory.h"
-#include "entity/Stats.h"
 #include "Screen.h"
-#include <vector>
-#include <memory>
+#include "Window.h"
+#include "entity/Inventory.h"
+#include "entity/Player.h"
+#include "entity/Stats.h"
 #include <cassert>
-#include <stdexcept>
 #include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 class Game : public Screen {
-private:
+  private:
     std::shared_ptr<Player> player;
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
@@ -25,6 +26,8 @@ private:
 
     int gameWidth, gameHeight;
 
+    std::string saveFilePath;
+
     void onRender() override;
 
     void onEvent(SDL_Event event) override;
@@ -33,25 +36,22 @@ private:
 
     void avoidPlayerCollision();
 
-public:
-
-    explicit Game(int width, int height);
-
-    explicit Game(int width, int height, const std::string & saveFile);
-
-    ~Game() override;
-
-    bool popSelf() override;
+    bool loadSave();
 
     bool loadMap(const std::string &file);
+
+  public:
+    explicit Game(int width, int height);
+
+    explicit Game(int width, int height, const std::string &saveFile);
+
+    bool popSelf() override;
 
     bool clearBackStack() override;
 
     void onResume() override;
 
     void onCreate() override;
-
 };
 
-
-#endif //TPOHB_GAME_H
+#endif // TPOHB_GAME_H

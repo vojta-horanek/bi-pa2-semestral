@@ -1,7 +1,7 @@
 #include "MainMenu.h"
 #include "Game.h"
-#include "MenuNew.h"
 #include "MenuLoad.h"
+#include "MenuNew.h"
 #include "MenuQuit.h"
 #include "resources/strings/Paths.h"
 

@@ -10,8 +10,8 @@
 Application::Application() : window(Window(L10n::appName)) {
     Renderer::getInstance().createRenderer(window);
     backstack.emplace(
-            std::make_unique<MainMenu>(GAME_WIDTH * REAL_PIXEL_SIZE * BLOCK_SIZE,
-                                       GAME_HEIGHT * REAL_PIXEL_SIZE * BLOCK_SIZE));
+            std::make_unique<MainMenu>(GAME_WIDTH * BLOCK_PIXELS,
+                                       GAME_HEIGHT * BLOCK_PIXELS));
 }
 
 int Application::run(const std::vector<std::string> &args) {

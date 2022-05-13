@@ -1,36 +1,27 @@
 #ifndef TPOHB_MAPFILEPARSER_H
 #define TPOHB_MAPFILEPARSER_H
 
-
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-#include <cctype>
-#include <map>
-#include <memory>
-#include <tuple>
-#include <utility>
+#include "EntityManager.h"
 #include "Map.h"
 #include "Result.h"
-#include "entity/Entity.h"
-#include "entity/Tree.h"
-#include "entity/Apple.h"
-#include "entity/Sword.h"
-#include "entity/Axe.h"
-#include "entity/Bricks.h"
-#include "entity/Grass.h"
-#include "entity/Monster.h"
 
 class MapParserState {
-public:
+  public:
     enum class Value {
-        player, default_section, section, sections, define, none, invalid, monsters
+        player,
+        default_section,
+        section,
+        sections,
+        define,
+        none,
+        invalid,
+        monsters
     };
-private:
+
+  private:
     Value value = Value::none;
-public:
+
+  public:
     MapParserState();
 
     explicit MapParserState(Value value);
@@ -56,22 +47,9 @@ public:
     bool operator!=(Value rhs) const;
 };
 
-class EntityManger {
-public:
-    enum class Type {
-        VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, ZOMBIE, INVALID
-    };
-
-    static Type getType(const std::string &name);
-
-    static std::unique_ptr<Entity> getEntity(Type type);
-
-    static std::unique_ptr<Monster> getMonster(Type type);
-};
-
 class MapFileParser {
 
-private:
+  private:
     MapParserState currentState;
     Map map;
     std::map<int, EntityManger::Type> types;
@@ -83,7 +61,7 @@ private:
 
     static std::tuple<Result, Vec, Vec, int> readMonsterAddCommand(const std::string &line);
 
-public:
+  public:
     MapFileParser(int width, int height);
 
     Result parseNextLine(const std::string &line);
@@ -95,5 +73,4 @@ public:
     GameState getState();
 };
 
-
-#endif //TPOHB_MAPFILEPARSER_H
+#endif // TPOHB_MAPFILEPARSER_H

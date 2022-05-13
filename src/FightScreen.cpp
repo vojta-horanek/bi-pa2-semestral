@@ -30,7 +30,7 @@ void FightScreen::onRender() {
     if (playerTurn && !justShown) playerXPos++;
 
     player->render(*gameState, Vec(playerXPos, 4));
-    gameState->fight->render(*gameState, Vec(width / 2 / REAL_PIXEL_SIZE / BLOCK_SIZE + monsterXPos, 4));
+    gameState->fight->render(*gameState, Vec(width / 2 / BLOCK_PIXELS + monsterXPos, 4));
 
     if (!fighting && (player->isFadeOut() || gameState->fight->isFadeOut())) {
         fadeFinished = true;
@@ -41,7 +41,7 @@ void FightScreen::onRender() {
                 *gameState,
                 player->health,
                 player->currentHealth,
-                Vec(0, height / REAL_PIXEL_SIZE / BLOCK_SIZE),
+                Vec(0, height / BLOCK_PIXELS),
                 false
         );
     }

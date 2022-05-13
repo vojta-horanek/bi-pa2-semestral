@@ -1,0 +1,6 @@
+#ifndef TPOHB_PICKUPENTITY_FWD_H
+#define TPOHB_PICKUPENTITY_FWD_H
+
+class PickupEntity;
+
+#endif //TPOHB_PICKUPENTITY_FWD_H

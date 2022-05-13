@@ -3,7 +3,7 @@
 
 
 #include "Vec.h"
-#include "entity/Entity.fwd.h"
+#include "entity/PickupEntity.fwd.h"
 #include "entity/Weapon.fwd.h"
 #include "entity/Monster.fwd.h"
 #include <vector>
@@ -13,7 +13,7 @@ struct GameState {
     bool running = false;
     bool won = false;
     Vec playerPosition = Vec::max();
-    std::vector<std::unique_ptr<Entity>> inventory;
+    std::vector<std::unique_ptr<PickupEntity>> inventory;
     std::unique_ptr<Weapon> weapon;
     std::unique_ptr<Monster> fight;
 };

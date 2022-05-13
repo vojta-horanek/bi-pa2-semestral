@@ -64,12 +64,12 @@ void Texture::renderBlockWithOffset(Vec position, int xOffset, int scale) const 
 
     Rect dstRect{
             position.getScaled(),
-            Vec(BLOCK_SIZE * REAL_PIXEL_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE) * scale
+            Vec(BLOCK_PIXELS, BLOCK_PIXELS) * scale
     };
 
     Rect srcRect{
             Vec(xOffset * BLOCK_SIZE, 0),
-            Vec(BLOCK_SIZE, BLOCK_SIZE * REAL_PIXEL_SIZE)
+            Vec(BLOCK_SIZE, BLOCK_PIXELS)
     };
 
     Renderer::getInstance().render(texture, srcRect, dstRect);

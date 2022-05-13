@@ -66,7 +66,7 @@ double Vec::distanceTo(const Vec &other) const {
 }
 
 Vec Vec::getScaled() const {
-    return *this * REAL_PIXEL_SIZE * BLOCK_SIZE;
+    return *this * BLOCK_PIXELS;
 }
 
 bool Vec::operator<(const Vec &p1) const {
@@ -83,7 +83,7 @@ std::ostream &operator<<(std::ostream &s, const Vec &vec) {
 }
 
 void Vec::scale() {
-    *this = *this * REAL_PIXEL_SIZE * BLOCK_SIZE;
+    *this = *this * BLOCK_PIXELS;
 }
 
 int Vec::xDistance(const Vec &other) const {
