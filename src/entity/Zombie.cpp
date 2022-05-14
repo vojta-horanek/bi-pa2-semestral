@@ -14,3 +14,5 @@ void Zombie::onFight(GameState &state) {
         state.fight = std::make_unique<Zombie>();
     }
 }
+
+EntityType Zombie::getType() const noexcept { return EntityType::ZOMBIE; }

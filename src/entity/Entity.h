@@ -1,10 +1,10 @@
 #ifndef TPOHB_ENTITY_H
 #define TPOHB_ENTITY_H
 
+#include "../EntityType.h"
 #include "../GameState.h"
 #include "../Texture.h"
 #include "../Vec.h"
-#include <SDL2/SDL.h>
 #include <iostream>
 
 class Entity {
@@ -34,6 +34,8 @@ class Entity {
     virtual void updateState(GameState &state);
 
     virtual void onCollision(GameState &state);
+
+    virtual EntityType getType() const noexcept;
 };
 
 #endif // TPOHB_ENTITY_H

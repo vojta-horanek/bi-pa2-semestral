@@ -2,6 +2,7 @@
 #define TPOHB_MAPFILEPARSER_H
 
 #include "EntityManager.h"
+#include "EntityType.h"
 #include "Map.h"
 #include "MapParserState.h"
 #include "Result.h"
@@ -11,7 +12,7 @@ class MapFileParser {
   private:
     MapParserState currentState;
     Map map;
-    std::map<int, EntityManager::Type> types;
+    std::map<int, EntityType> types;
     std::map<Vec, MapSection>::iterator currentSection = map.sections.end();
     GameState gameState;
     int width, height;

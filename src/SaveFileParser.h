@@ -27,7 +27,7 @@ class SaveFileParser {
 
     std::unique_ptr<Weapon> weapon = nullptr;
 
-    std::map<int, EntityManager::Type> types;
+    std::map<int, EntityType> types;
 
     static std::pair<Result, int>
     readIntCommand(const std::string &line, const std::string &expectedCommnad);

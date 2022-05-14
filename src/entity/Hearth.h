@@ -7,6 +7,8 @@ class Hearth : public Entity {
 
   public:
     Hearth();
+
+    EntityType getType() const noexcept override;
 };
 
 #endif // TPOHB_HEARTH_H

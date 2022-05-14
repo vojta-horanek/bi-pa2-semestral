@@ -11,3 +11,5 @@ void Sword::onPickup(GameState &state) {
     Weapon::onPickup(state);
     state.weapon = std::make_unique<Sword>();
 }
+
+EntityType Sword::getType() const noexcept { return EntityType::SWORD; }

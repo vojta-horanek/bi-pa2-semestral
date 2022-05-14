@@ -7,15 +7,17 @@ DEFINE
 5 BRICK
 6 GRASS
 7 ZOMBIE
+8 HEARTH
 END DEFINE
 MAPFILE
-examples/save_manual_map
+examples/map
 END MAPFILE
 INVENTORY
-examples/save_manual_map
+ADD 2
+ADD 2
 END INVENTORY
 WEAPON
-examples/save_manual_map
+SET 3
 END WEAPON
 HEALTH
 SET 255

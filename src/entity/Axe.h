@@ -11,6 +11,8 @@ class Axe : public Weapon {
 
     void onPickup(GameState &state) override;
     int getDamage() override;
+
+    EntityType getType() const noexcept override;
 };
 
 #endif // TPOHB_AXE_H

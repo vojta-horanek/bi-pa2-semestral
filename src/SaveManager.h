@@ -10,8 +10,8 @@
 
 class SaveManager {
   private:
-    constexpr static const char *commonSavePaths[] = {"examples/save",
-                                                      "../examples/save"};
+    static const std::string commonSavePaths[];
+
     static bool fileExists(const std::string &path);
     void writeSection(SaveParserState section, std::ostream &output,
                       std::function<void(std::ostream &ostream)> writeFun);

@@ -6,6 +6,8 @@
 class Bricks : public BlockEntity {
   public:
     Bricks();
+
+    EntityType getType() const noexcept override;
 };
 
 #endif // TPOHB_BRICKS_H

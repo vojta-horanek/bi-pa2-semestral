@@ -7,3 +7,5 @@ void Apple::onPickup(GameState &state) {
     PickupEntity::onPickup(state);
     state.inventory.emplace_back(new Apple());
 }
+
+EntityType Apple::getType() const noexcept { return EntityType::APPLE; }

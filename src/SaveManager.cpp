@@ -2,6 +2,9 @@
 
 #include <fstream>
 
+const std::string SaveManager::commonSavePaths[] = {"examples/save_manual",
+                                                    "../examples/save_manual"};
+
 bool SaveManager::fileExists(const std::string &path) {
     std::ifstream file(path);
     return file.good();
@@ -26,8 +29,7 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
     if (!saveFile.good())
         return Result::error("Cannot create save file: " + saveFilePath);
 
-    std::map<EntityManager::Type, int> types =
-        EntityManager::createDefinitions();
+    std::map<EntityType, int> types = EntityManager::createDefinitions();
 
     // Write definitions
     writeSection(SaveParserState(SaveParserState::value_type::define), saveFile,
@@ -41,19 +43,24 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
                      ostream << mapFilePath << std::endl;
                  });
 
-    // Write inventory TODO
+    // Write inventory
     if (!gameState->inventory.empty()) {
         writeSection(SaveParserState(SaveParserState::value_type::inventory),
-                     saveFile, [&mapFilePath](std::ostream &ostream) {
-                         ostream << mapFilePath << std::endl;
+                     saveFile, [&gameState, &types](std::ostream &ostream) {
+                         for (const auto &item : gameState->inventory) {
+                             ostream << "ADD " << types[item->getType()]
+                                     << std::endl;
+                         }
                      });
     }
 
-    // Write weapon TODO
+    // Write weapon
     if (gameState->weapon != nullptr) {
         writeSection(SaveParserState(SaveParserState::value_type::weapon),
-                     saveFile, [&mapFilePath](std::ostream &ostream) {
-                         ostream << mapFilePath << std::endl;
+                     saveFile, [&gameState, &types](std::ostream &ostream) {
+                         ostream << "SET "
+                                 << types[gameState->weapon->getType()]
+                                 << std::endl;
                      });
     }
 

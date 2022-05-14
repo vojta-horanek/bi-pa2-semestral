@@ -12,110 +12,108 @@
 #include <initializer_list>
 #include <map>
 
-const std::pair<EntityManager::Type, const std::string>
-    EntityManager::typeTable[] = {
-        {Type::VOID, "VOID"},   {Type::TREE, "TREE"},    {Type::APPLE, "APPLE"},
-        {Type::SWORD, "SWORD"}, {Type::AXE, "AXE"},      {Type::BRICK, "BRICK"},
-        {Type::GRASS, "GRASS"}, {Type::ZOMBIE, "ZOMBIE"}};
+const std::pair<EntityType, const std::string> EntityManager::typeTable[] = {
+    {EntityType::VOID, "VOID"},    {EntityType::TREE, "TREE"},
+    {EntityType::APPLE, "APPLE"},  {EntityType::SWORD, "SWORD"},
+    {EntityType::AXE, "AXE"},      {EntityType::BRICK, "BRICK"},
+    {EntityType::GRASS, "GRASS"},  {EntityType::ZOMBIE, "ZOMBIE"},
+    {EntityType::HEARTH, "HEARTH"}};
 
 const size_t EntityManager::typeTableSize =
     sizeof(typeTable) / sizeof(typeTable[0]);
 
-std::pair<EntityManager::Type, const std::string>
+std::pair<EntityType, const std::string>
 EntityManager::findType(const std::string &name) {
     for (size_t i = 0; i < typeTableSize; i++) {
         if (typeTable[i].second == name)
             return typeTable[i];
     }
 
-    return {Type::INVALID, "INVALID"};
+    return {EntityType::INVALID, "INVALID"};
 }
 
-std::pair<EntityManager::Type, const std::string>
-EntityManager::findType(Type type) {
+std::pair<EntityType, const std::string>
+EntityManager::findType(EntityType type) {
     for (size_t i = 0; i < typeTableSize; i++) {
         if (typeTable[i].first == type)
             return typeTable[i];
     }
 
-    return {Type::INVALID, "INVALID"};
+    return {EntityType::INVALID, "INVALID"};
 }
 
-EntityManager::Type EntityManager::getType(const std::string &name) {
+EntityType EntityManager::getType(const std::string &name) {
     return findType(name).first;
 }
 
-std::string EntityManager::getString(const Type &type) {
+std::string EntityManager::getString(const EntityType &type) {
     return findType(type).second;
 }
 
-std::unique_ptr<Entity> EntityManager::getEntity(EntityManager::Type type) {
+std::unique_ptr<Entity> EntityManager::getEntity(EntityType type) {
     switch (type) {
-        case Type::VOID:
+        case EntityType::VOID:
             return std::move(std::make_unique<Entity>());
-        case Type::TREE:
+        case EntityType::TREE:
             return std::move(std::make_unique<Tree>());
-        case Type::APPLE:
+        case EntityType::APPLE:
             return std::move(std::make_unique<Apple>());
-        case Type::SWORD:
+        case EntityType::SWORD:
             return std::move(std::make_unique<Sword>());
-        case Type::AXE:
+        case EntityType::AXE:
             return std::move(std::make_unique<Axe>());
-        case Type::BRICK:
+        case EntityType::BRICK:
             return std::move(std::make_unique<Bricks>());
-        case Type::GRASS:
+        case EntityType::GRASS:
             return std::move(std::make_unique<Grass>());
-        case Type::ZOMBIE:
+        case EntityType::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
         default:
             return nullptr;
     }
 }
 
-std::unique_ptr<Monster> EntityManager::getMonster(EntityManager::Type type) {
+std::unique_ptr<Monster> EntityManager::getMonster(EntityType type) {
     switch (type) {
-        case Type::ZOMBIE:
+        case EntityType::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
         default:
             return nullptr;
     }
 }
 
-std::unique_ptr<PickupEntity> EntityManager::getPickupEntity(Type type) {
+std::unique_ptr<PickupEntity> EntityManager::getPickupEntity(EntityType type) {
     switch (type) {
-        case Type::APPLE:
+        case EntityType::APPLE:
             return std::move(std::make_unique<Apple>());
         default:
             return nullptr;
     }
 }
 
-std::unique_ptr<Weapon> EntityManager::getWeapon(Type type) {
+std::unique_ptr<Weapon> EntityManager::getWeapon(EntityType type) {
     switch (type) {
-        case Type::SWORD:
+        case EntityType::SWORD:
             return std::move(std::make_unique<Sword>());
-        case Type::AXE:
+        case EntityType::AXE:
             return std::move(std::make_unique<Axe>());
         default:
             return nullptr;
     }
 }
 
-std::map<EntityManager::Type, int> EntityManager::createDefinitions() {
-    const Type types[] = {Type::VOID, Type::TREE,  Type::APPLE, Type::SWORD,
-                          Type::AXE,  Type::BRICK, Type::GRASS, Type::ZOMBIE};
+std::map<EntityType, int> EntityManager::createDefinitions() {
+    std::map<EntityType, int> typeMap;
 
-    std::map<Type, int> typeMap;
-
-    for (size_t i = 0; i < sizeof(types) / sizeof(types[0]); i++) {
-        typeMap[types[i]] = i;
+    for (size_t i = 0; i < typeTableSize; i++) {
+        typeMap[typeTable[i].first] = i;
     }
 
     return typeMap;
 }
 
-void EntityManager::printDefinitions(
-    const std::map<EntityManager::Type, int> &types, std::ostream &outStream) {
+void EntityManager::printDefinitions(const std::map<EntityType, int> &types,
+                                     std::ostream &outStream) {
 
     for (const auto &item : types) {
         outStream << item.second << " " << getString(item.first) << std::endl;

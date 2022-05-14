@@ -23,8 +23,8 @@ void MainMenu::onItemSelected(size_t activeIndex) {
             navigationDestination = std::make_unique<Game>(width, height);
             break;
         case MenuItem::Item::LOAD:
-            navigationDestination =
-                std::make_unique<Game>(width, height, "examples/save");
+            navigationDestination = std::make_unique<Game>(
+                width, height, SaveManager::getSaveFilePath());
             break;
         case MenuItem::Item::QUIT:
             userInMenu = false;

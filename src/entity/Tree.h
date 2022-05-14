@@ -7,6 +7,8 @@ class Tree : public BlockEntity {
 
   public:
     Tree();
+
+    EntityType getType() const noexcept override;
 };
 
 #endif // TPOHB_TREE_H

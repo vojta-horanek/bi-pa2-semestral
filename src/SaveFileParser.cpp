@@ -47,9 +47,9 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         std::string entityName;
 
         lineStream >> number >> entityName;
-        EntityManager::Type type = EntityManager::getType(entityName);
+        EntityType type = EntityManager::getType(entityName);
 
-        if (type != EntityManager::Type::INVALID && number >= 0 && lineStream) {
+        if (type != EntityType::INVALID && number >= 0 && lineStream) {
             types[number] = type;
         } else {
             return Result::error("Invalid definition");
