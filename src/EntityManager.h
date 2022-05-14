@@ -14,6 +14,14 @@ class EntityManager {
   public:
     enum class Type { VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, ZOMBIE, INVALID };
 
+  private:
+    const static std::pair<Type, const std::string> typeTable[];
+    const static size_t typeTableSize;
+
+    static std::pair<Type, const std::string> findType(const std::string &name);
+    static std::pair<Type, const std::string> findType(Type type);
+
+  public:
     static Type getType(const std::string &name);
 
     static std::string getString(const Type &type);

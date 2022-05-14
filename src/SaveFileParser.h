@@ -9,49 +9,7 @@
 #include "entity/PickupEntity.h"
 #include "entity/Weapon.h"
 #include "EntityManager.h"
-
-class SaveParserState {
-  public:
-    enum class Value {
-        mapfile,
-        inventory,
-        weapon,
-        health,
-        current_health,
-        default_damage,
-        define,
-        none,
-        invalid
-    };
-
-  private:
-    Value value = Value::none;
-
-  public:
-    SaveParserState();
-
-    explicit SaveParserState(Value value);
-
-    std::string toString() const;
-
-    void reset();
-
-    void set(Value val);
-
-    void set(const SaveParserState &state);
-
-    Value get() const;
-
-    static SaveParserState fromString(const std::string &str);
-
-    bool operator==(const SaveParserState &rhs) const;
-
-    bool operator!=(const SaveParserState &rhs) const;
-
-    bool operator==(Value rhs) const;
-
-    bool operator!=(Value rhs) const;
-};
+#include "SaveParserState.h"
 
 class SaveFileParser {
   private:

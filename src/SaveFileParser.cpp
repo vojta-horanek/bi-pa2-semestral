@@ -17,14 +17,14 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
     std::istringstream lineStream(line);
 
     SaveParserState possibleNewState = SaveParserState::fromString(line);
-    if (possibleNewState != SaveParserState::Value::invalid) {
-        if (currentState == SaveParserState::Value::none) {
+    if (possibleNewState != SaveParserState::value_type::invalid) {
+        if (currentState == SaveParserState::value_type::none) {
             currentState.set(possibleNewState);
             return Result::success();
         } else {
             return Result::error("Unexpected state change");
         }
-    } else if (currentState == SaveParserState::Value::none) {
+    } else if (currentState == SaveParserState::value_type::none) {
         return Result::error("Unexpected token");
     }
 
@@ -41,7 +41,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         }
     }
 
-    if (currentState == SaveParserState::Value::define) {
+    if (currentState == SaveParserState::value_type::define) {
         int number = -1;
         std::string entityName;
 
@@ -53,22 +53,22 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         } else {
             return Result::error("Invalid definition");
         }
-    } else if (currentState == SaveParserState::Value::health) {
+    } else if (currentState == SaveParserState::value_type::health) {
         auto setHealth = readIntCommand(line, "SET");
         if (setHealth.first.isError || setHealth.second < 0)
             return setHealth.first;
         playerHealth = setHealth.second;
-    } else if (currentState == SaveParserState::Value::current_health) {
+    } else if (currentState == SaveParserState::value_type::current_health) {
         auto setHealth = readIntCommand(line, "SET");
         if (setHealth.first.isError || setHealth.second < 0)
             return setHealth.first;
         playerCurrentHealth = setHealth.second;
-    } else if (currentState == SaveParserState::Value::default_damage) {
+    } else if (currentState == SaveParserState::value_type::default_damage) {
         auto defaultDamage = readIntCommand(line, "SET");
         if (defaultDamage.first.isError || defaultDamage.second < 0)
             return defaultDamage.first;
         playerDefaultDamage = defaultDamage.second;
-    } else if (currentState == SaveParserState::Value::weapon) {
+    } else if (currentState == SaveParserState::value_type::weapon) {
         auto weaponSet = readIntCommand(line, "SET");
         if (weaponSet.first.isError)
             return weaponSet.first;
@@ -84,7 +84,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
             return Result::error("Entity is not a weapon: " + std::to_string(weaponSet.second));
 
         weapon = std::move(weaponEntity);
-    } else if (currentState == SaveParserState::Value::mapfile) {
+    } else if (currentState == SaveParserState::value_type::mapfile) {
         if (!mapFilePath.empty())
             return Result::success();
 
@@ -94,7 +94,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
             return Result::success();
         }
         mapFilePath = line;
-    } else if (currentState == SaveParserState::Value::inventory) {
+    } else if (currentState == SaveParserState::value_type::inventory) {
         auto inventoryAdd = readIntCommand(line, "ADD");
         if (inventoryAdd.first.isError)
             return inventoryAdd.first;
@@ -209,65 +209,3 @@ std::vector<std::unique_ptr<PickupEntity>> SaveFileParser::getInventory() {
 }
 
 std::unique_ptr<Weapon> SaveFileParser::getWeapon() { return std::move(weapon); }
-
-std::string SaveParserState::toString() const {
-    switch (value) {
-        case Value::mapfile:
-            return "MAPFILE";
-        case Value::inventory:
-            return "INVENTORY";
-        case Value::weapon:
-            return "WEAPON";
-        case Value::health:
-            return "HEALTH";
-        case Value::current_health:
-            return "CURRENT_HEALTH";
-        case Value::default_damage:
-            return "DEFAULT_DAMAGE";
-        case Value::define:
-            return "DEFINE";
-        case Value::none:
-            return "NONE";
-        default:
-            throw std::invalid_argument("Unknown state!");
-    }
-}
-
-void SaveParserState::reset() { value = Value::none; }
-
-void SaveParserState::set(SaveParserState::Value val) { value = val; }
-
-void SaveParserState::set(const SaveParserState &state) { value = state.value; }
-
-SaveParserState::Value SaveParserState::get() const { return value; }
-
-SaveParserState SaveParserState::fromString(const std::string &str) {
-    if (str == "MAPFILE")
-        return SaveParserState(Value::mapfile);
-    if (str == "INVENTORY")
-        return SaveParserState(Value::inventory);
-    if (str == "WEAPON")
-        return SaveParserState(Value::weapon);
-    if (str == "HEALTH")
-        return SaveParserState(Value::health);
-    if (str == "CURRENT_HEALTH")
-        return SaveParserState(Value::current_health);
-    if (str == "DEFAULT_DAMAGE")
-        return SaveParserState(Value::default_damage);
-    if (str == "DEFINE")
-        return SaveParserState(Value::define);
-    else
-        return SaveParserState(Value::invalid);
-}
-
-bool SaveParserState::operator==(const SaveParserState &rhs) const { return value == rhs.value; }
-
-bool SaveParserState::operator!=(const SaveParserState &rhs) const { return !(rhs == *this); }
-
-bool SaveParserState::operator==(SaveParserState::Value rhs) const { return value == rhs; }
-
-bool SaveParserState::operator!=(SaveParserState::Value rhs) const { return !(*this == rhs); }
-
-SaveParserState::SaveParserState(SaveParserState::Value value) : value(value) {}
-
-SaveParserState::SaveParserState() = default;

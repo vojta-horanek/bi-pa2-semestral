@@ -92,5 +92,6 @@ add_executable(
   src/SaveFileParser.cpp
   src/SaveFileParser.h
   src/EntityManager.cpp
-  src/EntityManager.h)
+  src/EntityManager.h
+  src/ParserState.h)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})

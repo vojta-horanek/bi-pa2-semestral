@@ -20,14 +20,14 @@ Result MapFileParser::parseNextLine(const std::string &line) {
     std::istringstream lineStream(line);
 
     MapParserState possibleNewState = MapParserState::fromString(line);
-    if (possibleNewState != MapParserState::Value::invalid) {
-        if (currentState == MapParserState::Value::none) {
+    if (possibleNewState != MapParserState::value_type::invalid) {
+        if (currentState == MapParserState::value_type::none) {
             currentState.set(possibleNewState);
             return Result::success();
         } else {
             return Result::error("Unexpected state change");
         }
-    } else if (currentState == MapParserState::Value::none) {
+    } else if (currentState == MapParserState::value_type::none) {
         return Result::error("Unexpected token");
     }
 
@@ -37,8 +37,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         std::string end, what, current = currentState.toString();
         tmpStream >> end >> what;
         if (what == current) {
-            if (currentState == MapParserState::Value::section) {
-                currentState.set(MapParserState::Value::sections);
+            if (currentState == MapParserState::value_type::section) {
+                currentState.set(MapParserState::value_type::sections);
             } else {
                 currentState.reset();
             }
@@ -48,7 +48,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
     }
 
-    if (currentState == MapParserState::Value::player) {
+    if (currentState == MapParserState::value_type::player) {
         auto result = readSetCommand(line);
         if (result.first.isError)
             return result.first;
@@ -64,7 +64,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
 
         gameState.playerPosition = result.second;
-    } else if (currentState == MapParserState::Value::default_section) {
+    } else if (currentState == MapParserState::value_type::default_section) {
 
         auto result = readSetCommand(line);
         if (result.first.isError)
@@ -78,7 +78,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error(str.str());
         }
 
-    } else if (currentState == MapParserState::Value::sections) {
+    } else if (currentState == MapParserState::value_type::sections) {
 
         std::string command;
         int x, y, background = -1;
@@ -87,7 +87,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Invalid syntax");
         }
 
-        currentState.set(MapParserState::Value::section);
+        currentState.set(MapParserState::value_type::section);
 
         auto backgroundType = types.find(background);
 
@@ -109,7 +109,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
 
         currentSection = insert.first;
-    } else if (currentState == MapParserState::Value::section) {
+    } else if (currentState == MapParserState::value_type::section) {
 
         if (currentSection->second.entities.size() == (size_t)currentSection->second.height) {
             return Result::error("Unexpected line, height exceeded");
@@ -149,7 +149,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
 
         currentSection->second.entities.emplace_back(std::move(row));
 
-    } else if (currentState == MapParserState::Value::define) {
+    } else if (currentState == MapParserState::value_type::define) {
 
         int number = -1;
         std::string entityName;
@@ -162,7 +162,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         } else {
             return Result::error("Invalid definition");
         }
-    } else if (currentState == MapParserState::Value::monsters) {
+    } else if (currentState == MapParserState::value_type::monsters) {
         Result result = Result::error();
         Vec position;
         Vec section;
@@ -255,61 +255,3 @@ Result MapFileParser::areAllValuesSet() const {
 
     return Result::success();
 }
-
-std::string MapParserState::toString() const {
-    switch (value) {
-        case Value::player:
-            return "PLAYER";
-        case Value::default_section:
-            return "DEFAULT_SECTION";
-        case Value::sections:
-            return "SECTIONS";
-        case Value::section:
-            return "SECTION";
-        case Value::define:
-            return "DEFINE";
-        case Value::none:
-            return "NONE";
-        case Value::monsters:
-            return "MONSTERS";
-        default:
-            throw std::invalid_argument("Unknown state!");
-    }
-}
-
-void MapParserState::reset() { value = Value::none; }
-
-void MapParserState::set(MapParserState::Value val) { value = val; }
-
-void MapParserState::set(const MapParserState &state) { value = state.value; }
-
-MapParserState::Value MapParserState::get() const { return value; }
-
-MapParserState MapParserState::fromString(const std::string &str) {
-    if (str == "PLAYER")
-        return MapParserState(Value::player);
-    if (str == "DEFAULT_SECTION")
-        return MapParserState(Value::default_section);
-    if (str == "SECTIONS")
-        return MapParserState(Value::sections);
-    if (str == "SECTION")
-        return MapParserState(Value::section);
-    if (str == "DEFINE")
-        return MapParserState(Value::define);
-    if (str == "MONSTERS")
-        return MapParserState(Value::monsters);
-    else
-        return MapParserState(Value::invalid);
-}
-
-bool MapParserState::operator==(const MapParserState &rhs) const { return value == rhs.value; }
-
-bool MapParserState::operator!=(const MapParserState &rhs) const { return !(rhs == *this); }
-
-bool MapParserState::operator==(MapParserState::Value rhs) const { return value == rhs; }
-
-bool MapParserState::operator!=(MapParserState::Value rhs) const { return !(*this == rhs); }
-
-MapParserState::MapParserState(MapParserState::Value value) : value(value) {}
-
-MapParserState::MapParserState() = default;

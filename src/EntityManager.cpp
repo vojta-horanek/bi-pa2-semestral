@@ -12,49 +12,33 @@
 #include <initializer_list>
 #include <map>
 
-EntityManager::Type EntityManager::getType(const std::string &name) {
-    if (name == "VOID")
-        return Type::VOID;
-    if (name == "TREE")
-        return Type::TREE;
-    if (name == "APPLE")
-        return Type::APPLE;
-    if (name == "SWORD")
-        return Type::SWORD;
-    if (name == "AXE")
-        return Type::AXE;
-    if (name == "BRICK")
-        return Type::BRICK;
-    if (name == "GRASS")
-        return Type::GRASS;
-    if (name == "ZOMBIE")
-        return Type::ZOMBIE;
-    else
-        return Type::INVALID;
+const std::pair<EntityManager::Type, const std::string> EntityManager::typeTable[] = {
+    {Type::VOID, "VOID"}, {Type::TREE, "TREE"},   {Type::APPLE, "APPLE"}, {Type::SWORD, "SWORD"},
+    {Type::AXE, "AXE"},   {Type::BRICK, "BRICK"}, {Type::GRASS, "GRASS"}, {Type::ZOMBIE, "ZOMBIE"}};
+
+const size_t EntityManager::typeTableSize = sizeof(typeTable) / sizeof(typeTable[0]);
+
+std::pair<EntityManager::Type, const std::string> EntityManager::findType(const std::string &name) {
+    for (size_t i = 0; i < typeTableSize; i++) {
+        if (typeTable[i].second == name)
+            return typeTable[i];
+    }
+
+    return {Type::INVALID, "INVALID"};
 }
 
-std::string EntityManager::getString(const Type &type) {
-    switch (type) {
-        case Type::VOID:
-            return "VOID";
-        case Type::TREE:
-            return "TREE";
-        case Type::APPLE:
-            return "APPLE";
-        case Type::SWORD:
-            return "SWORD";
-        case Type::AXE:
-            return "AXE";
-        case Type::BRICK:
-            return "BRICK";
-        case Type::GRASS:
-            return "GRASS";
-        case Type::ZOMBIE:
-            return "ZOMBIE";
-        default:
-            return "";
+std::pair<EntityManager::Type, const std::string> EntityManager::findType(Type type) {
+    for (size_t i = 0; i < typeTableSize; i++) {
+        if (typeTable[i].first == type)
+            return typeTable[i];
     }
+
+    return {Type::INVALID, "INVALID"};
 }
+
+EntityManager::Type EntityManager::getType(const std::string &name) { return findType(name).first; }
+
+std::string EntityManager::getString(const Type &type) { return findType(type).second; }
 
 std::unique_ptr<Entity> EntityManager::getEntity(EntityManager::Type type) {
     switch (type) {
