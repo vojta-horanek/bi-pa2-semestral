@@ -2,18 +2,15 @@
 
 #include <utility>
 
+#include "Game.h"
 #include "Renderer.h"
+#include "ResumeMenu.h"
 #include "entity/Weapon.h"
 #include "resources/strings/Paths.h"
-#include "ResumeMenu.h"
-#include "Game.h"
 
-FightScreen::FightScreen(
-        std::shared_ptr<Player> player,
-        std::shared_ptr<GameState> gameState,
-        int width,
-        int height
-) : Screen(width, height), player(std::move(player)), gameState(std::move(gameState)) {
+FightScreen::FightScreen(std::shared_ptr<Player> player, std::shared_ptr<GameState> gameState,
+                         int width, int height)
+    : Screen(width, height), player(std::move(player)), gameState(std::move(gameState)) {
     background = Texture(Paths::Bitmaps::fighting_background);
     stats = std::make_unique<Stats>(3);
     this->gameState->fight->onFightBegin();
@@ -24,10 +21,12 @@ void FightScreen::onRender() {
     background.renderFullscreen();
 
     int monsterXPos = 1;
-    if (!playerTurn && !justShown) monsterXPos--;
+    if (!playerTurn && !justShown)
+        monsterXPos--;
 
     int playerXPos = 3;
-    if (playerTurn && !justShown) playerXPos++;
+    if (playerTurn && !justShown)
+        playerXPos++;
 
     player->render(*gameState, Vec(playerXPos, 4));
     gameState->fight->render(*gameState, Vec(width / 2 / BLOCK_PIXELS + monsterXPos, 4));
@@ -36,24 +35,16 @@ void FightScreen::onRender() {
         fadeFinished = true;
     }
 
-    if (player->currentHealth > 0) {
-        stats->render(
-                *gameState,
-                player->health,
-                player->currentHealth,
-                Vec(0, height / BLOCK_PIXELS),
-                false
-        );
+    if (gameState->playerCurrentHealth > 0) {
+        stats->render(*gameState, Vec(0, height / BLOCK_PIXELS), false);
     }
-
 }
-
 
 void FightScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                 navigationDestination = std::make_unique<ResumeMenu>(width, height, false);
+                navigationDestination = std::make_unique<ResumeMenu>(width, height);
                 break;
             case SDLK_RETURN:
             case SDLK_SPACE:
@@ -68,9 +59,7 @@ void FightScreen::onEvent(SDL_Event event) {
     }
 }
 
-bool FightScreen::popSelf() {
-    return fadeFinished;
-}
+bool FightScreen::popSelf() { return fadeFinished; }
 
 FightScreen::~FightScreen() {
     player->onFightEnd();
@@ -81,15 +70,16 @@ FightScreen::~FightScreen() {
 void FightScreen::attack() {
     playerTurn = !playerTurn;
 
-    player->currentHealth -= gameState->fight->getDamage();
+    gameState->playerCurrentHealth -= gameState->fight->getDamage();
 
     if (gameState->weapon != nullptr) {
-        gameState->fight->currentHealth -= gameState->weapon->getDamage();
+        gameState->fight->currentHealth -=
+            gameState->weapon->getDamage() + gameState->playerDefaultDamage;
     } else {
-        gameState->fight->currentHealth -= player->defaultDamage;
+        gameState->fight->currentHealth -= gameState->playerDefaultDamage;
     }
 
-    if (player->currentHealth <= 0) {
+    if (gameState->playerCurrentHealth <= 0) {
         player->fadeOut();
         if (gameState->weapon != nullptr) {
             gameState->weapon->fadeOut();

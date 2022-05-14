@@ -46,9 +46,9 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         std::string entityName;
 
         lineStream >> number >> entityName;
-        EntityManger::Type type = EntityManger::getType(entityName);
+        EntityManager::Type type = EntityManager::getType(entityName);
 
-        if (type != EntityManger::Type::INVALID && number >= 0 && lineStream) {
+        if (type != EntityManager::Type::INVALID && number >= 0 && lineStream) {
             types[number] = type;
         } else {
             return Result::error("Invalid definition");
@@ -78,7 +78,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         if (it == types.end())
             return Result::error("Invalid entity type: " + std::to_string(weaponSet.second));
 
-        auto weaponEntity = EntityManger::getWeapon(it->second);
+        auto weaponEntity = EntityManager::getWeapon(it->second);
 
         if (weaponEntity == nullptr)
             return Result::error("Entity is not a weapon: " + std::to_string(weaponSet.second));
@@ -104,7 +104,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         if (it == types.end())
             return Result::error("Invalid entity type: " + std::to_string(inventoryAdd.second));
 
-        auto pickupEntity = EntityManger::getPickupEntity(it->second);
+        auto pickupEntity = EntityManager::getPickupEntity(it->second);
 
         if (pickupEntity == nullptr)
             return Result::error("Entity is not a pickup entity: " +

@@ -32,7 +32,7 @@ void Game::onRender() {
 
     inventory->render(*gameState, Vec(3, gameHeight));
 
-    stats->render(*gameState, player->health, player->currentHealth, Vec(0, gameHeight));
+    stats->render(*gameState, Vec(0, gameHeight));
 }
 
 void Game::onEvent(SDL_Event event) {
@@ -62,7 +62,7 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                navigationDestination = std::make_unique<ResumeMenu>(width, height);
+                navigationDestination = std::make_unique<ResumeMenu>(width, height, gameState);
                 break;
         }
     }
@@ -93,10 +93,10 @@ bool Game::loadSave() {
         return false;
     }
 
-    player->health = saveFileParser.getPlayerHealth();
-    player->currentHealth = saveFileParser.getPlayerCurrentHealth();
-    player->defaultDamage = saveFileParser.getPlayerDefaultDamage();
-    
+    gameState->playerHealth = saveFileParser.getPlayerHealth();
+    gameState->playerCurrentHealth = saveFileParser.getPlayerCurrentHealth();
+    gameState->playerDefaultDamage = saveFileParser.getPlayerDefaultDamage();
+
     gameState->inventory = saveFileParser.getInventory();
     gameState->weapon = saveFileParser.getWeapon();
     return true;
@@ -153,7 +153,7 @@ bool Game::popSelf() { return !gameState->running; }
 bool Game::clearBackStack() { return false; }
 
 void Game::onResume() {
-    if (player->currentHealth <= 0) {
+    if (gameState->playerCurrentHealth <= 0) {
         navigationDestination = std::make_unique<EndScreen>(false, width, height);
     }
 }

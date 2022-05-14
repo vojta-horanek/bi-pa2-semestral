@@ -16,6 +16,9 @@ struct GameState {
     std::vector<std::unique_ptr<PickupEntity>> inventory;
     std::unique_ptr<Weapon> weapon;
     std::unique_ptr<Monster> fight;
+    int playerHealth = 255;
+    int playerCurrentHealth = playerHealth;
+    int playerDefaultDamage = 5;
 };
 
 

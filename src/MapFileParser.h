@@ -52,7 +52,7 @@ class MapFileParser {
   private:
     MapParserState currentState;
     Map map;
-    std::map<int, EntityManger::Type> types;
+    std::map<int, EntityManager::Type> types;
     std::map<Vec, MapSection>::iterator currentSection = map.sections.end();
     GameState gameState;
     int width, height;

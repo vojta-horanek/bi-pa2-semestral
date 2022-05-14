@@ -7,10 +7,11 @@ struct Result {
     bool isError;
     std::string errorText;
 
-    static Result error(const std::string &errorText);
+    Result() = delete;
+
+    static Result error(const std::string &errorText = "");
 
     static Result success();
 };
 
-
-#endif //TPOHB_RESULT_H
+#endif // TPOHB_RESULT_H

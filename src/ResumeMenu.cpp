@@ -1,16 +1,21 @@
-#include <iostream>
 #include "ResumeMenu.h"
 #include "MainMenu.h"
-#include "MenuResume.h"
 #include "MenuMainMenu.h"
+#include "MenuResume.h"
 #include "MenuSave.h"
+#include "SaveManager.h"
+#include <iostream>
 
-ResumeMenu::ResumeMenu(int width, int height, bool saveEnabled) : Menu(width, height) {
+ResumeMenu::ResumeMenu(int width, int height) : Menu(width, height) {
     items.emplace_back(std::make_unique<MenuResume>());
-    if (saveEnabled)
-        items.emplace_back(std::make_unique<MenuSave>());
     items.emplace_back(std::make_unique<MenuMainMenu>());
+}
 
+ResumeMenu::ResumeMenu(int width, int height, std::shared_ptr<GameState> gameState)
+    : Menu(width, height), gameState(gameState) {
+    items.emplace_back(std::make_unique<MenuResume>());
+    items.emplace_back(std::make_unique<MenuSave>());
+    items.emplace_back(std::make_unique<MenuMainMenu>());
 }
 
 void ResumeMenu::onItemSelected(size_t activeIndex) {
@@ -20,8 +25,7 @@ void ResumeMenu::onItemSelected(size_t activeIndex) {
             userInMenu = false;
             break;
         case MenuItem::Item::SAVE:
-            // TODO
-            std::cout << "Saving" << std::endl;
+            saveGame();
             break;
         case MenuItem::Item::MAIN_MENU:
             goToMainMenu = true;
@@ -32,10 +36,14 @@ void ResumeMenu::onItemSelected(size_t activeIndex) {
     }
 }
 
-bool ResumeMenu::clearBackStack() {
-    return goToMainMenu;
-}
+bool ResumeMenu::clearBackStack() { return goToMainMenu; }
 
-void ResumeMenu::onEscapePressed() {
-    userInMenu = false;
+void ResumeMenu::onEscapePressed() { userInMenu = false; }
+
+void ResumeMenu::saveGame() {
+    SaveManager manager;
+    std::string saveFilePath = SaveManager::getSaveFilePath() + "_manual";
+    Result saveResult = manager.saveGame(saveFilePath, saveFilePath + "_map", gameState);
+    if (saveResult.isError)
+        std::cerr << "Failed while saving the game: " << saveResult.errorText << std::endl;
 }

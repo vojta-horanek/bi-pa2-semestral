@@ -1,16 +1,18 @@
 #include "EntityManager.h"
 
-#include "entity/Entity.h"
-#include "entity/Tree.h"
 #include "entity/Apple.h"
-#include "entity/Sword.h"
 #include "entity/Axe.h"
 #include "entity/Bricks.h"
+#include "entity/Entity.h"
 #include "entity/Grass.h"
 #include "entity/Monster.h"
+#include "entity/Sword.h"
+#include "entity/Tree.h"
 #include "entity/Zombie.h"
+#include <initializer_list>
+#include <map>
 
-EntityManger::Type EntityManger::getType(const std::string &name) {
+EntityManager::Type EntityManager::getType(const std::string &name) {
     if (name == "VOID")
         return Type::VOID;
     if (name == "TREE")
@@ -31,7 +33,30 @@ EntityManger::Type EntityManger::getType(const std::string &name) {
         return Type::INVALID;
 }
 
-std::unique_ptr<Entity> EntityManger::getEntity(EntityManger::Type type) {
+std::string EntityManager::getString(const Type &type) {
+    switch (type) {
+        case Type::VOID:
+            return "VOID";
+        case Type::TREE:
+            return "TREE";
+        case Type::APPLE:
+            return "APPLE";
+        case Type::SWORD:
+            return "SWORD";
+        case Type::AXE:
+            return "AXE";
+        case Type::BRICK:
+            return "BRICK";
+        case Type::GRASS:
+            return "GRASS";
+        case Type::ZOMBIE:
+            return "ZOMBIE";
+        default:
+            return "";
+    }
+}
+
+std::unique_ptr<Entity> EntityManager::getEntity(EntityManager::Type type) {
     switch (type) {
         case Type::VOID:
             return std::move(std::make_unique<Entity>());
@@ -54,7 +79,7 @@ std::unique_ptr<Entity> EntityManger::getEntity(EntityManger::Type type) {
     }
 }
 
-std::unique_ptr<Monster> EntityManger::getMonster(EntityManger::Type type) {
+std::unique_ptr<Monster> EntityManager::getMonster(EntityManager::Type type) {
     switch (type) {
         case Type::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
@@ -63,7 +88,7 @@ std::unique_ptr<Monster> EntityManger::getMonster(EntityManger::Type type) {
     }
 }
 
-std::unique_ptr<PickupEntity> EntityManger::getPickupEntity(Type type) {
+std::unique_ptr<PickupEntity> EntityManager::getPickupEntity(Type type) {
     switch (type) {
         case Type::APPLE:
             return std::move(std::make_unique<Apple>());
@@ -72,7 +97,7 @@ std::unique_ptr<PickupEntity> EntityManger::getPickupEntity(Type type) {
     }
 }
 
-std::unique_ptr<Weapon> EntityManger::getWeapon(Type type) {
+std::unique_ptr<Weapon> EntityManager::getWeapon(Type type) {
     switch (type) {
         case Type::SWORD:
             return std::move(std::make_unique<Sword>());
@@ -80,5 +105,26 @@ std::unique_ptr<Weapon> EntityManger::getWeapon(Type type) {
             return std::move(std::make_unique<Axe>());
         default:
             return nullptr;
+    }
+}
+
+std::map<EntityManager::Type, int> EntityManager::createDefinitions() {
+    const Type types[] = {Type::VOID, Type::TREE,  Type::APPLE, Type::SWORD,
+                          Type::AXE,  Type::BRICK, Type::GRASS, Type::ZOMBIE};
+
+    std::map<Type, int> typeMap;
+
+    for (size_t i = 0; i < sizeof(types) / sizeof(types[0]); i++) {
+        typeMap[types[i]] = i;
+    }
+
+    return typeMap;
+}
+
+void EntityManager::printDefinitions(const std::map<EntityManager::Type, int> &types,
+                                     std::ostream &outStream) {
+
+    for (const auto &item : types) {
+        outStream << item.second << " " << getString(item.first) << std::endl;
     }
 }

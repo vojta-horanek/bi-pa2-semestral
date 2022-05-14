@@ -5,14 +5,18 @@
 #include "entity/Monster.fwd.h"
 #include "entity/PickupEntity.fwd.h"
 #include "entity/Weapon.fwd.h"
+#include <map>
 #include <memory>
+#include <ostream>
 #include <string>
 
-class EntityManger {
+class EntityManager {
   public:
     enum class Type { VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, ZOMBIE, INVALID };
 
     static Type getType(const std::string &name);
+
+    static std::string getString(const Type &type);
 
     static std::unique_ptr<Entity> getEntity(Type type);
 
@@ -21,6 +25,11 @@ class EntityManger {
     static std::unique_ptr<PickupEntity> getPickupEntity(Type type);
 
     static std::unique_ptr<Weapon> getWeapon(Type type);
+
+    static std::map<Type, int> createDefinitions();
+
+    static void printDefinitions(const std::map<EntityManager::Type, int> &types,
+                                 std::ostream &outStream);
 };
 
 #endif // TPOHB_ENTITYMANAGER_H

@@ -15,7 +15,7 @@ private:
 public:
     explicit Stats(int maxHealth);
 
-    void render(GameState &state, int playerHealth, int playerCurrentHealth, Vec position, bool withBackground = true);
+    void render(GameState &state, Vec position, bool withBackground = true);
 };
 
 

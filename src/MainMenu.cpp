@@ -3,11 +3,15 @@
 #include "MenuLoad.h"
 #include "MenuNew.h"
 #include "MenuQuit.h"
+#include "SaveManager.h"
 #include "resources/strings/Paths.h"
 
 MainMenu::MainMenu(int width, int height) : Menu(width, height) {
     items.emplace_back(std::make_unique<MenuNew>());
-    items.emplace_back(std::make_unique<MenuLoad>());
+
+    if (!SaveManager::getSaveFilePath().empty())
+        items.emplace_back(std::make_unique<MenuLoad>());
+        
     items.emplace_back(std::make_unique<MenuQuit>());
     title = Texture(Paths::Bitmaps::title, true);
 }

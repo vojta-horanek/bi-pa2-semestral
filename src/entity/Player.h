@@ -12,11 +12,6 @@ private:
     Vec direction;
 public:
 
-    int health = 255;
-    int currentHealth = 255;
-
-    int defaultDamage = 5;
-
     Vec getNextPosition(Vec currentPosition) const;
 
     explicit Player();

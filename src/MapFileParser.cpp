@@ -95,7 +95,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Unknown entity type");
         }
 
-        auto backgroundEntity = EntityManger::getEntity(backgroundType->second);
+        auto backgroundEntity = EntityManager::getEntity(backgroundType->second);
 
         if (backgroundEntity == nullptr) {
             return Result::error("Invalid background entity");
@@ -141,7 +141,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             if (it == types.end()) {
                 return Result::error("Could not find a valid entity type: " + entityString);
             } else {
-                row.emplace_back(std::move(EntityManger::getEntity(it->second)));
+                row.emplace_back(std::move(EntityManager::getEntity(it->second)));
             }
 
             entityRowCount++;
@@ -155,15 +155,15 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         std::string entityName;
 
         lineStream >> number >> entityName;
-        EntityManger::Type type = EntityManger::getType(entityName);
+        EntityManager::Type type = EntityManager::getType(entityName);
 
-        if (type != EntityManger::Type::INVALID && number >= 0 && lineStream) {
+        if (type != EntityManager::Type::INVALID && number >= 0 && lineStream) {
             types[number] = type;
         } else {
             return Result::error("Invalid definition");
         }
     } else if (currentState == MapParserState::Value::monsters) {
-        Result result;
+        Result result = Result::error();
         Vec position;
         Vec section;
         int entityIdentifier;
@@ -192,7 +192,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Could not find a valid entity type: " +
                                  std::to_string(entityIdentifier));
 
-        auto monster = EntityManger::getMonster(it->second);
+        auto monster = EntityManager::getMonster(it->second);
 
         if (monster == nullptr) {
             return Result::error("Entity is not a monster");
