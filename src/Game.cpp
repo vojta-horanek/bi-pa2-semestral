@@ -10,14 +10,16 @@
 #include "entity/Monster.h"
 
 Game::Game(int width, int height)
-    : Screen(width, height), gameWidth(width / BLOCK_PIXELS), gameHeight(height / BLOCK_PIXELS) {
+    : Screen(width, height), gameWidth(width / BLOCK_PIXELS),
+      gameHeight(height / BLOCK_PIXELS) {
     gameState = std::make_shared<GameState>();
     inventory = std::make_unique<Inventory>(width);
     player = std::make_shared<Player>();
     stats = std::make_unique<Stats>(3);
 }
 
-Game::Game(int width, int height, const std::string &saveFile) : Game(width, height) {
+Game::Game(int width, int height, const std::string &saveFile)
+    : Game(width, height) {
     saveFilePath = saveFile;
 }
 
@@ -62,7 +64,8 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                navigationDestination = std::make_unique<ResumeMenu>(width, height, gameState);
+                navigationDestination =
+                    std::make_unique<ResumeMenu>(width, height, gameState);
                 break;
         }
     }
@@ -109,11 +112,13 @@ void Game::nextTurn() {
     gameMap.getCurrentSection().onTurn(*gameState);
 
     if (gameState->fight != nullptr) {
-        navigationDestination = std::make_unique<FightScreen>(player, gameState, width, height);
+        navigationDestination =
+            std::make_unique<FightScreen>(player, gameState, width, height);
     }
 
     if (gameState->won) {
-        navigationDestination = std::make_unique<EndScreen>(true, width, height);
+        navigationDestination =
+            std::make_unique<EndScreen>(true, width, height);
     }
 }
 
@@ -132,18 +137,21 @@ void Game::avoidPlayerCollision() {
                     // Going from left screen to right screen
                     newX = gameWidth - 1;
                 }
-                gameState->playerPosition = Vec(newX, gameState->playerPosition.y);
+                gameState->playerPosition =
+                    Vec(newX, gameState->playerPosition.y);
             } else if (direction.y != 0) {
                 int newY = 0;
                 if (direction.y < 0) {
                     // Going from bottom screen to top screen
                     newY = gameHeight - 1;
                 }
-                gameState->playerPosition = Vec(gameState->playerPosition.x, newY);
+                gameState->playerPosition =
+                    Vec(gameState->playerPosition.x, newY);
             }
         }
 
-    } else if (gameMap.getCurrentSection().collideWith(playerNexPos, *gameState)) {
+    } else if (gameMap.getCurrentSection().collideWith(playerNexPos,
+                                                       *gameState)) {
         player->setDirection(0, 0);
     }
 }
@@ -154,7 +162,8 @@ bool Game::clearBackStack() { return false; }
 
 void Game::onResume() {
     if (gameState->playerCurrentHealth <= 0) {
-        navigationDestination = std::make_unique<EndScreen>(false, width, height);
+        navigationDestination =
+            std::make_unique<EndScreen>(false, width, height);
     }
 }
 

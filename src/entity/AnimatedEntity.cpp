@@ -2,12 +2,10 @@
 
 #include <cassert>
 
-AnimatedEntity::AnimatedEntity(Texture texture, int frameCount, bool synchronized, int speed) :
-        Entity(texture),
-        speed(speed),
-        frameCount(frameCount),
-        synchronized(synchronized) {
-}
+AnimatedEntity::AnimatedEntity(Texture texture, int frameCount,
+                               bool synchronized, int speed)
+    : Entity(texture), speed(speed), frameCount(frameCount),
+      synchronized(synchronized) {}
 
 void AnimatedEntity::render(GameState &state, Vec position) {
     updateState(state);
@@ -15,7 +13,8 @@ void AnimatedEntity::render(GameState &state, Vec position) {
 }
 
 void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
-    // If this entity is not synchronized, it handles the animation frames itself
+    // If this entity is not synchronized, it handles the animation frames
+    // itself
     if (!synchronized) {
         if (delay >= speed) {
             delay = 0;
@@ -47,13 +46,10 @@ void AnimatedEntity::fadeOut() {
     texture.setBlendMode(true);
 }
 
-bool AnimatedEntity::isFadeOut() const {
-    return fadingOut && alpha <= 0;
-}
+bool AnimatedEntity::isFadeOut() const { return fadingOut && alpha <= 0; }
 
 void AnimatedEntity::resetAlpha() {
     fadingOut = false;
     alpha = 255;
     texture.setAlpha(alpha);
 }
-

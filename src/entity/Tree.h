@@ -5,9 +5,8 @@
 
 class Tree : public BlockEntity {
 
-public:
+  public:
     Tree();
 };
 
-
-#endif //TPOHB_TREE_H
+#endif // TPOHB_TREE_H

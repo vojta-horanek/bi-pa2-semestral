@@ -1,8 +1,7 @@
 #include "MapParserState.h"
 
 #include <stdexcept>
-MapParserState::MapParserState(value_type value)
-    : ParserState(value) {}
+MapParserState::MapParserState(value_type value) : ParserState(value) {}
 
 MapParserState::MapParserState() : ParserState() {}
 

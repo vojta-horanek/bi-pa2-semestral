@@ -8,5 +8,4 @@ struct Rect {
     Vec size;
 };
 
-
-#endif //TPOHB_RECT_H
+#endif // TPOHB_RECT_H

@@ -1,19 +1,17 @@
 #ifndef TPOHB_MAINMENU_H
 #define TPOHB_MAINMENU_H
 
-
 #include "Menu.h"
 
 class MainMenu : public Menu {
-private:
+  private:
     Texture title;
     void onItemSelected(size_t activeIndex) override;
     void onEscapePressed() override;
-public:
+
+  public:
     MainMenu(int width, int height);
     void onRender() override;
-
 };
 
-
-#endif //TPOHB_MAINMENU_H
+#endif // TPOHB_MAINMENU_H

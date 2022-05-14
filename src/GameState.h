@@ -1,13 +1,12 @@
 #ifndef TPOHB_GAMESTATE_H
 #define TPOHB_GAMESTATE_H
 
-
 #include "Vec.h"
+#include "entity/Monster.fwd.h"
 #include "entity/PickupEntity.fwd.h"
 #include "entity/Weapon.fwd.h"
-#include "entity/Monster.fwd.h"
-#include <vector>
 #include <memory>
+#include <vector>
 
 struct GameState {
     bool running = false;
@@ -21,5 +20,4 @@ struct GameState {
     int playerDefaultDamage = 5;
 };
 
-
-#endif //TPOHB_GAMESTATE_H
+#endif // TPOHB_GAMESTATE_H

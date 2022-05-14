@@ -5,8 +5,8 @@
 
 class Hearth : public Entity {
 
-public:
+  public:
     Hearth();
 };
 
-#endif //TPOHB_HEARTH_H
+#endif // TPOHB_HEARTH_H

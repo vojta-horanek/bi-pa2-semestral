@@ -1,12 +1,14 @@
 #include "Monster.h"
 #include "../MapSection.h"
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
 
 Monster::Monster(Texture texture) : Monster(texture, 1, true, 0) {}
 
-Monster::Monster(Texture texture, int animationFrameCount, bool animationSynchronized, int animationSpeed)
-        : MovingEntity(texture, animationFrameCount, animationSynchronized, animationSpeed) {
+Monster::Monster(Texture texture, int animationFrameCount,
+                 bool animationSynchronized, int animationSpeed)
+    : MovingEntity(texture, animationFrameCount, animationSynchronized,
+                   animationSpeed) {
     srand(time(nullptr));
 }
 
@@ -19,8 +21,10 @@ void Monster::onTurn(GameState &state, MapSection &section) {
 
     if (rand() % 2) {
         // Align X newPosition
-        int distanceRight = newPosition.withX(1).xDistance(state.playerPosition);
-        int distanceLeft = newPosition.withX(-1).xDistance(state.playerPosition);
+        int distanceRight =
+            newPosition.withX(1).xDistance(state.playerPosition);
+        int distanceLeft =
+            newPosition.withX(-1).xDistance(state.playerPosition);
         if (distanceRight > distanceLeft) {
             newPosition.x--;
         } else if (distanceRight < distanceLeft) {
@@ -35,7 +39,6 @@ void Monster::onTurn(GameState &state, MapSection &section) {
         } else if (distanceDown < distanceUp) {
             newPosition.y++;
         }
-
     }
 
     if (newPosition == state.playerPosition) {
@@ -48,9 +51,7 @@ void Monster::onTurn(GameState &state, MapSection &section) {
     }
 }
 
-void Monster::onFightBegin() {
-    scale = 2;
-}
+void Monster::onFightBegin() { scale = 2; }
 
 void Monster::onFightEnd() {
     scale = 1;

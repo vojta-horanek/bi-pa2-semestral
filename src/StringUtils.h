@@ -14,5 +14,4 @@ struct StringUtils {
     static void trim(std::string &s);
 };
 
-
-#endif //TPOHB_STRINGUTILS_H
+#endif // TPOHB_STRINGUTILS_H

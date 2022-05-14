@@ -12,13 +12,17 @@
 #include <initializer_list>
 #include <map>
 
-const std::pair<EntityManager::Type, const std::string> EntityManager::typeTable[] = {
-    {Type::VOID, "VOID"}, {Type::TREE, "TREE"},   {Type::APPLE, "APPLE"}, {Type::SWORD, "SWORD"},
-    {Type::AXE, "AXE"},   {Type::BRICK, "BRICK"}, {Type::GRASS, "GRASS"}, {Type::ZOMBIE, "ZOMBIE"}};
+const std::pair<EntityManager::Type, const std::string>
+    EntityManager::typeTable[] = {
+        {Type::VOID, "VOID"},   {Type::TREE, "TREE"},    {Type::APPLE, "APPLE"},
+        {Type::SWORD, "SWORD"}, {Type::AXE, "AXE"},      {Type::BRICK, "BRICK"},
+        {Type::GRASS, "GRASS"}, {Type::ZOMBIE, "ZOMBIE"}};
 
-const size_t EntityManager::typeTableSize = sizeof(typeTable) / sizeof(typeTable[0]);
+const size_t EntityManager::typeTableSize =
+    sizeof(typeTable) / sizeof(typeTable[0]);
 
-std::pair<EntityManager::Type, const std::string> EntityManager::findType(const std::string &name) {
+std::pair<EntityManager::Type, const std::string>
+EntityManager::findType(const std::string &name) {
     for (size_t i = 0; i < typeTableSize; i++) {
         if (typeTable[i].second == name)
             return typeTable[i];
@@ -27,7 +31,8 @@ std::pair<EntityManager::Type, const std::string> EntityManager::findType(const 
     return {Type::INVALID, "INVALID"};
 }
 
-std::pair<EntityManager::Type, const std::string> EntityManager::findType(Type type) {
+std::pair<EntityManager::Type, const std::string>
+EntityManager::findType(Type type) {
     for (size_t i = 0; i < typeTableSize; i++) {
         if (typeTable[i].first == type)
             return typeTable[i];
@@ -36,9 +41,13 @@ std::pair<EntityManager::Type, const std::string> EntityManager::findType(Type t
     return {Type::INVALID, "INVALID"};
 }
 
-EntityManager::Type EntityManager::getType(const std::string &name) { return findType(name).first; }
+EntityManager::Type EntityManager::getType(const std::string &name) {
+    return findType(name).first;
+}
 
-std::string EntityManager::getString(const Type &type) { return findType(type).second; }
+std::string EntityManager::getString(const Type &type) {
+    return findType(type).second;
+}
 
 std::unique_ptr<Entity> EntityManager::getEntity(EntityManager::Type type) {
     switch (type) {
@@ -105,8 +114,8 @@ std::map<EntityManager::Type, int> EntityManager::createDefinitions() {
     return typeMap;
 }
 
-void EntityManager::printDefinitions(const std::map<EntityManager::Type, int> &types,
-                                     std::ostream &outStream) {
+void EntityManager::printDefinitions(
+    const std::map<EntityManager::Type, int> &types, std::ostream &outStream) {
 
     for (const auto &item : types) {
         outStream << item.second << " " << getString(item.first) << std::endl;

@@ -4,8 +4,8 @@
 #include "BlockEntity.h"
 
 class Bricks : public BlockEntity {
-public:
+  public:
     Bricks();
 };
 
-#endif //TPOHB_BRICKS_H
+#endif // TPOHB_BRICKS_H

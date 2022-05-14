@@ -1,18 +1,18 @@
 #ifndef TPOHB_MENU_H
 #define TPOHB_MENU_H
 
-#include "Screen.h"
 #include "MenuItem.h"
+#include "Screen.h"
 
 #include <memory>
 #include <vector>
 
 class Menu : public Screen {
-private:
+  private:
     size_t activeItem = 0;
     Texture backdrop;
 
-protected:
+  protected:
     bool userInMenu = true;
 
     std::vector<std::unique_ptr<MenuItem>> items;
@@ -23,15 +23,12 @@ protected:
 
     Menu(int width, int height);
 
-public:
-
+  public:
     void onEvent(SDL_Event event) override;
 
     void onRender() override;
 
     bool popSelf() override;
-
 };
 
-
-#endif //TPOHB_MENU_H
+#endif // TPOHB_MENU_H

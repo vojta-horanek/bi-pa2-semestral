@@ -11,7 +11,8 @@ ResumeMenu::ResumeMenu(int width, int height) : Menu(width, height) {
     items.emplace_back(std::make_unique<MenuMainMenu>());
 }
 
-ResumeMenu::ResumeMenu(int width, int height, std::shared_ptr<GameState> gameState)
+ResumeMenu::ResumeMenu(int width, int height,
+                       std::shared_ptr<GameState> gameState)
     : Menu(width, height), gameState(gameState) {
     items.emplace_back(std::make_unique<MenuResume>());
     items.emplace_back(std::make_unique<MenuSave>());
@@ -43,7 +44,9 @@ void ResumeMenu::onEscapePressed() { userInMenu = false; }
 void ResumeMenu::saveGame() {
     SaveManager manager;
     std::string saveFilePath = SaveManager::getSaveFilePath() + "_manual";
-    Result saveResult = manager.saveGame(saveFilePath, saveFilePath + "_map", gameState);
+    Result saveResult =
+        manager.saveGame(saveFilePath, saveFilePath + "_map", gameState);
     if (saveResult.isError)
-        std::cerr << "Failed while saving the game: " << saveResult.errorText << std::endl;
+        std::cerr << "Failed while saving the game: " << saveResult.errorText
+                  << std::endl;
 }

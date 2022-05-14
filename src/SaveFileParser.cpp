@@ -37,7 +37,8 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
             currentState.reset();
             return Result::success();
         } else {
-            return Result::error("Was in " + current + " but tried to end " + what);
+            return Result::error("Was in " + current + " but tried to end " +
+                                 what);
         }
     }
 
@@ -76,12 +77,14 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         auto it = types.find(weaponSet.second);
 
         if (it == types.end())
-            return Result::error("Invalid entity type: " + std::to_string(weaponSet.second));
+            return Result::error("Invalid entity type: " +
+                                 std::to_string(weaponSet.second));
 
         auto weaponEntity = EntityManager::getWeapon(it->second);
 
         if (weaponEntity == nullptr)
-            return Result::error("Entity is not a weapon: " + std::to_string(weaponSet.second));
+            return Result::error("Entity is not a weapon: " +
+                                 std::to_string(weaponSet.second));
 
         weapon = std::move(weaponEntity);
     } else if (currentState == SaveParserState::value_type::mapfile) {
@@ -90,7 +93,8 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
 
         std::ifstream mapFile(line);
         if (!mapFile.good()) {
-            std::cout << "INFO: map file `" << line << "` does not exist" << std::endl;
+            std::cout << "INFO: map file `" << line << "` does not exist"
+                      << std::endl;
             return Result::success();
         }
         mapFilePath = line;
@@ -102,7 +106,8 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         auto it = types.find(inventoryAdd.second);
 
         if (it == types.end())
-            return Result::error("Invalid entity type: " + std::to_string(inventoryAdd.second));
+            return Result::error("Invalid entity type: " +
+                                 std::to_string(inventoryAdd.second));
 
         auto pickupEntity = EntityManager::getPickupEntity(it->second);
 
@@ -116,8 +121,9 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
     return Result::success();
 }
 
-std::pair<Result, int> SaveFileParser::readIntCommand(const std::string &line,
-                                                      const std::string &expectedCommnad) {
+std::pair<Result, int>
+SaveFileParser::readIntCommand(const std::string &line,
+                               const std::string &expectedCommnad) {
     std::istringstream lineStream(line);
     std::string command;
     int number;
@@ -126,8 +132,8 @@ std::pair<Result, int> SaveFileParser::readIntCommand(const std::string &line,
         return {Result::error("Cannot parse command `" + line + '`'), -1};
     }
     if (command != expectedCommnad) {
-        return {Result::error("Command not supported `" + command + "`, expected `" +
-                              expectedCommnad + '`'),
+        return {Result::error("Command not supported `" + command +
+                              "`, expected `" + expectedCommnad + '`'),
                 -1};
     }
 
@@ -170,7 +176,8 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
 
         if (result.isError) {
             std::cerr << "Error while parsing " << fileName << ". " << std::endl
-                      << "Occurred on line " << lineNum << " with error:" << std::endl
+                      << "Occurred on line " << lineNum
+                      << " with error:" << std::endl
                       << "\t" << result.errorText << std::endl
                       << "The invalid line:" << std::endl
                       << "\t" << line << std::endl;
@@ -187,8 +194,9 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
     Result parsingResult = areAllValuesSet();
 
     if (parsingResult.isError)
-        return Result::error("Some required values were not set in the save file: " +
-                             parsingResult.errorText);
+        return Result::error(
+            "Some required values were not set in the save file: " +
+            parsingResult.errorText);
 
     return Result::success();
 }
@@ -200,12 +208,18 @@ std::string SaveFileParser::getMapFilePath() const {
 
 int SaveFileParser::getPlayerHealth() const { return playerHealth; }
 
-int SaveFileParser::getPlayerCurrentHealth() const { return playerCurrentHealth; }
+int SaveFileParser::getPlayerCurrentHealth() const {
+    return playerCurrentHealth;
+}
 
-int SaveFileParser::getPlayerDefaultDamage() const { return playerDefaultDamage; }
+int SaveFileParser::getPlayerDefaultDamage() const {
+    return playerDefaultDamage;
+}
 
 std::vector<std::unique_ptr<PickupEntity>> SaveFileParser::getInventory() {
     return std::move(inventory);
 }
 
-std::unique_ptr<Weapon> SaveFileParser::getWeapon() { return std::move(weapon); }
+std::unique_ptr<Weapon> SaveFileParser::getWeapon() {
+    return std::move(weapon);
+}

@@ -1,31 +1,30 @@
 #ifndef TPOHB_APPLICATION_H
 #define TPOHB_APPLICATION_H
 
-#include "Window.h"
 #include "Screen.h"
+#include "Window.h"
 
-#include <vector>
-#include <string>
 #include <memory>
 #include <stack>
+#include <string>
+#include <vector>
 
 class Application {
-private:
+  private:
     Window window;
     std::stack<std::unique_ptr<Screen>> backstack;
-public:
 
+  public:
     Application();
 
     int run(const std::vector<std::string> &args);
 
     void popBackStack();
 
-    void navigateTo(std::unique_ptr<Screen> destination, const std::vector<std::string> &args);
+    void navigateTo(std::unique_ptr<Screen> destination,
+                    const std::vector<std::string> &args);
 
     void clearBackStack();
-
 };
 
-
-#endif //TPOHB_APPLICATION_H
+#endif // TPOHB_APPLICATION_H

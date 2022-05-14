@@ -1,27 +1,25 @@
 #ifndef TPOHB_MENUITEM_H
 #define TPOHB_MENUITEM_H
 
-#include "Vec.h"
 #include "Texture.h"
+#include "Vec.h"
 
 class MenuItem {
-private:
+  private:
     Texture inactive;
     Texture active;
 
     const int renderScale = 3;
     const int height = 24;
     const int width = 80;
-protected:
+
+  protected:
     MenuItem(Texture inactive, Texture active);
 
-public:
-
+  public:
     virtual ~MenuItem();
 
-    enum class Item {
-        NEW, LOAD, QUIT, RESUME, MAIN_MENU, SAVE
-    };
+    enum class Item { NEW, LOAD, QUIT, RESUME, MAIN_MENU, SAVE };
 
     virtual Item getType() = 0;
 
@@ -29,8 +27,8 @@ public:
 
     void renderActive(Vec position);
 
-    Vec getDestinationPosition(int position, int itemCount, int screenWidth, int screenHeight) const;
+    Vec getDestinationPosition(int position, int itemCount, int screenWidth,
+                               int screenHeight) const;
 };
 
-
-#endif //TPOHB_MENUITEM_H
+#endif // TPOHB_MENUITEM_H

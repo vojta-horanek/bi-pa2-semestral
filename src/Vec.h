@@ -52,5 +52,4 @@ struct Vec {
     friend std::ostream &operator<<(std::ostream &s, const Vec &vec);
 };
 
-
-#endif //TPOHB_VEC_H
+#endif // TPOHB_VEC_H

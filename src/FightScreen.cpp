@@ -8,9 +8,11 @@
 #include "entity/Weapon.h"
 #include "resources/strings/Paths.h"
 
-FightScreen::FightScreen(std::shared_ptr<Player> player, std::shared_ptr<GameState> gameState,
-                         int width, int height)
-    : Screen(width, height), player(std::move(player)), gameState(std::move(gameState)) {
+FightScreen::FightScreen(std::shared_ptr<Player> player,
+                         std::shared_ptr<GameState> gameState, int width,
+                         int height)
+    : Screen(width, height), player(std::move(player)),
+      gameState(std::move(gameState)) {
     background = Texture(Paths::Bitmaps::fighting_background);
     stats = std::make_unique<Stats>(3);
     this->gameState->fight->onFightBegin();
@@ -29,7 +31,8 @@ void FightScreen::onRender() {
         playerXPos++;
 
     player->render(*gameState, Vec(playerXPos, 4));
-    gameState->fight->render(*gameState, Vec(width / 2 / BLOCK_PIXELS + monsterXPos, 4));
+    gameState->fight->render(*gameState,
+                             Vec(width / 2 / BLOCK_PIXELS + monsterXPos, 4));
 
     if (!fighting && (player->isFadeOut() || gameState->fight->isFadeOut())) {
         fadeFinished = true;
@@ -44,7 +47,8 @@ void FightScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                navigationDestination = std::make_unique<ResumeMenu>(width, height);
+                navigationDestination =
+                    std::make_unique<ResumeMenu>(width, height);
                 break;
             case SDLK_RETURN:
             case SDLK_SPACE:

@@ -3,4 +3,4 @@
 
 class Weapon;
 
-#endif //TPOHB_WEAPON_FWD_H
+#endif // TPOHB_WEAPON_FWD_H

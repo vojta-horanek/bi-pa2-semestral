@@ -4,9 +4,8 @@
 #include "Entity.h"
 
 class Grass : public Entity {
-public:
+  public:
     Grass();
 };
 
-
-#endif //TPOHB_GRASS_H
+#endif // TPOHB_GRASS_H

@@ -12,7 +12,17 @@
 
 class EntityManager {
   public:
-    enum class Type { VOID, TREE, APPLE, SWORD, AXE, BRICK, GRASS, ZOMBIE, INVALID };
+    enum class Type {
+        VOID,
+        TREE,
+        APPLE,
+        SWORD,
+        AXE,
+        BRICK,
+        GRASS,
+        ZOMBIE,
+        INVALID
+    };
 
   private:
     const static std::pair<Type, const std::string> typeTable[];
@@ -36,8 +46,9 @@ class EntityManager {
 
     static std::map<Type, int> createDefinitions();
 
-    static void printDefinitions(const std::map<EntityManager::Type, int> &types,
-                                 std::ostream &outStream);
+    static void
+    printDefinitions(const std::map<EntityManager::Type, int> &types,
+                     std::ostream &outStream);
 };
 
 #endif // TPOHB_ENTITYMANAGER_H

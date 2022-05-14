@@ -1,17 +1,17 @@
 #ifndef TPOHB_PLAYER_H
 #define TPOHB_PLAYER_H
 
-#include "AnimatedEntity.h"
-#include <SDL2/SDL.h>
 #include "../GameState.h"
 #include "../Texture.h"
+#include "AnimatedEntity.h"
 #include "MovingEntity.h"
+#include <SDL2/SDL.h>
 
 class Player : public MovingEntity {
-private:
+  private:
     Vec direction;
-public:
 
+  public:
     Vec getNextPosition(Vec currentPosition) const;
 
     explicit Player();
@@ -31,5 +31,4 @@ public:
     void onFightEnd();
 };
 
-
-#endif //TPOHB_PLAYER_H
+#endif // TPOHB_PLAYER_H

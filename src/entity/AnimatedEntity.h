@@ -1,7 +1,6 @@
 #ifndef TPOHB_ANIMATEDENTITY_H
 #define TPOHB_ANIMATEDENTITY_H
 
-
 #include "Entity.h"
 
 class AnimatedEntity : public Entity {
@@ -12,16 +11,15 @@ class AnimatedEntity : public Entity {
     bool fadingOut = false;
     int alpha = 255;
 
-protected:
-
+  protected:
     int frame = 0;
 
-    AnimatedEntity(Texture texture, int frameCount, bool synchronized = false, int speed = 15);
+    AnimatedEntity(Texture texture, int frameCount, bool synchronized = false,
+                   int speed = 15);
 
     void nextAnimatedRender(Texture &texture, Vec position);
 
-public:
-
+  public:
     int scale = 1;
 
     void render(GameState &state, Vec position) override;
@@ -34,7 +32,8 @@ public:
 
     /**
      * Synchronizes this animated entity with another one.
-     * Makes it so both entities are currently on the same frame of their animation
+     * Makes it so both entities are currently on the same frame of their
+     * animation
      * @param other an entity to synchronize with
      */
     void syncWith(AnimatedEntity &other);
@@ -42,5 +41,4 @@ public:
     void onCollision(GameState &state) override;
 };
 
-
-#endif //TPOHB_ANIMATEDENTITY_H
+#endif // TPOHB_ANIMATEDENTITY_H

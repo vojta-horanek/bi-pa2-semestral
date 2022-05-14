@@ -5,11 +5,11 @@
 #include <string>
 #include <vector>
 
+#include "EntityManager.h"
 #include "Result.h"
+#include "SaveParserState.h"
 #include "entity/PickupEntity.h"
 #include "entity/Weapon.h"
-#include "EntityManager.h"
-#include "SaveParserState.h"
 
 class SaveFileParser {
   private:
@@ -29,8 +29,8 @@ class SaveFileParser {
 
     std::map<int, EntityManager::Type> types;
 
-    static std::pair<Result, int> readIntCommand(const std::string &line,
-                                                 const std::string &expectedCommnad);
+    static std::pair<Result, int>
+    readIntCommand(const std::string &line, const std::string &expectedCommnad);
 
     Result parseNextLine(const std::string &line);
 

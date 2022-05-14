@@ -1,22 +1,21 @@
 #ifndef TPOHB_STATS_H
 #define TPOHB_STATS_H
 
-
 #include "Entity.h"
 #include "Hearth.h"
 #include <memory>
 
 class Stats : public Entity {
-private:
+  private:
     int maxHealth;
     std::unique_ptr<Hearth> hearth;
     Texture left, right;
     static int map(int x, int in_min, int in_max, int out_min, int out_max);
-public:
+
+  public:
     explicit Stats(int maxHealth);
 
     void render(GameState &state, Vec position, bool withBackground = true);
 };
 
-
-#endif //TPOHB_STATS_H
+#endif // TPOHB_STATS_H

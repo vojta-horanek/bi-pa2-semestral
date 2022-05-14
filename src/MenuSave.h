@@ -3,11 +3,10 @@
 
 #include "MenuItem.h"
 
-class MenuSave : public  MenuItem {
-public:
+class MenuSave : public MenuItem {
+  public:
     MenuSave();
     Item getType() override;
 };
 
-
-#endif //TPOHB_MENUSAVE_H
+#endif // TPOHB_MENUSAVE_H

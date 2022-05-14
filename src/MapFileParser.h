@@ -18,7 +18,8 @@ class MapFileParser {
 
     static std::pair<Result, Vec> readSetCommand(const std::string &line);
 
-    static std::tuple<Result, Vec, Vec, int> readMonsterAddCommand(const std::string &line);
+    static std::tuple<Result, Vec, Vec, int>
+    readMonsterAddCommand(const std::string &line);
 
   public:
     MapFileParser(int width, int height);

@@ -3,4 +3,4 @@
 
 class MapSection;
 
-#endif //TPOHB_MAPSECTION_FWD_H
+#endif // TPOHB_MAPSECTION_FWD_H

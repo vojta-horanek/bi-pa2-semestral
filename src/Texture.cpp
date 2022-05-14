@@ -1,16 +1,16 @@
 #include "Texture.h"
 
 #include "Constants.h"
-#include "resources/strings/L10n.h"
-#include "resources/strings/Paths.h"
 #include "Game.h"
 #include "Rect.h"
 #include "Renderer.h"
+#include "resources/strings/L10n.h"
+#include "resources/strings/Paths.h"
 #include <SDL2/SDL.h>
 
 std::map<std::pair<std::string, bool>, SDL_Texture *> Texture::textureStore;
 
-Texture::Texture(): width(0), height(8) {}
+Texture::Texture() : width(0), height(8) {}
 
 Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
     texture = create(path, useWhiteAsAlpha);
@@ -27,7 +27,8 @@ Texture::Texture(const std::string &path, bool useWhiteAsAlpha) {
 SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     // If texture has been saved in the store, retrieve it
     auto existing = textureStore.find(std::make_pair(path, useWhiteAsAlpha));
-    if (existing != textureStore.end()) return existing->second;
+    if (existing != textureStore.end())
+        return existing->second;
 
     // Otherwise, create the texture
     SDL_Surface *surface = SDL_LoadBMP(path.c_str());
@@ -37,7 +38,8 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
     }
 
     if (useWhiteAsAlpha) {
-        SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr), SDL_MapRGB(surface->format, 255, 255, 255));
+        SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr),
+                        SDL_MapRGB(surface->format, 255, 255, 255));
     }
 
     SDL_Texture *texture = Renderer::getInstance().createTexture(surface);
@@ -57,68 +59,60 @@ void Texture::renderBlock(Vec position, int scale) const {
     Texture::renderBlockWithOffset(position, 0, scale);
 }
 
+void Texture::renderBlockWithOffset(Vec position, int xOffset,
+                                    int scale) const {
 
-void Texture::renderBlockWithOffset(Vec position, int xOffset, int scale) const {
+    if (texture == nullptr)
+        return;
 
-    if (texture == nullptr) return;
+    Rect dstRect{position.getScaled(), Vec(BLOCK_PIXELS, BLOCK_PIXELS) * scale};
 
-    Rect dstRect{
-            position.getScaled(),
-            Vec(BLOCK_PIXELS, BLOCK_PIXELS) * scale
-    };
-
-    Rect srcRect{
-            Vec(xOffset * BLOCK_SIZE, 0),
-            Vec(BLOCK_SIZE, BLOCK_PIXELS)
-    };
+    Rect srcRect{Vec(xOffset * BLOCK_SIZE, 0), Vec(BLOCK_SIZE, BLOCK_PIXELS)};
 
     Renderer::getInstance().render(texture, srcRect, dstRect);
 }
 
 void Texture::render(Vec position, int scale) const {
 
-    if (texture == nullptr) return;
+    if (texture == nullptr)
+        return;
 
     SDL_Point size;
     SDL_QueryTexture(texture, nullptr, nullptr, &size.x, &size.y);
 
-    Rect dstRect{
-            position,
-            Vec(size.x, size.y) * scale
-    };
+    Rect dstRect{position, Vec(size.x, size.y) * scale};
 
     Renderer::getInstance().render(texture, dstRect);
 }
 
 void Texture::clearStore() {
-    for (const auto &item: textureStore)
-        if (item.second != nullptr) SDL_DestroyTexture(item.second);
+    for (const auto &item : textureStore)
+        if (item.second != nullptr)
+            SDL_DestroyTexture(item.second);
 
     textureStore.clear();
 }
 
 void Texture::renderFullscreen() const {
-    if (texture == nullptr) return;
+    if (texture == nullptr)
+        return;
 
     Renderer::getInstance().render(texture);
 }
 
-std::pair<int, int> Texture::getSize(SDL_Texture * texture) {
+std::pair<int, int> Texture::getSize(SDL_Texture *texture) {
     int width, height;
     SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
     return {width, height};
 }
 
-int Texture::getWidth() const {
-    return width;
-}
+int Texture::getWidth() const { return width; }
 
-int Texture::getHeight() const {
-    return height;
-}
+int Texture::getHeight() const { return height; }
 
 void Texture::setAlpha(int alpha) const {
-    if (alpha < 0 || alpha > 255) return;
+    if (alpha < 0 || alpha > 255)
+        return;
     SDL_SetTextureAlphaMod(texture, alpha);
 }
 

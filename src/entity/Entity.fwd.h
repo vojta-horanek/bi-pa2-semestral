@@ -3,4 +3,4 @@
 
 class Entity;
 
-#endif //TPOHB_ENTITY_FWD_H
+#endif // TPOHB_ENTITY_FWD_H

@@ -3,4 +3,4 @@
 
 class PickupEntity;
 
-#endif //TPOHB_PICKUPENTITY_FWD_H
+#endif // TPOHB_PICKUPENTITY_FWD_H

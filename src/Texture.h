@@ -1,15 +1,15 @@
 #ifndef TPOHB_TEXTURE_H
 #define TPOHB_TEXTURE_H
 
-#include <SDL2/SDL.h>
-#include <string>
-#include <memory>
-#include <map>
-#include <utility>
 #include "Vec.h"
+#include <SDL2/SDL.h>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
 
 class Texture {
-private:
+  private:
     static std::map<std::pair<std::string, bool>, SDL_Texture *> textureStore;
 
     SDL_Texture *texture = nullptr;
@@ -19,7 +19,7 @@ private:
 
     static std::pair<int, int> getSize(SDL_Texture *texture);
 
-public:
+  public:
     Texture();
 
     explicit Texture(const std::string &path, bool useWhiteAsAlpha = false);
@@ -43,5 +43,4 @@ public:
     void setBlendMode(bool blend) const;
 };
 
-
-#endif //TPOHB_TEXTURE_H
+#endif // TPOHB_TEXTURE_H

@@ -11,7 +11,7 @@ MainMenu::MainMenu(int width, int height) : Menu(width, height) {
 
     if (!SaveManager::getSaveFilePath().empty())
         items.emplace_back(std::make_unique<MenuLoad>());
-        
+
     items.emplace_back(std::make_unique<MenuQuit>());
     title = Texture(Paths::Bitmaps::title, true);
 }
@@ -23,7 +23,8 @@ void MainMenu::onItemSelected(size_t activeIndex) {
             navigationDestination = std::make_unique<Game>(width, height);
             break;
         case MenuItem::Item::LOAD:
-            navigationDestination = std::make_unique<Game>(width, height, "examples/save");
+            navigationDestination =
+                std::make_unique<Game>(width, height, "examples/save");
             break;
         case MenuItem::Item::QUIT:
             userInMenu = false;
@@ -40,5 +41,6 @@ void MainMenu::onEscapePressed() {
 void MainMenu::onRender() {
     Menu::onRender();
     // Render game title
-    title.render(Vec(width / 2 - title.getWidth() * 2, title.getHeight() * 2), 4);
+    title.render(Vec(width / 2 - title.getWidth() * 2, title.getHeight() * 2),
+                 4);
 }

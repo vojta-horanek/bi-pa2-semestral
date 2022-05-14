@@ -10,14 +10,16 @@
 
 class SaveManager {
   private:
-    constexpr static const char *commonSavePaths[] = {"examples/save", "../examples/save"};
+    constexpr static const char *commonSavePaths[] = {"examples/save",
+                                                      "../examples/save"};
     static bool fileExists(const std::string &path);
     void writeSection(SaveParserState section, std::ostream &output,
                       std::function<void(std::ostream &ostream)> writeFun);
 
   public:
     static std::string getSaveFilePath();
-    Result saveGame(const std::string &saveFilePath, const std::string &mapFilePath,
+    Result saveGame(const std::string &saveFilePath,
+                    const std::string &mapFilePath,
                     std::shared_ptr<GameState> gameState);
 };
 

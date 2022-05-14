@@ -32,22 +32,14 @@ std::unique_ptr<Screen> Screen::getNavigationDestination() {
     return std::move(navigationDestination);
 }
 
-bool Screen::popSelf() {
-    return false;
-}
+bool Screen::popSelf() { return false; }
 
-bool Screen::clearBackStack() {
-    return false;
-}
+bool Screen::clearBackStack() { return false; }
 
-void Screen::onResume() {
+void Screen::onResume() {}
 
-}
-
-void Screen::setArgs(const std::vector<std::string> & programArgs) {
+void Screen::setArgs(const std::vector<std::string> &programArgs) {
     args = programArgs;
 }
 
-void Screen::onCreate() {
-
-}
+void Screen::onCreate() {}

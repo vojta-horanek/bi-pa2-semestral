@@ -9,10 +9,9 @@ class FPSController {
     static const Uint32 delayTicks = 1000 / FPS;
     inline static Uint32 startTicks;
 
-public:
+  public:
     static void renderStart();
     static void renderEnd();
 };
 
-
-#endif //TPOHB_FPSCONTROLLER_H
+#endif // TPOHB_FPSCONTROLLER_H

@@ -1,22 +1,21 @@
 #ifndef TPOHB_MONSTER_H
 #define TPOHB_MONSTER_H
 
-
-#include "MovingEntity.h"
 #include "../Texture.h"
+#include "MovingEntity.h"
 
 /**
- * A base class for a monster. A monster is something that follows the player and can attack
+ * A base class for a monster. A monster is something that follows the player
+ * and can attack
  */
 class Monster : public MovingEntity {
-public:
+  public:
     int currentHealth = 0;
     int health = 0;
 
     explicit Monster(Texture texture);
 
-    explicit Monster(Texture texture,
-                     int animationFrameCount,
+    explicit Monster(Texture texture, int animationFrameCount,
                      bool animationSynchronized = false,
                      int animationSpeed = 15);
 
@@ -33,5 +32,4 @@ public:
     void onFightEnd();
 };
 
-
-#endif //TPOHB_MONSTER_H
+#endif // TPOHB_MONSTER_H

@@ -1,16 +1,15 @@
 #ifndef TPOHB_FIGHTSCREEN_H
 #define TPOHB_FIGHTSCREEN_H
 
-
-#include "Screen.h"
 #include "GameState.h"
+#include "Screen.h"
 #include "entity/Monster.h"
 #include "entity/Player.h"
 #include "entity/Stats.h"
 #include <memory>
 
 class FightScreen : public Screen {
-private:
+  private:
     bool justShown = true;
     bool fadeFinished = false;
     bool fighting = true;
@@ -19,13 +18,10 @@ private:
     std::shared_ptr<GameState> gameState;
     Texture background;
     std::unique_ptr<Stats> stats;
-public:
-    FightScreen(
-            std::shared_ptr<Player> player,
-            std::shared_ptr<GameState> gameState,
-            int width,
-            int height
-    );
+
+  public:
+    FightScreen(std::shared_ptr<Player> player,
+                std::shared_ptr<GameState> gameState, int width, int height);
 
     ~FightScreen() override;
 
@@ -38,5 +34,4 @@ public:
     void attack();
 };
 
-
-#endif //TPOHB_FIGHTSCREEN_H
+#endif // TPOHB_FIGHTSCREEN_H

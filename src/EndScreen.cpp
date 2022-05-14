@@ -1,7 +1,7 @@
 #include "EndScreen.h"
 
-#include "resources/strings/Paths.h"
 #include "MainMenu.h"
+#include "resources/strings/Paths.h"
 
 EndScreen::EndScreen(bool won, int width, int height) : Screen(width, height) {
     if (won) {
@@ -18,10 +18,6 @@ void EndScreen::onEvent(SDL_Event event) {
     }
 }
 
-void EndScreen::onRender() {
-    background.renderFullscreen();
-}
+void EndScreen::onRender() { background.renderFullscreen(); }
 
-bool EndScreen::clearBackStack() {
-    return hide;
-}
+bool EndScreen::clearBackStack() { return hide; }

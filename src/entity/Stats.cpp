@@ -9,7 +9,8 @@ Stats::Stats(int maxHealth) : Entity(Texture(Paths::Bitmaps::stats)) {
 }
 
 void Stats::render(GameState &state, Vec position, bool withBackground) {
-    int mappedHealth = map(state.playerCurrentHealth, 0, state.playerHealth, 1, maxHealth);
+    int mappedHealth =
+        map(state.playerCurrentHealth, 0, state.playerHealth, 1, maxHealth);
     int i;
     for (i = 0; i < mappedHealth && i < maxHealth; i++) {
 

@@ -1,8 +1,7 @@
 #include "Apple.h"
 #include "../resources/strings/Paths.h"
 
-Apple::Apple() : PickupEntity(Texture(Paths::Bitmaps::apple, true)) {
-}
+Apple::Apple() : PickupEntity(Texture(Paths::Bitmaps::apple, true)) {}
 
 void Apple::onPickup(GameState &state) {
     PickupEntity::onPickup(state);

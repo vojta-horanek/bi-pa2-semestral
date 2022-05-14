@@ -1,18 +1,18 @@
 #ifndef TPOHB_WEAPON_H
 #define TPOHB_WEAPON_H
 
-#include "Entity.h"
 #include "../GameState.h"
+#include "Entity.h"
 #include "PickupEntity.h"
 
 class Weapon : public PickupEntity {
 
     Texture playerTexture;
 
-protected:
+  protected:
     Weapon(Texture texture, Texture playerTexture);
 
-public:
+  public:
     virtual int getDamage() = 0;
 
     void onPickup(GameState &state) override;
@@ -20,4 +20,4 @@ public:
     virtual void renderOnPlayer(GameState &state, Vec position);
 };
 
-#endif //TPOHB_WEAPON_H
+#endif // TPOHB_WEAPON_H

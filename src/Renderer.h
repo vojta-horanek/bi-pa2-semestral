@@ -1,26 +1,27 @@
 #ifndef TPOHB_RENDERER_H
 #define TPOHB_RENDERER_H
 
-#include <SDL2/SDL_render.h>
-#include "Window.h"
 #include "Rect.h"
+#include "Window.h"
+#include <SDL2/SDL_render.h>
 #include <memory>
 
 class Renderer {
-private:
+  private:
     static std::unique_ptr<Renderer> instance;
     SDL_Renderer *renderer = nullptr;
 
     Renderer();
 
-public:
+  public:
     ~Renderer();
 
     static Renderer &getInstance();
 
     void createRenderer(const Window &window);
 
-    void render(SDL_Texture *texture, const Rect &sourceRect, const Rect &destinationRect) const;
+    void render(SDL_Texture *texture, const Rect &sourceRect,
+                const Rect &destinationRect) const;
 
     void render(SDL_Texture *texture, const Rect &destinationRect) const;
 
@@ -35,5 +36,4 @@ public:
     SDL_Texture *createTexture(SDL_Surface *surface) const;
 };
 
-
-#endif //TPOHB_RENDERER_H
+#endif // TPOHB_RENDERER_H

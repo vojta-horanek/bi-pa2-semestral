@@ -3,4 +3,4 @@
 
 class Monster;
 
-#endif //TPOHB_MONSTER_FWD_H
+#endif // TPOHB_MONSTER_FWD_H

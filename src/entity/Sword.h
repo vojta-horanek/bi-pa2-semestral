@@ -1,12 +1,11 @@
 #ifndef TPOHB_SWORD_H
 #define TPOHB_SWORD_H
 
-
 #include "../GameState.h"
 #include "Weapon.h"
 
 class Sword : public Weapon {
-public:
+  public:
     Sword();
 
     void onPickup(GameState &state) override;
@@ -14,5 +13,4 @@ public:
     int getDamage() override;
 };
 
-
-#endif //TPOHB_SWORD_H
+#endif // TPOHB_SWORD_H

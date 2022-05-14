@@ -44,7 +44,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             }
             return Result::success();
         } else {
-            return Result::error("Was in " + current + " but tried to end " + what);
+            return Result::error("Was in " + current + " but tried to end " +
+                                 what);
         }
     }
 
@@ -54,7 +55,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return result.first;
 
         if (currentSection == map.sections.end()) {
-            return Result::error("No default map section has been specified yet!");
+            return Result::error(
+                "No default map section has been specified yet!");
         }
 
         if (currentSection->second.isEdge(result.second)) {
@@ -95,14 +97,15 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Unknown entity type");
         }
 
-        auto backgroundEntity = EntityManager::getEntity(backgroundType->second);
+        auto backgroundEntity =
+            EntityManager::getEntity(backgroundType->second);
 
         if (backgroundEntity == nullptr) {
             return Result::error("Invalid background entity");
         }
 
-        auto insert =
-            map.sections.emplace(Vec(x, y), MapSection(width, height, std::move(backgroundEntity)));
+        auto insert = map.sections.emplace(
+            Vec(x, y), MapSection(width, height, std::move(backgroundEntity)));
 
         if (!insert.second) {
             return Result::error("Could not create a section");
@@ -111,7 +114,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         currentSection = insert.first;
     } else if (currentState == MapParserState::value_type::section) {
 
-        if (currentSection->second.entities.size() == (size_t)currentSection->second.height) {
+        if (currentSection->second.entities.size() ==
+            (size_t)currentSection->second.height) {
             return Result::error("Unexpected line, height exceeded");
         }
 
@@ -126,7 +130,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         while (std::getline(lineStream, entityString, ' ')) {
 
             if (entityRowCount == currentSection->second.width) {
-                return Result::error("Unexpected entity, width exceeded: " + entityString);
+                return Result::error("Unexpected entity, width exceeded: " +
+                                     entityString);
             }
 
             int entityIdentifier = -1;
@@ -139,9 +144,11 @@ Result MapFileParser::parseNextLine(const std::string &line) {
 
             auto it = types.find(entityIdentifier);
             if (it == types.end()) {
-                return Result::error("Could not find a valid entity type: " + entityString);
+                return Result::error("Could not find a valid entity type: " +
+                                     entityString);
             } else {
-                row.emplace_back(std::move(EntityManager::getEntity(it->second)));
+                row.emplace_back(
+                    std::move(EntityManager::getEntity(it->second)));
             }
 
             entityRowCount++;
@@ -168,7 +175,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         Vec section;
         int entityIdentifier;
 
-        std::tie(result, position, section, entityIdentifier) = readMonsterAddCommand(line);
+        std::tie(result, position, section, entityIdentifier) =
+            readMonsterAddCommand(line);
 
         if (result.isError)
             return result;
@@ -217,28 +225,33 @@ std::pair<Result, Vec> MapFileParser::readSetCommand(const std::string &line) {
         return {Result::error("Cannot parse command `" + line + '`'), Vec()};
     }
     if (command != "SET") {
-        return {Result::error("Command not supported `" + command + '`'), Vec()};
+        return {Result::error("Command not supported `" + command + '`'),
+                Vec()};
     }
 
     return {Result::success(), Vec(x, y)};
 }
 
-std::tuple<Result, Vec, Vec, int> MapFileParser::readMonsterAddCommand(const std::string &line) {
+std::tuple<Result, Vec, Vec, int>
+MapFileParser::readMonsterAddCommand(const std::string &line) {
     std::istringstream lineStream(line);
     std::string command;
     int x, y, sectionX, sectionY, type;
     lineStream >> command >> x >> y >> sectionX >> sectionY >> type;
     if (!lineStream) {
-        return {Result::error("Cannot parse command `" + line + '`'), Vec(), Vec(), type};
+        return {Result::error("Cannot parse command `" + line + '`'), Vec(),
+                Vec(), type};
     }
     if (command != "ADD") {
-        return {Result::error("Command not supported `" + command + '`'), Vec(), Vec(), type};
+        return {Result::error("Command not supported `" + command + '`'), Vec(),
+                Vec(), type};
     }
 
     return {Result::success(), Vec(x, y), Vec(sectionX, sectionY), type};
 }
 
-MapFileParser::MapFileParser(int width, int height) : width(width), height(height) {}
+MapFileParser::MapFileParser(int width, int height)
+    : width(width), height(height) {}
 
 Result MapFileParser::areAllValuesSet() const {
     if (map.sections.empty()) {

@@ -9,8 +9,8 @@
 #include <string>
 
 bool Map::tryNavigateToSection(Vec inPlayerDirection) {
-    // If player is going up/down its direction is negative/positive. Multiply by -1 to convert to
-    // map coordinates
+    // If player is going up/down its direction is negative/positive. Multiply
+    // by -1 to convert to map coordinates
     inPlayerDirection.y *= -1;
     Vec newSection = currentSection->first + inPlayerDirection;
     auto it = sections.find(newSection);
@@ -27,7 +27,8 @@ MapSection &Map::getCurrentSection() {
     return currentSection->second;
 }
 
-Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int width, int height) {
+Map Map::loadFromFile(const std::string &fileName, GameState &gameState,
+                      int width, int height) {
 
     std::ifstream mapFile(fileName);
     if (!mapFile)
@@ -49,7 +50,8 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int wid
 
         if (result.isError) {
             std::cerr << "Error while parsing " << fileName << ". " << std::endl
-                      << "Occurred on line " << lineNum << " with error:" << std::endl
+                      << "Occurred on line " << lineNum
+                      << " with error:" << std::endl
                       << "\t" << result.errorText << std::endl
                       << "The invalid line:" << std::endl
                       << "\t" << line << std::endl;
@@ -63,8 +65,9 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState, int wid
     auto parsingResult = parser.areAllValuesSet();
 
     if (parsingResult.isError) {
-        throw std::invalid_argument("Some values were not set in the map file: " +
-                                    parsingResult.errorText);
+        throw std::invalid_argument(
+            "Some values were not set in the map file: " +
+            parsingResult.errorText);
     }
 
     if (isError)

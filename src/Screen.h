@@ -1,14 +1,13 @@
 #ifndef TPOHB_SCREEN_H
 #define TPOHB_SCREEN_H
 
-
 #include <SDL_events.h>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 class Screen {
-protected:
+  protected:
     Screen(int width, int height);
 
     std::vector<std::string> args;
@@ -16,8 +15,8 @@ protected:
     std::unique_ptr<Screen> navigationDestination = nullptr;
 
     int width, height;
-public:
 
+  public:
     bool applicationQuitRequested = false;
 
     virtual ~Screen();
@@ -38,8 +37,7 @@ public:
 
     virtual void onCreate();
 
-    void setArgs(const std::vector<std::string> & programArgs);
+    void setArgs(const std::vector<std::string> &programArgs);
 };
 
-
-#endif //TPOHB_SCREEN_H
+#endif // TPOHB_SCREEN_H
