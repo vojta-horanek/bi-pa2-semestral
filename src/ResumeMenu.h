@@ -2,8 +2,8 @@
 #define TPOHB_RESUMEMENU_H
 
 #include "GameState.h"
-#include "Menu.h"
 #include "Map.h"
+#include "Menu.h"
 #include <memory>
 
 class ResumeMenu : public Menu {

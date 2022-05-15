@@ -7,6 +7,7 @@
 #include "Result.h"
 #include "ResumeMenu.h"
 #include "SaveFileParser.h"
+#include "SaveManager.h"
 #include "entity/Monster.h"
 
 Game::Game(int width, int height)
@@ -17,6 +18,10 @@ Game::Game(int width, int height)
     player = std::make_shared<Player>();
     stats = std::make_unique<Stats>(3);
     gameMap = std::make_shared<Map>();
+
+    if (saveFilePath.empty()) {
+        saveFilePath = SaveManager::getNewGameFilePath();
+    }
 }
 
 Game::Game(int width, int height, const std::string &saveFile)
@@ -65,8 +70,8 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                navigationDestination =
-                    std::make_unique<ResumeMenu>(width, height, gameState, gameMap);
+                navigationDestination = std::make_unique<ResumeMenu>(
+                    width, height, gameState, gameMap);
                 break;
         }
     }
@@ -152,7 +157,7 @@ void Game::avoidPlayerCollision() {
         }
 
     } else if (gameMap->getCurrentSection().collideWith(playerNexPos,
-                                                       *gameState)) {
+                                                        *gameState)) {
         player->setDirection(0, 0);
     }
 }

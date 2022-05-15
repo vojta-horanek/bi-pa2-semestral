@@ -32,8 +32,9 @@ class Map {
 
     Result saveToFile(const std::string &path, const GameState &gameState);
 
-    static std::shared_ptr<Map> loadFromFile(const std::string &fileName, GameState &gameState,
-                            int width, int height);
+    static std::shared_ptr<Map> loadFromFile(const std::string &fileName,
+                                             GameState &gameState, int width,
+                                             int height);
 
   private:
     void writeSection(MapParserState section, std::ostream &output,

@@ -42,8 +42,8 @@ Result Map::saveToFile(const std::string &path, const GameState &gameState) {
                  });
 
     // Write sections
-    writeSection(MapParserState(MapParserState::value_type::sections),
-                 saveFile, [&](std::ostream &ostream) {
+    writeSection(MapParserState(MapParserState::value_type::sections), saveFile,
+                 [&](std::ostream &ostream) {
                      for (const auto &[position, section] : sections) {
                          section.writeToStream(ostream, types, position);
                      }
@@ -62,8 +62,8 @@ Result Map::saveToFile(const std::string &path, const GameState &gameState) {
                  });
 
     // Write monsters
-    writeSection(MapParserState(MapParserState::value_type::monsters),
-                 saveFile, [&](std::ostream &ostream) {
+    writeSection(MapParserState(MapParserState::value_type::monsters), saveFile,
+                 [&](std::ostream &ostream) {
                      for (const auto &[position, section] : sections) {
                          section.writeMovingEntities(ostream, types, position);
                      }
@@ -75,8 +75,9 @@ Result Map::saveToFile(const std::string &path, const GameState &gameState) {
     return Result::success();
 }
 
-std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName, GameState &gameState,
-                      int width, int height) {
+std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName,
+                                       GameState &gameState, int width,
+                                       int height) {
 
     std::ifstream mapFile(fileName);
     if (!mapFile)
@@ -127,9 +128,8 @@ std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName, GameState &g
     return parser.map;
 }
 
-void Map::writeSection(
-    MapParserState section, std::ostream &output,
-    std::function<void(std::ostream &ostream)> writeFun) {
+void Map::writeSection(MapParserState section, std::ostream &output,
+                       std::function<void(std::ostream &ostream)> writeFun) {
     const std::string &sectionName = section.toString();
     output << sectionName << std::endl;
     writeFun(output);

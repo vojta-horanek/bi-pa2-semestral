@@ -5,6 +5,9 @@
 const std::string SaveManager::commonSavePaths[] = {"examples/save_manual",
                                                     "../examples/save_manual"};
 
+const std::string SaveManager::newGamePaths[] = {"src/games/new_game_save",
+                                                 "games/new_game_save"};
+
 bool SaveManager::fileExists(const std::string &path) {
     std::ifstream file(path);
     return file.good();
@@ -15,6 +18,15 @@ std::string SaveManager::getSaveFilePath() {
          i++) {
         if (fileExists(commonSavePaths[i]))
             return commonSavePaths[i];
+    }
+
+    return "";
+}
+std::string SaveManager::getNewGameFilePath() {
+    for (size_t i = 0; i < sizeof(newGamePaths) / sizeof(newGamePaths[0]);
+         i++) {
+        if (fileExists(newGamePaths[i]))
+            return newGamePaths[i];
     }
 
     return "";

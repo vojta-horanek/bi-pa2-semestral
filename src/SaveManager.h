@@ -11,6 +11,7 @@
 class SaveManager {
   private:
     static const std::string commonSavePaths[];
+    static const std::string newGamePaths[];
 
     static bool fileExists(const std::string &path);
     void writeSection(SaveParserState section, std::ostream &output,
@@ -18,9 +19,9 @@ class SaveManager {
 
   public:
     static std::string getSaveFilePath();
+    static std::string getNewGameFilePath();
     Result saveGame(const std::string &saveFilePath,
-                    const std::string &mapFilePath,
-                    const GameState &gameState);
+                    const std::string &mapFilePath, const GameState &gameState);
 };
 
 #endif // TPOHB_SAVEMANAGER_H

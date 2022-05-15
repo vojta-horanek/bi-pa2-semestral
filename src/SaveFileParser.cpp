@@ -93,8 +93,8 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
 
         std::ifstream mapFile(line);
         if (!mapFile.good()) {
-            std::cout << "INFO: map file `" << line << "` does not exist"
-                      << std::endl;
+            std::cout << "INFO: map file `" << line
+                      << "` does not exist. Trying next one." << std::endl;
             return Result::success();
         }
         mapFilePath = line;

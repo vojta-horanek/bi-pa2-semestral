@@ -14,8 +14,8 @@
 
 MapFileParser::MapFileParser(int width, int height)
     : width(width), height(height) {
-        map = std::make_shared<Map>();
-    }
+    map = std::make_shared<Map>();
+}
 
 Result MapFileParser::parseNextLine(const std::string &line) {
 
