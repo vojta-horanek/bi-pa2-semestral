@@ -67,6 +67,9 @@ bool FightScreen::popSelf() { return fadeFinished; }
 
 FightScreen::~FightScreen() {
     player->onFightEnd();
+    if (gameState->weapon != nullptr) {
+        gameState->weapon->onFightEnd();
+    }
     gameState->fight->onFightEnd();
     gameState->fight = nullptr;
 }

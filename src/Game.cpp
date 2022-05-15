@@ -14,10 +14,10 @@ Game::Game(int width, int height)
     : Screen(width, height), gameWidth(width / BLOCK_PIXELS),
       gameHeight(height / BLOCK_PIXELS) {
     gameState = std::make_shared<GameState>();
-    inventory = std::make_unique<Inventory>(width);
     player = std::make_shared<Player>();
-    stats = std::make_unique<Stats>(3);
     gameMap = std::make_shared<Map>();
+    inventory = std::make_unique<Inventory>(width);
+    stats = std::make_unique<Stats>(3);
 
     if (saveFilePath.empty()) {
         saveFilePath = SaveManager::getNewGameFilePath();

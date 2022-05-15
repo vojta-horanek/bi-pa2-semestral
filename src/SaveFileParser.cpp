@@ -154,6 +154,9 @@ Result SaveFileParser::areAllValuesSet() const {
     if (playerDefaultDamage == -1)
         return Result::error("Player default damage not set");
 
+    if (playerCurrentHealth > playerHealth)
+        return Result::error("Players current health cannot be higher than their maxium health");
+
     return Result::success();
 }
 

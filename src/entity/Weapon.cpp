@@ -8,3 +8,10 @@ void Weapon::renderOnPlayer(GameState &state, Vec position) {
 }
 
 void Weapon::onPickup(GameState &state) { PickupEntity::onPickup(state); }
+
+
+void Weapon::onFightEnd() {
+    scale = 1;
+    resetAlpha();
+    playerTexture.setAlpha(255);
+}

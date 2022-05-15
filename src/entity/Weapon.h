@@ -18,6 +18,8 @@ class Weapon : public PickupEntity {
     void onPickup(GameState &state) override;
 
     virtual void renderOnPlayer(GameState &state, Vec position);
+
+    void onFightEnd();
 };
 
 #endif // TPOHB_WEAPON_H
