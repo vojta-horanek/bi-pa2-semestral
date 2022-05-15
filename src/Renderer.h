@@ -29,6 +29,8 @@ class Renderer {
 
     void selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const;
 
+    void drawRectangle(const Rect & destination, bool fill) const;
+
     void clear() const;
 
     void present() const;

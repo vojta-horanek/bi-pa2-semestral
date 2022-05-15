@@ -8,8 +8,16 @@
 #include "resources/strings/L10n.h"
 #include <iostream>
 #include <stack>
+#include <stdexcept>
 
 Application::Application() : window(Window(L10n::appName)) {
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, L10n::cannotInitializeSDL,
+                        SDL_GetError());
+        return;
+    }
+
     Renderer::getInstance().createRenderer(window);
 
     if (!Text::initTTF()) {
@@ -19,6 +27,11 @@ Application::Application() : window(Window(L10n::appName)) {
 
     backstack.emplace(std::make_unique<MainMenu>(GAME_WIDTH * BLOCK_PIXELS,
                                                  GAME_HEIGHT * BLOCK_PIXELS));
+}
+
+Application::~Application() {
+    Text::destroyTTF();
+    SDL_Quit();
 }
 
 int Application::run(const std::vector<std::string> &args) {

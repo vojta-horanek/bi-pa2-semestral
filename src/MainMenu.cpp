@@ -4,16 +4,17 @@
 #include "MenuNew.h"
 #include "MenuQuit.h"
 #include "SaveManager.h"
-#include "resources/strings/Paths.h"
+#include "resources/strings/L10n.h"
 
-MainMenu::MainMenu(int width, int height) : Menu(width, height) {
+MainMenu::MainMenu(int width, int height)
+    : Menu(width, height), m_Title(L10n::appNameShort, 128) {
+    m_Title.setColor(0, 0, 0);
     items.emplace_back(std::make_unique<MenuNew>());
 
     if (!SaveManager::getSaveFilePath().empty())
         items.emplace_back(std::make_unique<MenuLoad>());
 
     items.emplace_back(std::make_unique<MenuQuit>());
-    title = Texture(Paths::Bitmaps::title, true);
 }
 
 void MainMenu::onItemSelected(size_t activeIndex) {
@@ -41,6 +42,8 @@ void MainMenu::onEscapePressed() {
 void MainMenu::onRender() {
     Menu::onRender();
     // Render game title
-    title.render(Vec(width / 2 - title.getWidth() * 2, title.getHeight() * 2),
-                 4);
+    m_Title.render(Vec(width / 2 - m_Title.getBoxSize().x / 2,
+                       m_Title.getBoxSize().y / 2));
 }
+
+int MainMenu::getItemsTopPadding() const { return m_Title.getBoxSize().y / 2; }

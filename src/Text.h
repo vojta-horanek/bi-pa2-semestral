@@ -4,12 +4,14 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "Vec.h"
+#include <map>
 #include <string>
 #include <tuple>
 
 class Text {
   public:
-    Text(const std::string &text);
+    explicit Text(const std::string &text);
+    Text(const std::string &text, int fontSize);
     ~Text();
 
     Text(Text &&other) noexcept;
@@ -18,8 +20,11 @@ class Text {
     Text(const Text &other) = delete;
     Text &operator=(const Text &other) = delete;
 
-    void render(Vec position);
-    void setColor(int r, int g, int b);
+    void render(Vec position) const;
+    void setColor(unsigned char r, unsigned char g, unsigned char b);
+    void setFontSize(int fontSize);
+
+    Vec getBoxSize() const;
 
     static bool initTTF();
     static void destroyTTF();
@@ -27,9 +32,14 @@ class Text {
   private:
     const std::string m_Text;
     SDL_Texture *m_FontTexture = nullptr;
-    std::tuple<int, int, int> m_Color = std::make_tuple(255, 255, 255);
+    SDL_Color m_Color = {255, 255, 255, 255};
+    Vec m_BoxSize;
+    int m_FontSize;
+    SDL_Texture *createTexture();
+    TTF_Font *getFont();
+    void swapTexture();
 
-    static TTF_Font *s_Font;
+    static std::map<int, TTF_Font *> s_Fonts;
 };
 
 #endif // TPOHB_TEXT_H

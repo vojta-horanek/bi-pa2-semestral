@@ -1,20 +1,19 @@
 #ifndef TPOHB_MENUITEM_H
 #define TPOHB_MENUITEM_H
 
+#include "Text.h"
 #include "Texture.h"
 #include "Vec.h"
+#include <string>
 
 class MenuItem {
   private:
-    Texture inactive;
-    Texture active;
-
-    const int renderScale = 3;
-    const int height = 24;
-    const int width = 80;
+    Text m_Text;
+    const int m_TextPadding = 16;
+    Vec getTotalSize() const;
 
   protected:
-    MenuItem(Texture inactive, Texture active);
+    MenuItem(const std::string &text);
 
   public:
     virtual ~MenuItem();

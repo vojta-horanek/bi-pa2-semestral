@@ -2,8 +2,6 @@
 
 #include "resources/strings/Paths.h"
 
-MenuSave::MenuSave()
-    : MenuItem(Texture(Paths::Bitmaps::menu_save, true),
-               Texture(Paths::Bitmaps::menu_save_selected, true)) {}
+MenuSave::MenuSave() : MenuItem("SAVE") {}
 
 MenuItem::Item MenuSave::getType() { return MenuItem::Item::SAVE; }

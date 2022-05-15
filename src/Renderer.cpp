@@ -50,6 +50,15 @@ void Renderer::render(SDL_Texture *texture) const {
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 }
 
+void Renderer::drawRectangle(const Rect &destination, bool fill) const {
+    SDL_Rect dest{destination.position.x, destination.position.y,
+                  destination.size.x, destination.size.y};
+    if (fill)
+        SDL_RenderFillRect(renderer, &dest);
+    else
+        SDL_RenderDrawRect(renderer, &dest);
+}
+
 void Renderer::clear() const { SDL_RenderClear(renderer); }
 
 void Renderer::present() const { SDL_RenderPresent(renderer); }

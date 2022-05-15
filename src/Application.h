@@ -17,6 +17,8 @@ class Application {
   public:
     Application();
 
+    ~Application();
+
     int run(const std::vector<std::string> &args);
 
     void popBackStack();

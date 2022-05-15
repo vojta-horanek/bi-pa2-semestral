@@ -21,6 +21,8 @@ class Menu : public Screen {
 
     virtual void onEscapePressed() = 0;
 
+    virtual int getItemsTopPadding() const;
+
     Menu(int width, int height);
 
   public:

@@ -39,13 +39,21 @@ void Menu::onRender() {
     for (size_t item = 0; item < items.size(); item++) {
         auto &currentItem = items[item];
         if (item == activeItem) {
-            currentItem->renderActive(currentItem->getDestinationPosition(
-                (int)item, (int)items.size(), width, height));
+            currentItem->renderActive(
+                currentItem
+                    ->getDestinationPosition((int)item, (int)items.size(),
+                                             width, height)
+                    .withY(getItemsTopPadding()));
         } else {
-            currentItem->render(currentItem->getDestinationPosition(
-                (int)item, (int)items.size(), width, height));
+            currentItem->render(currentItem
+                                    ->getDestinationPosition((int)item,
+                                                             (int)items.size(),
+                                                             width, height)
+                                    .withY(getItemsTopPadding()));
         }
     }
 }
 
 bool Menu::popSelf() { return !userInMenu; }
+
+int Menu::getItemsTopPadding() const { return 0; }

@@ -1,11 +1,21 @@
 #include "Text.h"
 
+#include "Rect.h"
+#include "Renderer.h"
 #include "resources/strings/Paths.h"
+#include <SDL2/SDL.h>
 #include <iostream>
 
-TTF_Font *Text::s_Font = nullptr;
+Text::Text(const std::string &text, int fontSize)
+    : m_Text(text), m_FontSize(fontSize) {
+    m_FontTexture = createTexture();
 
-Text::Text(const std::string &text) : m_Text(text) {}
+    if (m_FontTexture == nullptr)
+        std::cerr << "Failed while creating font texture" << std::endl;
+}
+
+Text::Text(const std::string &text) : Text(text, 24) {}
+
 Text::~Text() {
     if (m_FontTexture != nullptr)
         SDL_DestroyTexture(m_FontTexture);
@@ -28,9 +38,89 @@ Text &Text::operator=(Text &&other) noexcept {
     return *this;
 }
 
-void Text::render(Vec position) {}
+void Text::render(Vec position) const {
 
-void Text::setColor(int r, int g, int b) { m_Color = std::make_tuple(r, g, b); }
+    if (m_FontTexture == nullptr)
+        return;
+
+    Rect destination{position, m_BoxSize};
+
+    Renderer::getInstance().render(m_FontTexture, destination);
+}
+
+void Text::setColor(unsigned char r, unsigned char g, unsigned char b) {
+
+    if (m_Color.r == r && m_Color.g == g && m_Color.b == b)
+        return;
+    m_Color = {r, g, b, 255};
+    swapTexture();
+}
+
+void Text::setFontSize(int fontSize) {
+    if (fontSize == m_FontSize)
+        return;
+
+    m_FontSize = fontSize;
+    swapTexture();
+}
+
+void Text::swapTexture() {
+    SDL_Texture *newFontTexture = createTexture();
+
+    if (newFontTexture == nullptr)
+        std::cerr << "Failed while creating font texture" << std::endl;
+
+    SDL_DestroyTexture(m_FontTexture);
+
+    m_FontTexture = newFontTexture;
+}
+
+SDL_Texture *Text::createTexture() {
+
+    TTF_Font *font = getFont();
+
+    if (font == nullptr)
+        return nullptr;
+
+    SDL_Surface *surface = TTF_RenderText_Solid(font, m_Text.c_str(), m_Color);
+    if (surface == nullptr)
+        return nullptr;
+
+    SDL_Texture *fontTexture = Renderer::getInstance().createTexture(surface);
+
+    if (fontTexture == nullptr)
+        return nullptr;
+
+    m_BoxSize.x = surface->w;
+    m_BoxSize.y = surface->h;
+
+    SDL_FreeSurface(surface);
+
+    return fontTexture;
+}
+
+TTF_Font *Text::getFont() {
+
+    // Try to find the font if it already exists
+    auto foundFont = s_Fonts.find(m_FontSize);
+    if (foundFont != s_Fonts.end())
+        return foundFont->second;
+
+    // Create a new font with the specified size
+    TTF_Font *font = TTF_OpenFont(Paths::Fonts::pixel, m_FontSize);
+
+    if (font == nullptr) {
+        std::cerr << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+
+    s_Fonts[m_FontSize] = font;
+    return font;
+}
+
+Vec Text::getBoxSize() const { return m_BoxSize; }
+
+std::map<int, TTF_Font *> Text::s_Fonts;
 
 bool Text::initTTF() {
     if (TTF_Init() < 0) {
@@ -38,16 +128,12 @@ bool Text::initTTF() {
         return false;
     }
 
-    s_Font = TTF_OpenFont(Paths::Fonts::pixel, 16);
-    if (s_Font == nullptr) {
-        std::cerr << TTF_GetError() << std::endl;
-        return false;
-    }
-
     return true;
 }
 void Text::destroyTTF() {
-    TTF_CloseFont(s_Font);
-    s_Font = nullptr;
+    for (const auto &[_, font] : s_Fonts)
+        TTF_CloseFont(font);
+
+    s_Fonts.clear();
     TTF_Quit();
 }

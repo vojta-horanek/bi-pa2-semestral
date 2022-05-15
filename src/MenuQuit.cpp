@@ -3,8 +3,6 @@
 #include "Texture.h"
 #include "resources/strings/Paths.h"
 
-MenuQuit::MenuQuit()
-    : MenuItem(Texture(Paths::Bitmaps::menu_quit, true),
-               Texture(Paths::Bitmaps::menu_quit_selected, true)) {}
+MenuQuit::MenuQuit() : MenuItem("QUIT") {}
 
 MenuItem::Item MenuQuit::getType() { return MenuItem::Item::QUIT; }
