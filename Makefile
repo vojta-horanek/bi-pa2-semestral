@@ -3,7 +3,7 @@
 LOGIN = horanvoj
 CXX = g++
 BASIC_FLAGS = -std=c++17 -O2 -g -Wall -pedantic
-FLAGS =  $(shell pkg-config --cflags --libs sdl2) -DRESOURCES_PATH=\"src/resources/\"
+FLAGS =  $(shell pkg-config --cflags --libs sdl2) -lSDL2_ttf -DRESOURCES_PATH=\"src/resources/\"
 
 ZIP = Makefile Doxyfile DOCUMENTATION.md zadani.txt prohlaseni.txt \
   .gitignore $(wildcard examples/*) $(wildcard src/*)

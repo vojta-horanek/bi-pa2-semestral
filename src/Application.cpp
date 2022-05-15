@@ -3,12 +3,20 @@
 #include "Constants.h"
 #include "MainMenu.h"
 #include "Renderer.h"
+#include "Text.h"
 #include "Window.h"
 #include "resources/strings/L10n.h"
+#include <iostream>
 #include <stack>
 
 Application::Application() : window(Window(L10n::appName)) {
     Renderer::getInstance().createRenderer(window);
+
+    if (!Text::initTTF()) {
+        std::cerr << "Error initializing TTF, quiting..." << std::endl;
+        return;
+    }
+
     backstack.emplace(std::make_unique<MainMenu>(GAME_WIDTH * BLOCK_PIXELS,
                                                  GAME_HEIGHT * BLOCK_PIXELS));
 }
