@@ -20,7 +20,7 @@ class SaveManager {
     static std::string getSaveFilePath();
     Result saveGame(const std::string &saveFilePath,
                     const std::string &mapFilePath,
-                    std::shared_ptr<GameState> gameState);
+                    const GameState &gameState);
 };
 
 #endif // TPOHB_SAVEMANAGER_H

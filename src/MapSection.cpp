@@ -78,3 +78,32 @@ bool MapSection::isMovingEntity(Vec position) const {
     }
     return false;
 }
+
+void MapSection::writeToStream(std::ostream &stream,
+                               const std::map<EntityType, int> &types,
+                               Vec sectionPosition) const {
+    stream << "SECTION " << sectionPosition << " "
+           << types.find(backgroundEntity->getType())->second << std::endl;
+
+    for (const auto &row : entities) {
+        for (const auto &entity : row) {
+            if (entity == nullptr) {
+                stream << types.find(EntityType::VOID)->second << " ";
+            } else {
+                stream << types.find(entity->getType())->second << " ";
+            }
+        }
+        stream << std::endl;
+    }
+
+    stream << "END SECTION" << std::endl;
+}
+
+void MapSection::writeMovingEntities(std::ostream &stream,
+                                     const std::map<EntityType, int> &types,
+                                     Vec sectionPosition) const {
+    for (const auto &entity : movingEntities) {
+        stream << "ADD " << entity->position << " " << sectionPosition << " "
+               << types.find(entity->getType())->second << std::endl;
+    }
+}

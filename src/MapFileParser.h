@@ -6,14 +6,14 @@
 #include "Map.h"
 #include "MapParserState.h"
 #include "Result.h"
+#include <memory>
 
 class MapFileParser {
 
   private:
     MapParserState currentState;
-    Map map;
     std::map<int, EntityType> types;
-    std::map<Vec, MapSection>::iterator currentSection = map.sections.end();
+    std::map<Vec, MapSection>::iterator currentSection = map->sections.end();
     GameState gameState;
     int width, height;
 
@@ -25,9 +25,9 @@ class MapFileParser {
   public:
     MapFileParser(int width, int height);
 
-    Result parseNextLine(const std::string &line);
+    std::shared_ptr<Map> map;
 
-    Map getMap();
+    Result parseNextLine(const std::string &line);
 
     Result areAllValuesSet() const;
 

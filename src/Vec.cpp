@@ -64,7 +64,7 @@ bool Vec::operator<(const Vec &p1) const {
 }
 
 std::ostream &operator<<(std::ostream &s, const Vec &vec) {
-    s << "(" << vec.x << ", " << vec.y << ")";
+    s << vec.x << " " << vec.y;
     return s;
 }
 

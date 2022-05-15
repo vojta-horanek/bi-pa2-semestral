@@ -27,7 +27,55 @@ MapSection &Map::getCurrentSection() {
     return currentSection->second;
 }
 
-Map Map::loadFromFile(const std::string &fileName, GameState &gameState,
+Result Map::saveToFile(const std::string &path, const GameState &gameState) {
+    std::ofstream saveFile(path);
+
+    if (!saveFile.good())
+        return Result::error("Cannot create map file: " + path);
+
+    std::map<EntityType, int> types = EntityManager::createDefinitions();
+
+    // Write definitions
+    writeSection(MapParserState(MapParserState::value_type::define), saveFile,
+                 [&types](std::ostream &ostream) {
+                     EntityManager::printDefinitions(types, ostream);
+                 });
+
+    // Write sections
+    writeSection(MapParserState(MapParserState::value_type::sections),
+                 saveFile, [&](std::ostream &ostream) {
+                     for (const auto &[position, section] : sections) {
+                         section.writeToStream(ostream, types, position);
+                     }
+                 });
+
+    // Write default section
+    writeSection(MapParserState(MapParserState::value_type::default_section),
+                 saveFile, [&](std::ostream &ostream) {
+                     ostream << "SET " << currentSection->first << std::endl;
+                 });
+
+    // Write player postion
+    writeSection(MapParserState(MapParserState::value_type::player), saveFile,
+                 [&gameState](std::ostream &ostream) {
+                     ostream << "SET " << gameState.playerPosition << std::endl;
+                 });
+
+    // Write monsters
+    writeSection(MapParserState(MapParserState::value_type::monsters),
+                 saveFile, [&](std::ostream &ostream) {
+                     for (const auto &[position, section] : sections) {
+                         section.writeMovingEntities(ostream, types, position);
+                     }
+                 });
+
+    if (!saveFile.good())
+        return Result::error("Failed writing to map file: " + path);
+
+    return Result::success();
+}
+
+std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName, GameState &gameState,
                       int width, int height) {
 
     std::ifstream mapFile(fileName);
@@ -60,8 +108,6 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState,
         }
     }
 
-    mapFile.close();
-
     auto parsingResult = parser.areAllValuesSet();
 
     if (parsingResult.isError) {
@@ -78,5 +124,14 @@ Map Map::loadFromFile(const std::string &fileName, GameState &gameState,
     // Update game state values
     gameState.playerPosition = newGameState.playerPosition;
 
-    return std::move(parser.getMap());
+    return parser.map;
+}
+
+void Map::writeSection(
+    MapParserState section, std::ostream &output,
+    std::function<void(std::ostream &ostream)> writeFun) {
+    const std::string &sectionName = section.toString();
+    output << sectionName << std::endl;
+    writeFun(output);
+    output << "END " << sectionName << std::endl;
 }

@@ -12,6 +12,11 @@
 #include <tuple>
 #include <utility>
 
+MapFileParser::MapFileParser(int width, int height)
+    : width(width), height(height) {
+        map = std::make_shared<Map>();
+    }
+
 Result MapFileParser::parseNextLine(const std::string &line) {
 
     if (line.empty() || line[0] == ';')
@@ -54,7 +59,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         if (result.first.isError)
             return result.first;
 
-        if (currentSection == map.sections.end()) {
+        if (currentSection == map->sections.end()) {
             return Result::error(
                 "No default map section has been specified yet!");
         }
@@ -72,9 +77,9 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         if (result.first.isError)
             return result.first;
 
-        map.currentSection = map.sections.find(result.second);
+        map->currentSection = map->sections.find(result.second);
 
-        if (map.currentSection == map.sections.end()) {
+        if (map->currentSection == map->sections.end()) {
             std::stringstream str;
             str << "Cannot find section with position " << result.second;
             return Result::error(str.str());
@@ -104,7 +109,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Invalid background entity");
         }
 
-        auto insert = map.sections.emplace(
+        auto insert = map->sections.emplace(
             Vec(x, y), MapSection(width, height, std::move(backgroundEntity)));
 
         if (!insert.second) {
@@ -181,9 +186,9 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         if (result.isError)
             return result;
 
-        auto thisSection = map.sections.find(section);
+        auto thisSection = map->sections.find(section);
 
-        if (thisSection == map.sections.end()) {
+        if (thisSection == map->sections.end()) {
             std::stringstream str;
             str << "Cannot find section with position " << section;
             return Result::error(str.str());
@@ -211,8 +216,6 @@ Result MapFileParser::parseNextLine(const std::string &line) {
     }
     return Result::success();
 }
-
-Map MapFileParser::getMap() { return std::move(map); }
 
 GameState MapFileParser::getState() { return std::move(gameState); }
 
@@ -250,15 +253,12 @@ MapFileParser::readMonsterAddCommand(const std::string &line) {
     return {Result::success(), Vec(x, y), Vec(sectionX, sectionY), type};
 }
 
-MapFileParser::MapFileParser(int width, int height)
-    : width(width), height(height) {}
-
 Result MapFileParser::areAllValuesSet() const {
-    if (map.sections.empty()) {
+    if (map->sections.empty()) {
         return Result::error("No map sections defined");
     }
 
-    if (map.currentSection == map.sections.end()) {
+    if (map->currentSection == map->sections.end()) {
         return Result::error("A default section has not been set");
     }
 

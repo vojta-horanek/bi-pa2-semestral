@@ -22,7 +22,7 @@ std::string SaveManager::getSaveFilePath() {
 
 Result SaveManager::saveGame(const std::string &saveFilePath,
                              const std::string &mapFilePath,
-                             std::shared_ptr<GameState> gameState) {
+                             const GameState &gameState) {
 
     std::ofstream saveFile(saveFilePath);
 
@@ -44,10 +44,10 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
                  });
 
     // Write inventory
-    if (!gameState->inventory.empty()) {
+    if (!gameState.inventory.empty()) {
         writeSection(SaveParserState(SaveParserState::value_type::inventory),
                      saveFile, [&gameState, &types](std::ostream &ostream) {
-                         for (const auto &item : gameState->inventory) {
+                         for (const auto &item : gameState.inventory) {
                              ostream << "ADD " << types[item->getType()]
                                      << std::endl;
                          }
@@ -55,11 +55,10 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
     }
 
     // Write weapon
-    if (gameState->weapon != nullptr) {
+    if (gameState.weapon != nullptr) {
         writeSection(SaveParserState(SaveParserState::value_type::weapon),
                      saveFile, [&gameState, &types](std::ostream &ostream) {
-                         ostream << "SET "
-                                 << types[gameState->weapon->getType()]
+                         ostream << "SET " << types[gameState.weapon->getType()]
                                  << std::endl;
                      });
     }
@@ -67,20 +66,20 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
     // Write player health
     writeSection(SaveParserState(SaveParserState::value_type::health), saveFile,
                  [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState->playerHealth << std::endl;
+                     ostream << "SET " << gameState.playerHealth << std::endl;
                  });
 
     // Write current player health
     writeSection(SaveParserState(SaveParserState::value_type::current_health),
                  saveFile, [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState->playerCurrentHealth
+                     ostream << "SET " << gameState.playerCurrentHealth
                              << std::endl;
                  });
 
     // Write default damage
     writeSection(SaveParserState(SaveParserState::value_type::default_damage),
                  saveFile, [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState->playerDefaultDamage
+                     ostream << "SET " << gameState.playerDefaultDamage
                              << std::endl;
                  });
 

@@ -21,8 +21,7 @@ class Game : public Screen {
     std::unique_ptr<Inventory> inventory;
     std::unique_ptr<Stats> stats;
     std::shared_ptr<GameState> gameState;
-
-    Map gameMap;
+    std::shared_ptr<Map> gameMap;
 
     int gameWidth, gameHeight;
 

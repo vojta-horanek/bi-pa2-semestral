@@ -13,6 +13,7 @@
 #include <cassert>
 #include <map>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,14 @@ class MapSection {
                      bool isPlayer = true) const;
 
     bool isMovingEntity(Vec position) const;
+
+    void writeToStream(std::ostream &stream,
+                       const std::map<EntityType, int> &types,
+                       Vec sectionPosition) const;
+
+    void writeMovingEntities(std::ostream &stream,
+                             const std::map<EntityType, int> &types,
+                             Vec sectionPosition) const;
 };
 
 #endif // TPOHB_MAPSECTION_H

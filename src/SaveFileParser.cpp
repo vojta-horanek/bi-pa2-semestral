@@ -186,8 +186,6 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
         }
     }
 
-    saveFile.close();
-
     if (isError)
         return Result::error("Save could not be loaded from file");
 

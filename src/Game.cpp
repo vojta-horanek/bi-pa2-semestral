@@ -16,6 +16,7 @@ Game::Game(int width, int height)
     inventory = std::make_unique<Inventory>(width);
     player = std::make_shared<Player>();
     stats = std::make_unique<Stats>(3);
+    gameMap = std::make_shared<Map>();
 }
 
 Game::Game(int width, int height, const std::string &saveFile)
@@ -28,7 +29,7 @@ void Game::onRender() {
     if (!gameState->running)
         return;
 
-    gameMap.getCurrentSection().render(*gameState);
+    gameMap->getCurrentSection().render(*gameState);
 
     player->render(*gameState, gameState->playerPosition);
 
@@ -65,7 +66,7 @@ void Game::onEvent(SDL_Event event) {
                 break;
             case SDLK_ESCAPE:
                 navigationDestination =
-                    std::make_unique<ResumeMenu>(width, height, gameState);
+                    std::make_unique<ResumeMenu>(width, height, gameState, gameMap);
                 break;
         }
     }
@@ -107,9 +108,9 @@ bool Game::loadSave() {
 
 void Game::nextTurn() {
     avoidPlayerCollision();
-    player->onTurn(*gameState, gameMap.getCurrentSection());
+    player->onTurn(*gameState, gameMap->getCurrentSection());
 
-    gameMap.getCurrentSection().onTurn(*gameState);
+    gameMap->getCurrentSection().onTurn(*gameState);
 
     if (gameState->fight != nullptr) {
         navigationDestination =
@@ -124,13 +125,13 @@ void Game::nextTurn() {
 
 void Game::avoidPlayerCollision() {
     Vec playerNexPos = player->getNextPosition(gameState->playerPosition);
-    if (gameMap.getCurrentSection().isEdge(playerNexPos)) {
+    if (gameMap->getCurrentSection().isEdge(playerNexPos)) {
 
         Vec direction = player->getDirection();
 
         player->setDirection(0, 0);
 
-        if (gameMap.tryNavigateToSection(direction)) {
+        if (gameMap->tryNavigateToSection(direction)) {
             if (direction.x != 0) {
                 int newX = 0;
                 if (direction.x < 0) {
@@ -150,7 +151,7 @@ void Game::avoidPlayerCollision() {
             }
         }
 
-    } else if (gameMap.getCurrentSection().collideWith(playerNexPos,
+    } else if (gameMap->getCurrentSection().collideWith(playerNexPos,
                                                        *gameState)) {
         player->setDirection(0, 0);
     }
