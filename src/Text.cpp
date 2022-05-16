@@ -90,8 +90,8 @@ SDL_Texture *Text::createTexture() {
     if (font == nullptr)
         return nullptr;
 
-    SDL_Surface *surface = TTF_RenderText_Solid_Wrapped(font, m_Text.c_str(),
-                                                        m_Color, m_WrapWidth);
+    SDL_Surface *surface = TTF_RenderText_Blended_Wrapped(font, m_Text.c_str(),
+                                                          m_Color, m_WrapWidth);
     if (surface == nullptr)
         return nullptr;
 
