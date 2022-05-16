@@ -20,6 +20,8 @@ class AnimatedEntity : public Entity {
     void nextAnimatedRender(Texture &texture, Vec position);
 
   public:
+    virtual ~AnimatedEntity();
+    
     int scale = 1;
 
     void render(GameState &state, Vec position) override;

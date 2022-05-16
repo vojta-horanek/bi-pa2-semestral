@@ -6,12 +6,15 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+Text::Text() : m_FontTexture(nullptr) {}
+
 Text::Text(const std::string &text, int fontSize)
     : m_Text(text), m_FontSize(fontSize) {
     m_FontTexture = createTexture();
 
     if (m_FontTexture == nullptr)
-        std::cerr << "Failed while creating font texture" << std::endl;
+        std::cerr << "Failed while creating font texture: " << TTF_GetError()
+                  << std::endl;
 }
 
 Text::Text(const std::string &text) : Text(text, 24) {}
@@ -48,6 +51,14 @@ void Text::render(Vec position) const {
     Renderer::getInstance().render(m_FontTexture, destination);
 }
 
+void Text::setText(const std::string &text) {
+    if (m_Text == text)
+        return;
+
+    m_Text = text;
+    swapTexture();
+}
+
 void Text::setColor(unsigned char r, unsigned char g, unsigned char b) {
 
     if (m_Color.r == r && m_Color.g == g && m_Color.b == b)
@@ -76,7 +87,8 @@ void Text::swapTexture() {
     SDL_Texture *newFontTexture = createTexture();
 
     if (newFontTexture == nullptr)
-        std::cerr << "Failed while creating font texture" << std::endl;
+        std::cerr << "Failed while creating font texture: " << TTF_GetError()
+                  << std::endl;
 
     SDL_DestroyTexture(m_FontTexture);
 

@@ -10,6 +10,7 @@
 
 class Text {
   public:
+    Text();
     explicit Text(const std::string &text);
     Text(const std::string &text, int fontSize);
     ~Text();
@@ -21,6 +22,7 @@ class Text {
     Text &operator=(const Text &other) = delete;
 
     void render(Vec position) const;
+    void setText(const std::string &text);
     void setColor(unsigned char r, unsigned char g, unsigned char b);
     void setFontSize(int fontSize);
     void setWrapWidth(int wrapWidth);
@@ -32,7 +34,7 @@ class Text {
     static void destroyTTF();
 
   private:
-    const std::string m_Text;
+    std::string m_Text;
     SDL_Texture *m_FontTexture = nullptr;
     SDL_Color m_Color = {255, 255, 255, 255};
     Vec m_BoxSize;

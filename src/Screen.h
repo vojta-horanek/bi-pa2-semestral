@@ -28,8 +28,6 @@ class Screen {
 
     void onLoop();
 
-    // TODO Add dialog
-
     virtual void onRender() = 0;
 
     virtual void onEvent(SDL_Event event) = 0;

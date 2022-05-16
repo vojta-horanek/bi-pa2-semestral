@@ -4,6 +4,7 @@
 #include "MenuNew.h"
 #include "MenuQuit.h"
 #include "SaveManager.h"
+#include "GameCreationScreen.h"
 #include "resources/strings/L10n.h"
 
 MainMenu::MainMenu(int width, int height)
@@ -21,7 +22,7 @@ void MainMenu::onItemSelected(size_t activeIndex) {
     auto type = items[activeIndex]->getType();
     switch (type) {
         case MenuItem::Item::NEW:
-            navigationDestination = std::make_unique<Game>(width, height);
+            navigationDestination = std::make_unique<GameCreationScreen>(width, height);
             break;
         case MenuItem::Item::LOAD:
             navigationDestination = std::make_unique<Game>(

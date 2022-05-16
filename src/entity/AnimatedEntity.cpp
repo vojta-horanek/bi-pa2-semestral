@@ -7,6 +7,8 @@ AnimatedEntity::AnimatedEntity(Texture texture, int frameCount,
     : Entity(texture), speed(speed), frameCount(frameCount),
       synchronized(synchronized) {}
 
+AnimatedEntity::~AnimatedEntity() = default;
+
 void AnimatedEntity::render(GameState &state, Vec position) {
     updateState(state);
     nextAnimatedRender(texture, position);
