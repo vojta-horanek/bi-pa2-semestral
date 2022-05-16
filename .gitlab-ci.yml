@@ -6,7 +6,7 @@ image: gcc
 build:
   stage: build
   before_script:
-    - apt update && apt -y install make autoconf libsdl2-dev doxygen zip
+    - apt update && apt -y install make autoconf libsdl2-dev libsdl2-ttf-dev doxygen zip
   script:
     - make 
     - make zip
