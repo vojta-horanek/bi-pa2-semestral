@@ -159,6 +159,10 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             entityRowCount++;
         }
 
+        if (entityRowCount < width) {
+            return Result::error("Missing entities for a complete row!");
+        }
+
         currentSection->second.entities.emplace_back(std::move(row));
 
     } else if (currentState == MapParserState::value_type::define) {

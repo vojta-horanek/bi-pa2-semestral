@@ -3,6 +3,7 @@
 #include "EndScreen.h"
 #include "FPSController.h"
 #include "FightScreen.h"
+#include "MessageDialog.h"
 #include "Renderer.h"
 #include "Result.h"
 #include "ResumeMenu.h"
@@ -82,6 +83,7 @@ bool Game::loadMap(const std::string &file) {
         gameMap = Map::loadFromFile(file, *gameState, gameWidth, gameHeight);
         return true;
     } catch (std::invalid_argument &ex) {
+        showDialog(std::make_unique<MessageDialog>(width, height, ex.what()));
         std::cerr << ex.what() << std::endl;
         return false;
     }
@@ -162,7 +164,7 @@ void Game::avoidPlayerCollision() {
     }
 }
 
-bool Game::popSelf() { return !gameState->running; }
+bool Game::popSelf() { return !gameState->running && m_Dialog == nullptr; }
 
 bool Game::clearBackStack() { return false; }
 

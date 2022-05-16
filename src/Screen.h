@@ -1,6 +1,7 @@
 #ifndef TPOHB_SCREEN_H
 #define TPOHB_SCREEN_H
 
+#include "Dialog.h"
 #include <SDL_events.h>
 #include <memory>
 #include <string>
@@ -16,12 +17,18 @@ class Screen {
 
     int width, height;
 
+    std::unique_ptr<Dialog> m_Dialog = nullptr;
+
+    void showDialog(std::unique_ptr<Dialog> dialog);
+
   public:
     bool applicationQuitRequested = false;
 
     virtual ~Screen();
 
     void onLoop();
+
+    // TODO Add dialog
 
     virtual void onRender() = 0;
 
@@ -36,8 +43,6 @@ class Screen {
     virtual void onResume();
 
     virtual void onCreate();
-
-    void setArgs(const std::vector<std::string> &programArgs);
 };
 
 #endif // TPOHB_SCREEN_H

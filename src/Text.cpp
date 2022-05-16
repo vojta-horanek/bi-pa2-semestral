@@ -64,6 +64,14 @@ void Text::setFontSize(int fontSize) {
     swapTexture();
 }
 
+void Text::setWrapWidth(int wrapWidth) {
+    if (wrapWidth == m_WrapWidth)
+        return;
+
+    m_WrapWidth = wrapWidth;
+    swapTexture();
+}
+
 void Text::swapTexture() {
     SDL_Texture *newFontTexture = createTexture();
 
@@ -82,7 +90,8 @@ SDL_Texture *Text::createTexture() {
     if (font == nullptr)
         return nullptr;
 
-    SDL_Surface *surface = TTF_RenderText_Solid(font, m_Text.c_str(), m_Color);
+    SDL_Surface *surface = TTF_RenderText_Solid_Wrapped(font, m_Text.c_str(),
+                                                        m_Color, m_WrapWidth);
     if (surface == nullptr)
         return nullptr;
 
@@ -119,6 +128,8 @@ TTF_Font *Text::getFont() {
 }
 
 Vec Text::getBoxSize() const { return m_BoxSize; }
+
+int Text::getFontSize() const { return m_FontSize; }
 
 std::map<int, TTF_Font *> Text::s_Fonts;
 

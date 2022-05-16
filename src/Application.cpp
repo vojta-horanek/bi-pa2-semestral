@@ -34,7 +34,7 @@ Application::~Application() {
     SDL_Quit();
 }
 
-int Application::run(const std::vector<std::string> &args) {
+int Application::run() {
     window.show();
 
     while (!backstack.empty()) {
@@ -55,7 +55,7 @@ int Application::run(const std::vector<std::string> &args) {
         }
 
         if (nextScreen != nullptr) {
-            navigateTo(std::move(nextScreen), args);
+            navigateTo(std::move(nextScreen));
         }
     }
 
@@ -64,10 +64,8 @@ int Application::run(const std::vector<std::string> &args) {
 
 void Application::popBackStack() { backstack.pop(); }
 
-void Application::navigateTo(std::unique_ptr<Screen> destination,
-                             const std::vector<std::string> &args) {
+void Application::navigateTo(std::unique_ptr<Screen> destination) {
     backstack.push(std::move(destination));
-    backstack.top()->setArgs(args);
     backstack.top()->onCreate();
 }
 

@@ -89,8 +89,6 @@ std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName,
 
     std::string line;
 
-    bool isError = false;
-
     while (std::getline(mapFile, line)) {
         lineNum++;
         StringUtils::trim(line);
@@ -104,8 +102,8 @@ std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName,
                       << "\t" << result.errorText << std::endl
                       << "The invalid line:" << std::endl
                       << "\t" << line << std::endl;
-            isError = true;
-            break;
+            throw std::invalid_argument("Error while loading map: " +
+                                        result.errorText);
         }
     }
 
@@ -116,9 +114,6 @@ std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName,
             "Some values were not set in the map file: " +
             parsingResult.errorText);
     }
-
-    if (isError)
-        throw std::invalid_argument("Map could not be loaded from file");
 
     GameState newGameState = parser.getState();
 

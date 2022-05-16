@@ -9,6 +9,7 @@ using str = const char *const;
 namespace L10n_en {
 // section General
 static constexpr str appName = "The planet of Hieronymus Bosch";
+static constexpr str pressKeyToHide = "Press any key to hide...";
 static constexpr str appNameShort = "TPOHB";
 // section Errors
 static constexpr str cannotInitializeSDL = "SDL Could not be initialized! (%s)";

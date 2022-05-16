@@ -14,7 +14,6 @@ void MenuItem::render(Vec position) {
     m_Text.render(textPosition);
 }
 
-// TODO
 void MenuItem::renderActive(Vec position) {
 
     m_Text.setColor(255, 255, 255);

@@ -17,12 +17,25 @@ void Screen::onLoop() {
             applicationQuitRequested = true;
             return;
         } else {
-            onEvent(event);
+            if (m_Dialog != nullptr) {
+                m_Dialog->onEvent(event);
+            } else {
+                onEvent(event);
+            }
         }
     }
 
     Renderer::getInstance().clear();
     onRender();
+
+    if (m_Dialog != nullptr) {
+        m_Dialog->onRender();
+
+        if (!m_Dialog->getVisibility()) {
+            m_Dialog = nullptr;
+        }
+    }
+
     Renderer::getInstance().present();
 
     FPSController::renderEnd();
@@ -38,8 +51,8 @@ bool Screen::clearBackStack() { return false; }
 
 void Screen::onResume() {}
 
-void Screen::setArgs(const std::vector<std::string> &programArgs) {
-    args = programArgs;
-}
-
 void Screen::onCreate() {}
+
+void Screen::showDialog(std::unique_ptr<Dialog> dialog) {
+    m_Dialog = std::move(dialog);
+}

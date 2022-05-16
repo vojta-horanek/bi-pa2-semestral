@@ -3,6 +3,7 @@
 #include "MenuMainMenu.h"
 #include "MenuResume.h"
 #include "MenuSave.h"
+#include "MessageDialog.h"
 #include "SaveManager.h"
 #include <iostream>
 
@@ -50,6 +51,10 @@ void ResumeMenu::saveGame() {
     if (saveResult.isError) {
         std::cerr << "Failed while saving the game: " << saveResult.errorText
                   << std::endl;
+        showDialog(std::make_unique<MessageDialog>(
+            width, height,
+            "Failed while saving the game: " + saveResult.errorText));
+
         return;
     }
 
@@ -57,6 +62,11 @@ void ResumeMenu::saveGame() {
     if (mapResult.isError) {
         std::cerr << "Failed while saving the game: " << mapResult.errorText
                   << std::endl;
+        showDialog(std::make_unique<MessageDialog>(
+            width, height,
+            "Failed while saving the game: " + mapResult.errorText));
         return;
     }
+
+    showDialog(std::make_unique<MessageDialog>(width, height, "Saved"));
 }

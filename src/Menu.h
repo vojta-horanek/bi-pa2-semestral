@@ -4,6 +4,7 @@
 #include "MenuItem.h"
 #include "Screen.h"
 
+#include "Dialog.h"
 #include <memory>
 #include <vector>
 
