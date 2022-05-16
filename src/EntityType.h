@@ -11,7 +11,8 @@ enum class EntityType {
     GRASS,
     ZOMBIE,
     HEARTH,
-    INVALID
+    INVALID,
+    DIRT
 };
 
 #endif // TPOHB_ENTITYTYPE_H

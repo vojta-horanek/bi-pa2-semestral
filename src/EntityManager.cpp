@@ -3,6 +3,7 @@
 #include "entity/Apple.h"
 #include "entity/Axe.h"
 #include "entity/Bricks.h"
+#include "entity/Dirt.h"
 #include "entity/Entity.h"
 #include "entity/Grass.h"
 #include "entity/Monster.h"
@@ -13,11 +14,11 @@
 #include <map>
 
 const std::pair<EntityType, const std::string> EntityManager::typeTable[] = {
-    {EntityType::VOID, "VOID"},    {EntityType::TREE, "TREE"},
-    {EntityType::APPLE, "APPLE"},  {EntityType::SWORD, "SWORD"},
-    {EntityType::AXE, "AXE"},      {EntityType::BRICK, "BRICK"},
-    {EntityType::GRASS, "GRASS"},  {EntityType::ZOMBIE, "ZOMBIE"},
-    {EntityType::HEARTH, "HEARTH"}};
+    {EntityType::VOID, "VOID"},     {EntityType::TREE, "TREE"},
+    {EntityType::APPLE, "APPLE"},   {EntityType::SWORD, "SWORD"},
+    {EntityType::AXE, "AXE"},       {EntityType::BRICK, "BRICK"},
+    {EntityType::GRASS, "GRASS"},   {EntityType::ZOMBIE, "ZOMBIE"},
+    {EntityType::HEARTH, "HEARTH"}, {EntityType::DIRT, "DIRT"}};
 
 const size_t EntityManager::typeTableSize =
     sizeof(typeTable) / sizeof(typeTable[0]);
@@ -68,6 +69,8 @@ std::unique_ptr<Entity> EntityManager::getEntity(EntityType type) {
             return std::move(std::make_unique<Grass>());
         case EntityType::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
+        case EntityType::DIRT:
+            return std::move(std::make_unique<Dirt>());
         default:
             return nullptr;
     }
