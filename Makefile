@@ -55,7 +55,7 @@ ${LOGIN}.zip: ${ZIP}
 	rm -rf tmp/
 
 build/%.dep: src/%.cpp src/*
-	@mkdir -p build/ build/enity build/menu build/render build/parser build/utils
+	@mkdir -p build/ build/entity build/menu build/render build/parser build/utils
 	${CXX} -MM -MT $(patsubst src/%.cpp, build/%.o, $<) $< > $@
 
 include ${DEPS}
