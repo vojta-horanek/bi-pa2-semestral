@@ -8,7 +8,6 @@ class Zombie : public Monster {
     Zombie();
     int getDamage() override;
     int getMaxHealth() override;
-    void onFight(GameState &state) override;
 
     EntityType getType() const noexcept override;
 };

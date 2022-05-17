@@ -5,6 +5,7 @@
 #include "Screen.h"
 
 #include "Dialog.h"
+#include "Texture.h"
 #include <memory>
 #include <vector>
 

@@ -1,4 +1,5 @@
 #include "Monster.h"
+#include "../EntityManager.h"
 #include "../MapSection.h"
 #include <cstdlib>
 #include <ctime>
@@ -42,8 +43,7 @@ void Monster::onTurn(GameState &state, MapSection &section) {
     }
 
     if (newPosition == state.playerPosition) {
-        removeOnNextTurn = true;
-        onFight(state);
+        removeOnNextTurn = onFight(state);
     } else if (!section.isEdge(newPosition) &&
                !section.collideWith(newPosition, state, false) &&
                !section.isMovingEntity(newPosition)) {
@@ -56,4 +56,12 @@ void Monster::onFightBegin() { scale = 2; }
 void Monster::onFightEnd() {
     scale = 1;
     resetAlpha();
+}
+
+bool Monster::onFight(GameState &state) {
+    if (state.fight != nullptr)
+        return false;
+
+    state.fight = EntityManager::getMonster(getType());
+    return true;
 }

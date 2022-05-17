@@ -1,7 +1,7 @@
 #include "GameCreationScreen.h"
+#include "Game.h"
 #include "MessageDialog.h"
 #include "Renderer.h"
-#include "Game.h"
 #include "resources/strings/L10n.h"
 #include "resources/strings/Paths.h"
 
@@ -75,7 +75,7 @@ void GameCreationScreen::updateTexts() {
                                   std::to_string(m_AvailablePoints));
 
     for (auto &attribute : m_Attributes) {
-        attribute.m_Text.setText(attribute.m_Description + ": " +
+        attribute.m_Text.setText(attribute.m_Description +
                                  std::to_string(attribute.m_Value));
     }
 }

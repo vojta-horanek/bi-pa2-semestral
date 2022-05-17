@@ -1,8 +1,8 @@
 #include "MenuNew.h"
 
 #include "Texture.h"
-#include "resources/strings/Paths.h"
+#include "resources/strings/L10n.h"
 
-MenuNew::MenuNew() : MenuItem("NEW") {}
+MenuNew::MenuNew() : MenuItem(L10n::newGame) {}
 
 MenuItem::Item MenuNew::getType() { return MenuItem::Item::NEW; }

@@ -3,18 +3,22 @@
 #include "MenuLoad.h"
 #include "MenuNew.h"
 #include "MenuQuit.h"
+#include "MenuHelp.h"
 #include "SaveManager.h"
 #include "GameCreationScreen.h"
+#include "MessageDialog.h"
 #include "resources/strings/L10n.h"
 
 MainMenu::MainMenu(int width, int height)
     : Menu(width, height), m_Title(L10n::appNameShort, 128) {
     m_Title.setColor(0, 0, 0);
+    m_Title.setWrapWidth(width - 40);
     items.emplace_back(std::make_unique<MenuNew>());
 
     if (!SaveManager::getSaveFilePath().empty())
         items.emplace_back(std::make_unique<MenuLoad>());
 
+    items.emplace_back(std::make_unique<MenuHelp>());
     items.emplace_back(std::make_unique<MenuQuit>());
 }
 
@@ -31,6 +35,8 @@ void MainMenu::onItemSelected(size_t activeIndex) {
         case MenuItem::Item::QUIT:
             userInMenu = false;
             break;
+        case MenuItem::Item::HELP:
+            showDialog(std::make_unique<MessageDialog>(width, height, L10n::helpText));
         default:
             break;
     }

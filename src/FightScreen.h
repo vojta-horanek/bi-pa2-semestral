@@ -3,6 +3,7 @@
 
 #include "GameState.h"
 #include "Screen.h"
+#include "Text.h"
 #include "entity/Monster.h"
 #include "entity/Player.h"
 #include "entity/Stats.h"
@@ -17,6 +18,8 @@ class FightScreen : public Screen {
     std::shared_ptr<Player> player;
     std::shared_ptr<GameState> gameState;
     Texture background;
+    Text m_PlayerHealthText;
+    Text m_MonsterHealthText;
     std::unique_ptr<Stats> stats;
 
   public:

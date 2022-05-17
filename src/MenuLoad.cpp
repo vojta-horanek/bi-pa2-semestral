@@ -1,9 +1,9 @@
 #include "MenuLoad.h"
 
 #include "Texture.h"
-#include "resources/strings/Paths.h"
+#include "resources/strings/L10n.h"
 
 MenuLoad::MenuLoad()
-    : MenuItem("LOAD") {}
+    : MenuItem(L10n::loadGame) {}
 
 MenuItem::Item MenuLoad::getType() { return MenuItem::Item::LOAD; }

@@ -21,7 +21,7 @@ class Monster : public MovingEntity {
 
     void onTurn(GameState &state, MapSection &section) override;
 
-    virtual void onFight(GameState &state) = 0;
+    bool onFight(GameState &state);
 
     virtual int getDamage() = 0;
 

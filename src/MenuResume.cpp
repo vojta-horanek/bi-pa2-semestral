@@ -1,7 +1,7 @@
 #include "MenuResume.h"
 
-#include "resources/strings/Paths.h"
+#include "resources/strings/L10n.h"
 
-MenuResume::MenuResume() : MenuItem("RESUME") {}
+MenuResume::MenuResume() : MenuItem(L10n::resume) {}
 
 MenuItem::Item MenuResume::getType() { return MenuItem::Item::RESUME; }

@@ -2,7 +2,6 @@
 #define TPOHB_MENUITEM_H
 
 #include "Text.h"
-#include "Texture.h"
 #include "Vec.h"
 #include <string>
 
@@ -18,7 +17,7 @@ class MenuItem {
   public:
     virtual ~MenuItem();
 
-    enum class Item { NEW, LOAD, QUIT, RESUME, MAIN_MENU, SAVE };
+    enum class Item { NEW, LOAD, QUIT, RESUME, MAIN_MENU, SAVE, HELP };
 
     virtual Item getType() = 0;
 
