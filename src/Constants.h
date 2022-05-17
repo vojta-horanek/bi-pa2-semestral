@@ -9,7 +9,7 @@ inline static const int BLOCK_SIZE =
 
 inline static const int BLOCK_PIXELS = REAL_PIXEL_SIZE * BLOCK_SIZE;
 
-inline static const int GAME_WIDTH = 11; // in blocks
-inline static const int GAME_HEIGHT = 7; // in blocks
+inline static const int WINDOW_WIDTH = 11; // in blocks
+inline static const int WINDOW_HEIGHT = 8; // in blocks
 
 #endif // TPOHB_CONSTANTS_H

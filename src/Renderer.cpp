@@ -14,6 +14,7 @@ void Renderer::createRenderer(const Window &window) {
     renderer = SDL_CreateRenderer(window.getWindow(), -1,
                                   SDL_RENDERER_ACCELERATED |
                                       SDL_RENDERER_PRESENTVSYNC);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 Renderer &Renderer::getInstance() {

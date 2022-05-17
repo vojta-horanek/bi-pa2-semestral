@@ -39,7 +39,7 @@ void FightScreen::onRender() {
     }
 
     if (gameState->playerCurrentHealth > 0) {
-        stats->render(*gameState, Vec(0, height / BLOCK_PIXELS), false);
+        stats->render(*gameState, Vec(0, height / BLOCK_PIXELS - 1), false);
     }
 }
 

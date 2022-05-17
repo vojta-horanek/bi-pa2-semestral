@@ -40,11 +40,14 @@ class Text {
     Vec m_BoxSize;
     int m_FontSize;
     int m_WrapWidth = 0;
+
+
     SDL_Texture *createTexture();
     TTF_Font *getFont();
     void swapTexture();
 
     static std::map<int, TTF_Font *> s_Fonts;
+    static const int s_DefaultFontSize = 32;
 };
 
 #endif // TPOHB_TEXT_H

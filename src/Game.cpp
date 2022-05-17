@@ -11,9 +11,9 @@
 #include "SaveManager.h"
 #include "entity/Monster.h"
 
-Game::Game(int width, int height)
+Game::Game(int width, int height, int damage, int health)
     : Screen(width, height), gameWidth(width / BLOCK_PIXELS),
-      gameHeight(height / BLOCK_PIXELS) {
+      gameHeight((height / BLOCK_PIXELS) - 1) {
     gameState = std::make_shared<GameState>();
     player = std::make_shared<Player>();
     gameMap = std::make_shared<Map>();
@@ -23,10 +23,21 @@ Game::Game(int width, int height)
     if (saveFilePath.empty()) {
         saveFilePath = SaveManager::getNewGameFilePath();
     }
+
+    gameState->running = loadSave();
+
+    if (damage != -1) {
+        gameState->playerDefaultDamage = (damage + 1) * 2;
+    }
+
+    if (health != -1) {
+        gameState->playerHealth = (health + 1) * 35;
+        gameState->playerCurrentHealth = gameState->playerHealth;
+    }
 }
 
 Game::Game(int width, int height, const std::string &saveFile)
-    : Game(width, height) {
+    : Game(width, height, -1, -1) {
     saveFilePath = saveFile;
 }
 
@@ -175,11 +186,4 @@ void Game::onResume() {
     }
 }
 
-void Game::onCreate() {
-    // Create a new game in case we should not load any save file
-    if (saveFilePath.empty()) {
-
-    } else {
-        gameState->running = loadSave();
-    }
-}
+void Game::onCreate() {}

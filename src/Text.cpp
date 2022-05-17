@@ -6,18 +6,15 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Text::Text() : m_FontTexture(nullptr) {}
+Text::Text() : m_FontTexture(nullptr), m_FontSize(s_DefaultFontSize) {}
 
 Text::Text(const std::string &text, int fontSize)
     : m_Text(text), m_FontSize(fontSize) {
-    m_FontTexture = createTexture();
 
-    if (m_FontTexture == nullptr)
-        std::cerr << "Failed while creating font texture: " << TTF_GetError()
-                  << std::endl;
+    swapTexture();
 }
 
-Text::Text(const std::string &text) : Text(text, 24) {}
+Text::Text(const std::string &text) : Text(text, s_DefaultFontSize) {}
 
 Text::~Text() {
     if (m_FontTexture != nullptr)
@@ -27,7 +24,8 @@ Text::~Text() {
 
 Text::Text(Text &&other) noexcept
     : m_Text(other.m_Text), m_FontTexture(other.m_FontTexture),
-      m_Color(other.m_Color) {
+      m_Color(other.m_Color), m_BoxSize(other.m_BoxSize),
+      m_FontSize(other.m_FontSize), m_WrapWidth(other.m_WrapWidth) {
     other.m_FontTexture = nullptr;
 }
 
@@ -36,7 +34,14 @@ Text &Text::operator=(Text &&other) noexcept {
         return *this;
     if (m_FontTexture != nullptr)
         SDL_DestroyTexture(m_FontTexture);
+
     m_FontTexture = other.m_FontTexture;
+    m_Text = std::move(other.m_Text);
+    m_Color = other.m_Color;
+    m_WrapWidth = other.m_WrapWidth;
+    m_FontSize = other.m_FontSize;
+    m_BoxSize = other.m_BoxSize;
+
     other.m_FontTexture = nullptr;
     return *this;
 }
@@ -56,6 +61,7 @@ void Text::setText(const std::string &text) {
         return;
 
     m_Text = text;
+
     swapTexture();
 }
 
@@ -72,6 +78,7 @@ void Text::setFontSize(int fontSize) {
         return;
 
     m_FontSize = fontSize;
+
     swapTexture();
 }
 
@@ -84,13 +91,18 @@ void Text::setWrapWidth(int wrapWidth) {
 }
 
 void Text::swapTexture() {
+
+    if (m_Text.empty())
+        return;
+
     SDL_Texture *newFontTexture = createTexture();
 
     if (newFontTexture == nullptr)
         std::cerr << "Failed while creating font texture: " << TTF_GetError()
                   << std::endl;
 
-    SDL_DestroyTexture(m_FontTexture);
+    if (m_FontTexture != nullptr)
+        SDL_DestroyTexture(m_FontTexture);
 
     m_FontTexture = newFontTexture;
 }

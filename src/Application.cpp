@@ -25,8 +25,8 @@ Application::Application() : window(Window(L10n::appName)) {
         return;
     }
 
-    backstack.emplace(std::make_unique<MainMenu>(GAME_WIDTH * BLOCK_PIXELS,
-                                                 GAME_HEIGHT * BLOCK_PIXELS));
+    backstack.emplace(
+        std::make_unique<MainMenu>(window.getSize().x, window.getSize().y));
 }
 
 Application::~Application() {

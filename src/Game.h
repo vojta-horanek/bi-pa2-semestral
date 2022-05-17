@@ -40,9 +40,9 @@ class Game : public Screen {
     bool loadMap(const std::string &file);
 
   public:
-    explicit Game(int width, int height);
+    Game(int width, int height, int damage, int health);
 
-    explicit Game(int width, int height, const std::string &saveFile);
+    Game(int width, int height, const std::string &saveFile);
 
     bool popSelf() override;
 
