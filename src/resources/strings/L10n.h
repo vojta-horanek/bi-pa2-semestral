@@ -8,7 +8,7 @@ using str = const char *const;
 
 namespace L10n_en {
 static constexpr str appName = "The planet of Hieronymus Bosch";
-static constexpr str pressKeyToHide = "Press any key to m_IsVisible...";
+static constexpr str pressKeyToHide = "Press any key to hide...";
 static constexpr str appNameShort = "TPOHB";
 static constexpr str cannotInitializeSDL = "SDL Could not be initialized!";
 static constexpr str cannotLoadBitmap = "Could not load bitmap from!";
@@ -37,7 +37,7 @@ static constexpr str mainMenu = "Main menu";
 static constexpr str resume = "Resume";
 static constexpr str quit = "Quit";
 static constexpr str helpText =
-    "Arrow keys: movement\nQ: drop weapon\nSpace/Enter: attack (in m_Monster)";
+    "Arrow keys: movement\nQ: drop weapon\nSpace/Enter: attack (in fight)";
 
 } // namespace L10n_en
 
