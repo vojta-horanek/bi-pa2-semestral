@@ -13,7 +13,6 @@ class Weapon : public PickupEntity {
     Weapon(Texture texture, Texture playerTexture);
 
   public:
-    virtual ~Weapon();
     virtual int getDamage() = 0;
 
     void onPickup(GameState &state) override;

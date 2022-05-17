@@ -4,7 +4,6 @@
 #include "BlockEntity.h"
 
 class Tree : public BlockEntity {
-
   public:
     Tree();
 

@@ -116,7 +116,7 @@ DEFAULT_SECTION
 SET 0 0
 END DEFAULT_SECTION
 
-; A player position
+; A player m_Position
 PLAYER
 SET 2 3
 END PLAYER

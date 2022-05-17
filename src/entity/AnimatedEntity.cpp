@@ -4,44 +4,44 @@
 
 AnimatedEntity::AnimatedEntity(Texture texture, int frameCount,
                                bool synchronized, int speed)
-    : Entity(texture), speed(speed), frameCount(frameCount),
-      synchronized(synchronized) {}
+    : Entity(texture), m_Speed(speed), m_FrameCount(frameCount),
+      m_Synchronized(synchronized) {}
 
-AnimatedEntity::~AnimatedEntity() = default;
+AnimatedEntity::AnimatedEntity(Texture texture, int frameCount)
+    : Entity(texture), m_FrameCount(frameCount) {}
 
 void AnimatedEntity::render(GameState &state, Vec position) {
-    updateState(state);
-    nextAnimatedRender(texture, position);
+    nextAnimatedRender(m_Texture, position);
 }
 
 void AnimatedEntity::nextAnimatedRender(Texture &texture, Vec position) {
     // If this entity is not synchronized, it handles the animation frames
     // itself
-    if (!synchronized) {
-        if (delay >= speed) {
-            delay = 0;
-            frame = (frame + 1) % frameCount;
+    if (!m_Synchronized) {
+        if (m_Delay >= m_Speed) {
+            m_Delay = 0;
+            m_Frame = (m_Frame + 1) % m_FrameCount;
         } else {
-            delay++;
+            m_Delay++;
         }
     }
 
-    if (fadingOut) {
-        texture.setAlpha(alpha);
-        alpha -= 5;
+    if (m_FadingOut) {
+        texture.setAlpha(m_Alpha);
+        m_Alpha -= 5;
     }
-    texture.renderBlockWithOffset(position, frame, scale);
+    texture.renderBlockWithOffset(position, m_Frame, m_TextureScale);
 }
 
 void AnimatedEntity::syncWith(AnimatedEntity &other) {
-    assert(other.frameCount == frameCount);
-    this->synchronized = true;
-    this->frame = other.frame;
+    assert(other.m_FrameCount == m_FrameCount);
+    m_Synchronized = true;
+    m_Frame = other.m_Frame;
 }
 
-void AnimatedEntity::unsync() {
-    this->synchronized = false;
-    this->frame = 0;
+void AnimatedEntity::unSync() {
+    m_Synchronized = false;
+    m_Frame = 0;
 }
 
 void AnimatedEntity::onCollision(GameState &state) {
@@ -49,14 +49,14 @@ void AnimatedEntity::onCollision(GameState &state) {
 }
 
 void AnimatedEntity::fadeOut() {
-    fadingOut = true;
-    texture.setBlendMode(true);
+    m_FadingOut = true;
+    m_Texture.setBlendMode(true);
 }
 
-bool AnimatedEntity::isFadeOut() const { return fadingOut && alpha <= 0; }
+bool AnimatedEntity::isFadeOut() const { return m_FadingOut && m_Alpha <= 0; }
 
 void AnimatedEntity::resetAlpha() {
-    fadingOut = false;
-    alpha = 255;
-    texture.setAlpha(alpha);
+    m_FadingOut = false;
+    m_Alpha = 255;
+    m_Texture.setAlpha(m_Alpha);
 }

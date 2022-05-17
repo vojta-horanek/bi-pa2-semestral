@@ -1,6 +1,6 @@
 #include "Dialog.h"
-#include "Rect.h"
-#include "Renderer.h"
+#include "render/Rect.h"
+#include "render/Renderer.h"
 
 Dialog::Dialog(int screenWidth, int screenHeight)
     : m_ScreenWidth(screenWidth), m_ScreenHeight(screenHeight),

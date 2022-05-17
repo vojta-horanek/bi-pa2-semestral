@@ -18,14 +18,14 @@ void Monster::onTurn(GameState &state, MapSection &section) {
     // The dumbest "AI" in any game...
     // It's pretty cool tho
 
-    Vec newPosition = position;
+    Vec newPosition = m_Position;
 
     if (rand() % 2) {
         // Align X newPosition
         int distanceRight =
-            newPosition.withX(1).xDistance(state.playerPosition);
+            newPosition.withX(1).xDistance(state.m_PlayerPosition);
         int distanceLeft =
-            newPosition.withX(-1).xDistance(state.playerPosition);
+            newPosition.withX(-1).xDistance(state.m_PlayerPosition);
         if (distanceRight > distanceLeft) {
             newPosition.x--;
         } else if (distanceRight < distanceLeft) {
@@ -33,8 +33,10 @@ void Monster::onTurn(GameState &state, MapSection &section) {
         }
     } else {
         // Align Y newPosition
-        int distanceUp = newPosition.withY(-1).yDistance(state.playerPosition);
-        int distanceDown = newPosition.withY(1).yDistance(state.playerPosition);
+        int distanceUp =
+            newPosition.withY(-1).yDistance(state.m_PlayerPosition);
+        int distanceDown =
+            newPosition.withY(1).yDistance(state.m_PlayerPosition);
         if (distanceDown > distanceUp) {
             newPosition.y--;
         } else if (distanceDown < distanceUp) {
@@ -42,26 +44,26 @@ void Monster::onTurn(GameState &state, MapSection &section) {
         }
     }
 
-    if (newPosition == state.playerPosition) {
-        removeOnNextTurn = onFight(state);
+    if (newPosition == state.m_PlayerPosition) {
+        m_RemoveOnNextTurn = onStartFight(state);
     } else if (!section.isEdge(newPosition) &&
                !section.collideWith(newPosition, state, false) &&
                !section.isMovingEntity(newPosition)) {
-        position = newPosition;
+        m_Position = newPosition;
     }
 }
 
-void Monster::onFightBegin() { scale = 2; }
+void Monster::onFightBegin() { m_TextureScale = 2; }
 
 void Monster::onFightEnd() {
-    scale = 1;
+    m_TextureScale = 1;
     resetAlpha();
 }
 
-bool Monster::onFight(GameState &state) {
-    if (state.fight != nullptr)
+bool Monster::onStartFight(GameState &state) {
+    if (state.m_Monster != nullptr)
         return false;
 
-    state.fight = EntityManager::getMonster(getType());
+    state.m_Monster = EntityManager::getMonster(getType());
     return true;
 }

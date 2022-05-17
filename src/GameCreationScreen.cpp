@@ -1,7 +1,7 @@
 #include "GameCreationScreen.h"
 #include "Game.h"
 #include "MessageDialog.h"
-#include "Renderer.h"
+#include "render/Renderer.h"
 #include "resources/strings/L10n.h"
 #include "resources/strings/Paths.h"
 
@@ -39,13 +39,13 @@ void GameCreationScreen::onRender() {
     m_BackgroundTexture.renderFullscreen();
 
     m_TitleText.render(
-        Vec(width / 2 - m_TitleText.getBoxSize().x / 2, m_Padding / 2));
+        Vec(m_ScreenWidth / 2 - m_TitleText.getBoxSize().x / 2, m_Padding / 2));
 
     Renderer::getInstance().selectDrawColor(0x0a, 0x0a, 0x0a, 0x77);
     Renderer::getInstance().drawRectangle(
         {Vec(m_Padding, m_Padding + m_TitleText.getBoxSize().y),
-         Vec(width - m_Padding * 2,
-             height - m_Padding * 2 - m_TitleText.getBoxSize().y)},
+         Vec(m_ScreenWidth - m_Padding * 2,
+             m_ScreenHeight - m_Padding * 2 - m_TitleText.getBoxSize().y)},
         true);
 
     Vec position = Vec(m_Padding * 2, m_Padding * 3);
@@ -55,7 +55,8 @@ void GameCreationScreen::onRender() {
     position.y += m_Padding + m_AvailablePointsText.getBoxSize().y;
 
     for (size_t i = 0; i < m_Attributes.size(); i++) {
-        position.x = width / 2 - m_Attributes[i].m_Text.getBoxSize().x / 2;
+        position.x =
+            m_ScreenWidth / 2 - m_Attributes[i].m_Text.getBoxSize().x / 2;
         if (m_SelectedAttributeIndex == i) {
             Renderer::getInstance().selectDrawColor(0x00, 0x00, 0x00, 0xaa);
             Renderer::getInstance().drawRectangle(
@@ -66,8 +67,8 @@ void GameCreationScreen::onRender() {
     }
 
     m_ContinueText.render(
-        Vec(width - m_Padding * 2 - m_ContinueText.getBoxSize().x,
-            height - m_Padding * 3));
+        Vec(m_ScreenWidth - m_Padding * 2 - m_ContinueText.getBoxSize().x,
+            m_ScreenHeight - m_Padding * 3));
 }
 
 void GameCreationScreen::updateTexts() {
@@ -122,8 +123,8 @@ void GameCreationScreen::onAttributeIncrease() {
         m_AvailablePoints--;
         updateTexts();
     } else {
-        showDialog(std::make_unique<MessageDialog>(width, height,
-                                                   L10n::noPointsAvailable));
+        showDialog(std::make_unique<MessageDialog>(
+            m_ScreenWidth, m_ScreenHeight, L10n::noPointsAvailable));
     }
 }
 
@@ -133,16 +134,16 @@ void GameCreationScreen::onAttributeDecrease() {
         m_AvailablePoints++;
         updateTexts();
     } else {
-        showDialog(std::make_unique<MessageDialog>(width, height,
-                                                   L10n::cannotBeLessThanZero));
+        showDialog(std::make_unique<MessageDialog>(
+            m_ScreenWidth, m_ScreenHeight, L10n::cannotBeLessThanZero));
     }
 }
 
 void GameCreationScreen::openGame() {
 
     if (m_AvailablePoints > 0) {
-        showDialog(
-            std::make_unique<MessageDialog>(width, height, L10n::useAllPoints));
+        showDialog(std::make_unique<MessageDialog>(
+            m_ScreenWidth, m_ScreenHeight, L10n::useAllPoints));
         return;
     }
 
@@ -159,14 +160,14 @@ void GameCreationScreen::openGame() {
     }
 
     if (health == -1 || damage == -1) {
-        showDialog(
-            std::make_unique<MessageDialog>(width, height, L10n::unknownError));
+        showDialog(std::make_unique<MessageDialog>(
+            m_ScreenWidth, m_ScreenHeight, L10n::unknownError));
         return;
     }
 
-    navigationDestination =
-        std::make_unique<Game>(width, height, damage, health);
+    m_NavigationDestination =
+        std::make_unique<Game>(m_ScreenWidth, m_ScreenHeight, damage, health);
     m_Exit = true;
 }
 
-bool GameCreationScreen::popSelf() { return m_Exit; }
+bool GameCreationScreen::shouldPopSelf() { return m_Exit; }

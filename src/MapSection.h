@@ -1,7 +1,6 @@
 #ifndef TPOHB_MAPSECTION_H
 #define TPOHB_MAPSECTION_H
 
-#include "Vec.h"
 #include "entity/Apple.h"
 #include "entity/Axe.h"
 #include "entity/Bricks.h"
@@ -10,6 +9,7 @@
 #include "entity/MovingEntity.h"
 #include "entity/Sword.h"
 #include "entity/Tree.h"
+#include "render/Vec.h"
 #include <cassert>
 #include <map>
 #include <memory>
@@ -18,16 +18,13 @@
 #include <vector>
 
 class MapSection {
-  private:
-    std::unique_ptr<Entity> backgroundEntity = nullptr;
-
   public:
-    int width;
-    int height;
-    std::vector<std::vector<std::unique_ptr<Entity>>> entities;
-    std::vector<std::unique_ptr<MovingEntity>> movingEntities;
+    int m_BlocksWidth;
+    int m_BlocksHeight;
+    std::vector<std::vector<std::unique_ptr<Entity>>> m_Entities;
+    std::vector<std::unique_ptr<MovingEntity>> m_MovingEntities;
 
-    explicit MapSection(int width, int height,
+    explicit MapSection(int blocksWidth, int blocksHeight,
                         std::unique_ptr<Entity> background);
 
     Entity *get(Vec at) const;
@@ -52,6 +49,9 @@ class MapSection {
     void writeMovingEntities(std::ostream &stream,
                              const std::map<EntityType, int> &types,
                              Vec sectionPosition) const;
+
+  private:
+    std::unique_ptr<Entity> backgroundEntity = nullptr;
 };
 
 #endif // TPOHB_MAPSECTION_H

@@ -1,10 +1,11 @@
 #include "Screen.h"
 
-#include "FPSController.h"
+#include "render/FPSController.h"
 
-#include "Renderer.h"
+#include "render/Renderer.h"
 
-Screen::Screen(int width, int height) : width(width), height(height) {}
+Screen::Screen(int screenWidth, int screenHeight)
+    : m_ScreenWidth(screenWidth), m_ScreenHeight(screenHeight) {}
 
 Screen::~Screen() = default;
 
@@ -14,7 +15,7 @@ void Screen::onLoop() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            applicationQuitRequested = true;
+            m_ApplicationQuitRequested = true;
             return;
         } else {
             if (m_Dialog != nullptr) {
@@ -42,16 +43,14 @@ void Screen::onLoop() {
 }
 
 std::unique_ptr<Screen> Screen::getNavigationDestination() {
-    return std::move(navigationDestination);
+    return std::move(m_NavigationDestination);
 }
 
-bool Screen::popSelf() { return false; }
+bool Screen::shouldPopSelf() { return false; }
 
-bool Screen::clearBackStack() { return false; }
+bool Screen::shouldClearBackStack() { return false; }
 
 void Screen::onResume() {}
-
-void Screen::onCreate() {}
 
 void Screen::showDialog(std::unique_ptr<Dialog> dialog) {
     m_Dialog = std::move(dialog);

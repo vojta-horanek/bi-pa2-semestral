@@ -2,21 +2,21 @@
 #define TPOHB_ENDSCREEN_H
 
 #include "Screen.h"
-#include "Texture.h"
+#include "render/Texture.h"
 
 class EndScreen : public Screen {
   private:
-    Texture background;
-    bool hide = false;
+    Texture m_BackgroundTexture;
+    bool m_IsVisible = true;
 
   public:
-    EndScreen(bool won, int width, int height);
+    EndScreen(bool hasWon, int screenWidth, int screenHeight);
 
     void onEvent(SDL_Event event) override;
 
     void onRender() override;
 
-    bool clearBackStack() override;
+    bool shouldClearBackStack() override;
 };
 
 #endif // TPOHB_ENDSCREEN_H

@@ -5,6 +5,9 @@ MovingEntity::MovingEntity(Texture texture, int animationFrameCount,
     : AnimatedEntity(texture, animationFrameCount, animationSynchronized,
                      animationSpeed) {}
 
+MovingEntity::MovingEntity(Texture texture, int animationFrameCount)
+    : AnimatedEntity(texture, animationFrameCount) {}
+
 MovingEntity::MovingEntity(Texture texture)
     : AnimatedEntity(texture, 1, true, 0) {}
 

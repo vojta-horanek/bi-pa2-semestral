@@ -8,7 +8,7 @@ FLAGS =  $(shell pkg-config --cflags --libs sdl2) -lSDL2_ttf -DRESOURCES_PATH=\"
 ZIP = Makefile Doxyfile DOCUMENTATION.md zadani.txt prohlaseni.txt \
   .gitignore $(wildcard examples/*) $(wildcard src/*)
 
-SOURCES = $(wildcard src/*.cpp src/entity/*.cpp)
+SOURCES = $(wildcard src/*.cpp src/entity/*.cpp src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp)
 OBJECTS = $(patsubst src/%.cpp, build/%.o, ${SOURCES})
 DEPS = $(patsubst src/%.cpp, build/%.dep, ${SOURCES})
 
@@ -34,11 +34,11 @@ valgrind: compile
 
 doc: doc/index.html
 
-doc/index.html: DOCUMENTATION.md Doxyfile $(wildcard src/* src/entity/*)
+doc/index.html: DOCUMENTATION.md Doxyfile $(wildcard src/* src/entity/* src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp)
 	doxygen Doxyfile
 
 count:
-	wc -l src/*.h src/*.cpp src/entity/*.h src/entity/*.cpp src/resources/strings/*.h
+	wc -l src/**/*.h src/**/*.cpp src/*.h src/*.cpp
 
 clean:
 	rm -rf build doc
@@ -55,8 +55,7 @@ ${LOGIN}.zip: ${ZIP}
 	rm -rf tmp/
 
 build/%.dep: src/%.cpp src/*
-	@mkdir -p build/
-	@mkdir -p build/entity
+	@mkdir -p build/ build/enity build/menu build/render build/parser build/utils
 	${CXX} -MM -MT $(patsubst src/%.cpp, build/%.o, $<) $< > $@
 
 include ${DEPS}

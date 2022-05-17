@@ -6,12 +6,14 @@
 
 class MovingEntity : public AnimatedEntity {
   public:
-    Vec position;
-
-    MovingEntity(Texture texture, int animationFrameCount,
-                 bool animationSynchronized = false, int animationSpeed = 15);
+    Vec m_Position;
 
     explicit MovingEntity(Texture texture);
+
+    MovingEntity(Texture texture, int animationFrameCount);
+
+    MovingEntity(Texture texture, int animationFrameCount,
+                 bool animationSynchronized, int animationSpeed);
 
     virtual void onTurn(GameState &state, MapSection &section);
 };

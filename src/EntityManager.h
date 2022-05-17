@@ -13,11 +13,12 @@
 
 class EntityManager {
   private:
-    const static std::pair<EntityType, const std::string> typeTable[];
-    const static size_t typeTableSize;
+    const static std::pair<EntityType, const std::string> s_TypeTable[];
+    const static size_t s_TypeTableSize;
 
     static std::pair<EntityType, const std::string>
     findType(const std::string &name);
+
     static std::pair<EntityType, const std::string> findType(EntityType type);
 
   public:

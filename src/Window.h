@@ -1,8 +1,8 @@
 #ifndef TPOHB_WINDOW_H
 #define TPOHB_WINDOW_H
 
-#include "Constants.h"
-#include "Vec.h"
+#include "render/Vec.h"
+#include "utils/Constants.h"
 #include <SDL2/SDL.h>
 #include <string>
 

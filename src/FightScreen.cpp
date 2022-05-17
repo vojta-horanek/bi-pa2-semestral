@@ -3,69 +3,72 @@
 #include <utility>
 
 #include "Game.h"
-#include "Renderer.h"
-#include "ResumeMenu.h"
-#include "entity/Weapon.h"
+#include "menu/ResumeMenu.h"
+#include "render/Renderer.h"
 #include "resources/strings/L10n.h"
 #include "resources/strings/Paths.h"
 
 FightScreen::FightScreen(std::shared_ptr<Player> player,
-                         std::shared_ptr<GameState> gameState, int width,
-                         int height)
-    : Screen(width, height), player(std::move(player)),
-      gameState(std::move(gameState)) {
+                         std::shared_ptr<GameState> gameState, int screenWidth,
+                         int screenHeight)
+    : Screen(screenWidth, screenHeight), m_Player(std::move(player)),
+      m_GameState(std::move(gameState)) {
 
-    background = Texture(Paths::Bitmaps::fighting_background);
-    stats = std::make_unique<Stats>(3);
+    m_BackgroundTexture = Texture(Paths::Bitmaps::fighting_background);
+    m_Stats = std::make_unique<Stats>(3);
 
     m_PlayerHealthText.setFontSize(60);
     m_PlayerHealthText.setText(
         L10n::yourHealth +
-        std::to_string(this->gameState->playerCurrentHealth));
+        std::to_string(this->m_GameState->m_PlayerCurrentHealth));
 
     m_MonsterHealthText.setFontSize(60);
     m_MonsterHealthText.setText(
         L10n::monsterHealth +
-        std::to_string(this->gameState->fight->currentHealth));
+        std::to_string(this->m_GameState->m_Monster->m_CurrentHealth));
 
-    this->gameState->fight->onFightBegin();
-    this->player->onFightBegin();
+    this->m_GameState->m_Monster->onFightBegin();
+    this->m_Player->onFightBegin();
 }
 
 void FightScreen::onRender() {
-    background.renderFullscreen();
+    m_BackgroundTexture.renderFullscreen();
 
     int monsterXPos = 1;
-    if (!playerTurn && !justShown)
+    if (!m_IsPlayerTurn && !m_IsJustShown)
         monsterXPos--;
 
     int playerXPos = 3;
-    if (playerTurn && !justShown)
+    if (m_IsPlayerTurn && !m_IsJustShown)
         playerXPos++;
 
-    player->render(*gameState, Vec(playerXPos, 4));
-    gameState->fight->render(*gameState,
-                             Vec(width / 2 / BLOCK_PIXELS + monsterXPos, 4));
+    m_Player->render(*m_GameState, Vec(playerXPos, 4));
+    m_GameState->m_Monster->render(
+        *m_GameState, Vec(m_ScreenWidth / 2 / BLOCK_PIXELS + monsterXPos, 4));
 
-    if (!fighting && (player->isFadeOut() || gameState->fight->isFadeOut())) {
-        fadeFinished = true;
+    if (!m_IsFighting &&
+        (m_Player->isFadeOut() || m_GameState->m_Monster->isFadeOut())) {
+        m_IsFadeFinished = true;
     }
 
     Renderer::getInstance().selectDrawColor(0, 0, 0, 0xaa);
     Renderer::getInstance().drawRectangle(
-        {Vec(0, height - height / 5), Vec(width, height / 5)}, true);
+        {Vec(0, m_ScreenHeight - m_ScreenHeight / 5),
+         Vec(m_ScreenWidth, m_ScreenHeight / 5)},
+        true);
 
-    if (gameState->playerCurrentHealth > 0) {
-        stats->render(*gameState, Vec(0, height / BLOCK_PIXELS - 1), false);
+    if (m_GameState->m_PlayerCurrentHealth > 0) {
+        m_Stats->render(*m_GameState, Vec(0, m_ScreenHeight / BLOCK_PIXELS - 1),
+                        false);
     }
 
     m_PlayerHealthText.render(
-        Vec(width - m_PlayerHealthText.getBoxSize().x - 15,
-            height - m_PlayerHealthText.getBoxSize().y - 15));
+        Vec(m_ScreenWidth - m_PlayerHealthText.getBoxSize().x - 15,
+            m_ScreenHeight - m_PlayerHealthText.getBoxSize().y - 15));
 
     m_MonsterHealthText.render(
-        Vec(width - m_MonsterHealthText.getBoxSize().x - 15,
-            height - m_MonsterHealthText.getBoxSize().y - 15 -
+        Vec(m_ScreenWidth - m_MonsterHealthText.getBoxSize().x - 15,
+            m_ScreenHeight - m_MonsterHealthText.getBoxSize().y - 15 -
                 m_PlayerHealthText.getBoxSize().y));
 }
 
@@ -73,62 +76,68 @@ void FightScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                navigationDestination =
-                    std::make_unique<ResumeMenu>(width, height);
+                m_NavigationDestination =
+                    std::make_unique<ResumeMenu>(m_ScreenWidth, m_ScreenHeight);
                 break;
             case SDLK_RETURN:
             case SDLK_SPACE:
-                if (!justShown && fighting) {
+                if (!m_IsJustShown && m_IsFighting) {
                     attack();
-                } else if (justShown) {
-                    justShown = false;
-                    playerTurn = rand() % 2;
+                } else if (m_IsJustShown) {
+                    m_IsJustShown = false;
+                    m_IsPlayerTurn = rand() % 2;
                 }
                 break;
         }
     }
 }
 
-bool FightScreen::popSelf() { return fadeFinished; }
+bool FightScreen::shouldPopSelf() { return m_IsFadeFinished; }
 
 FightScreen::~FightScreen() {
-    player->onFightEnd();
-    if (gameState->weapon != nullptr) {
-        gameState->weapon->onFightEnd();
+    m_Player->onFightEnd();
+    if (m_GameState->m_Weapon != nullptr) {
+        m_GameState->m_Weapon->onFightEnd();
     }
-    gameState->fight->onFightEnd();
-    gameState->fight = nullptr;
+    m_GameState->m_Monster->onFightEnd();
+    m_GameState->m_Monster = nullptr;
 }
 
 void FightScreen::attack() {
-    playerTurn = !playerTurn;
+    m_IsPlayerTurn = !m_IsPlayerTurn;
 
-    if (playerTurn) {
-        if (gameState->weapon != nullptr) {
-            gameState->fight->currentHealth -=
-                gameState->weapon->getDamage() + gameState->playerDefaultDamage;
+    if (m_IsPlayerTurn) {
+        if (m_GameState->m_Weapon != nullptr) {
+            // Player has weapon
+            m_GameState->m_Monster->m_CurrentHealth -=
+                m_GameState->m_Weapon->getDamage() +
+                m_GameState->m_PlayerDefaultDamage;
         } else {
-            gameState->fight->currentHealth -= gameState->playerDefaultDamage;
+            m_GameState->m_Monster->m_CurrentHealth -=
+                m_GameState->m_PlayerDefaultDamage;
         }
     } else {
-        gameState->playerCurrentHealth -= gameState->fight->getDamage();
-    }
-    if (gameState->playerCurrentHealth <= 0) {
-        gameState->playerCurrentHealth = 0;
-        player->fadeOut();
-        if (gameState->weapon != nullptr) {
-            gameState->weapon->fadeOut();
-        }
-        fighting = false;
-    } else if (gameState->fight->currentHealth <= 0) {
-        gameState->fight->currentHealth = 0;
-        gameState->fight->fadeOut();
-        fighting = false;
+        m_GameState->m_PlayerCurrentHealth -=
+            m_GameState->m_Monster->getDamage();
     }
 
-    m_PlayerHealthText.setText(L10n::yourHealth +
-                               std::to_string(gameState->playerCurrentHealth));
+    if (m_GameState->m_PlayerCurrentHealth <= 0) {
+        m_GameState->m_PlayerCurrentHealth = 0;
+        m_Player->fadeOut();
+        if (m_GameState->m_Weapon != nullptr) {
+            m_GameState->m_Weapon->fadeOut();
+        }
+        m_IsFighting = false;
+    } else if (m_GameState->m_Monster->m_CurrentHealth <= 0) {
+        m_GameState->m_Monster->m_CurrentHealth = 0;
+        m_GameState->m_Monster->fadeOut();
+        m_IsFighting = false;
+    }
+
+    m_PlayerHealthText.setText(
+        L10n::yourHealth + std::to_string(m_GameState->m_PlayerCurrentHealth));
 
     m_MonsterHealthText.setText(
-        L10n::monsterHealth + std::to_string(gameState->fight->currentHealth));
+        L10n::monsterHealth +
+        std::to_string(m_GameState->m_Monster->m_CurrentHealth));
 }

@@ -2,14 +2,14 @@
 #define TPOHB_PLAYER_H
 
 #include "../GameState.h"
-#include "../Texture.h"
+#include "../render/Texture.h"
 #include "AnimatedEntity.h"
 #include "MovingEntity.h"
 #include <SDL2/SDL.h>
 
 class Player : public MovingEntity {
   private:
-    Vec direction;
+    Vec m_Direction;
 
   public:
     Vec getNextPosition(Vec currentPosition) const;
@@ -19,8 +19,6 @@ class Player : public MovingEntity {
     void setDirection(int dx, int dy);
 
     Vec getDirection();
-
-    void updateState(GameState &state) override;
 
     void render(GameState &state, Vec position) override;
 

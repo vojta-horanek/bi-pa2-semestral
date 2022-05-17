@@ -1,32 +1,31 @@
 #include "Application.h"
 
-#include "Constants.h"
-#include "MainMenu.h"
-#include "Renderer.h"
-#include "Text.h"
 #include "Window.h"
+#include "menu/MainMenu.h"
+#include "render/Renderer.h"
+#include "render/Text.h"
 #include "resources/strings/L10n.h"
 #include <iostream>
 #include <stack>
 #include <stdexcept>
 
-Application::Application() : window(Window(L10n::appName)) {
+Application::Application() : m_Window(Window(L10n::appName)) {
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) != 0) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, L10n::cannotInitializeSDL,
-                        SDL_GetError());
+        std::cerr << L10n::cannotInitializeSDL << " " << SDL_GetError()
+                  << std::endl;
         return;
     }
 
-    Renderer::getInstance().createRenderer(window);
+    Renderer::getInstance().createRenderer(m_Window);
 
     if (!Text::initTTF()) {
         std::cerr << "Error initializing TTF, quiting..." << std::endl;
         return;
     }
 
-    backstack.emplace(
-        std::make_unique<MainMenu>(window.getSize().x, window.getSize().y));
+    m_Backstack.emplace(
+        std::make_unique<MainMenu>(m_Window.getSize().x, m_Window.getSize().y));
 }
 
 Application::~Application() {
@@ -35,23 +34,23 @@ Application::~Application() {
 }
 
 int Application::run() {
-    window.show();
+    m_Window.show();
 
-    while (!backstack.empty()) {
+    while (!m_Backstack.empty()) {
 
-        backstack.top()->onLoop();
+        m_Backstack.top()->onLoop();
 
-        if (backstack.top()->applicationQuitRequested)
+        if (m_Backstack.top()->m_ApplicationQuitRequested)
             break;
 
-        auto nextScreen = backstack.top()->getNavigationDestination();
+        auto nextScreen = m_Backstack.top()->getNavigationDestination();
 
-        if (backstack.top()->clearBackStack()) {
+        if (m_Backstack.top()->shouldClearBackStack()) {
             clearBackStack();
-        } else if (backstack.top()->popSelf()) {
+        } else if (m_Backstack.top()->shouldPopSelf()) {
             popBackStack();
-            if (!backstack.empty())
-                backstack.top()->onResume();
+            if (!m_Backstack.empty())
+                m_Backstack.top()->onResume();
         }
 
         if (nextScreen != nullptr) {
@@ -62,14 +61,13 @@ int Application::run() {
     return EXIT_SUCCESS;
 }
 
-void Application::popBackStack() { backstack.pop(); }
+void Application::popBackStack() { m_Backstack.pop(); }
 
 void Application::navigateTo(std::unique_ptr<Screen> destination) {
-    backstack.push(std::move(destination));
-    backstack.top()->onCreate();
+    m_Backstack.push(std::move(destination));
 }
 
 void Application::clearBackStack() {
-    while (!backstack.empty())
-        backstack.pop();
+    while (!m_Backstack.empty())
+        m_Backstack.pop();
 }

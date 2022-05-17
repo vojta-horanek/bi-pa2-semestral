@@ -4,21 +4,19 @@
 Weapon::Weapon(Texture texture, Texture playerTexture)
     : PickupEntity(texture, 2), playerTexture(playerTexture) {}
 
-Weapon::~Weapon() = default;
-
 void Weapon::renderOnPlayer(GameState &state, Vec position) {
     AnimatedEntity::nextAnimatedRender(playerTexture, position);
 }
 
 void Weapon::onPickup(GameState &state) {
-    if (state.weapon == nullptr) {
-        PickupEntity::onPickup(state);
-        state.weapon = EntityManager::getWeapon(getType());
+    if (state.m_Weapon == nullptr) {
+        m_RemoveOnNextTurn = true;
+        state.m_Weapon = EntityManager::getWeapon(getType());
     }
 }
 
 void Weapon::onFightEnd() {
-    scale = 1;
+    m_TextureScale = 1;
     resetAlpha();
     playerTexture.setAlpha(255);
 }

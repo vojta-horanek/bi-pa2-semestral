@@ -2,9 +2,9 @@
 #define TPOHB_GAMECREATIONSCREEN_H
 
 #include "Screen.h"
-#include "Text.h"
-#include "Texture.h"
 #include "entity/Player.h"
+#include "render/Text.h"
+#include "render/Texture.h"
 #include <SDL2/SDL_events.h>
 #include <memory>
 #include <vector>
@@ -17,7 +17,7 @@ class GameCreationScreen : public Screen {
 
     void onEvent(SDL_Event event) override;
 
-    bool popSelf() override;
+    bool shouldPopSelf() override;
 
     enum class AttributeType { DAMAGE, HEALTH };
 
@@ -41,8 +41,11 @@ class GameCreationScreen : public Screen {
     bool m_Exit = false;
 
     void updateTexts();
+
     void onAttributeIncrease();
+
     void onAttributeDecrease();
+
     void openGame();
 };
 

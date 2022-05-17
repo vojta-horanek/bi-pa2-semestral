@@ -1,23 +1,25 @@
 #include "EndScreen.h"
 
-#include "MainMenu.h"
+#include "menu/MainMenu.h"
 #include "resources/strings/Paths.h"
 
-EndScreen::EndScreen(bool won, int width, int height) : Screen(width, height) {
-    if (won) {
-        background = Texture(Paths::Bitmaps::screen_won);
+EndScreen::EndScreen(bool hasWon, int screenWidth, int screenHeight)
+    : Screen(screenWidth, screenHeight) {
+    if (hasWon) {
+        m_BackgroundTexture = Texture(Paths::Bitmaps::screen_won);
     } else {
-        background = Texture(Paths::Bitmaps::screen_lost);
+        m_BackgroundTexture = Texture(Paths::Bitmaps::screen_lost);
     }
 }
 
 void EndScreen::onEvent(SDL_Event event) {
     if (event.type == SDL_KEYUP) {
-        hide = true;
-        navigationDestination = std::make_unique<MainMenu>(width, height);
+        m_IsVisible = false;
+        m_NavigationDestination =
+            std::make_unique<MainMenu>(m_ScreenWidth, m_ScreenHeight);
     }
 }
 
-void EndScreen::onRender() { background.renderFullscreen(); }
+void EndScreen::onRender() { m_BackgroundTexture.renderFullscreen(); }
 
-bool EndScreen::clearBackStack() { return hide; }
+bool EndScreen::shouldClearBackStack() { return !m_IsVisible; }

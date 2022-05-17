@@ -6,28 +6,28 @@
 #include "entity/Dirt.h"
 #include "entity/Entity.h"
 #include "entity/Grass.h"
+#include "entity/Hearth.h"
 #include "entity/Monster.h"
 #include "entity/Sword.h"
 #include "entity/Tree.h"
 #include "entity/Zombie.h"
-#include <initializer_list>
 #include <map>
 
-const std::pair<EntityType, const std::string> EntityManager::typeTable[] = {
+const std::pair<EntityType, const std::string> EntityManager::s_TypeTable[] = {
     {EntityType::VOID, "VOID"},     {EntityType::TREE, "TREE"},
     {EntityType::APPLE, "APPLE"},   {EntityType::SWORD, "SWORD"},
     {EntityType::AXE, "AXE"},       {EntityType::BRICK, "BRICK"},
     {EntityType::GRASS, "GRASS"},   {EntityType::ZOMBIE, "ZOMBIE"},
     {EntityType::HEARTH, "HEARTH"}, {EntityType::DIRT, "DIRT"}};
 
-const size_t EntityManager::typeTableSize =
-    sizeof(typeTable) / sizeof(typeTable[0]);
+const size_t EntityManager::s_TypeTableSize =
+    sizeof(s_TypeTable) / sizeof(s_TypeTable[0]);
 
 std::pair<EntityType, const std::string>
 EntityManager::findType(const std::string &name) {
-    for (size_t i = 0; i < typeTableSize; i++) {
-        if (typeTable[i].second == name)
-            return typeTable[i];
+    for (const auto &i : s_TypeTable) {
+        if (i.second == name)
+            return i;
     }
 
     return {EntityType::INVALID, "INVALID"};
@@ -35,9 +35,9 @@ EntityManager::findType(const std::string &name) {
 
 std::pair<EntityType, const std::string>
 EntityManager::findType(EntityType type) {
-    for (size_t i = 0; i < typeTableSize; i++) {
-        if (typeTable[i].first == type)
-            return typeTable[i];
+    for (const auto &i : s_TypeTable) {
+        if (i.first == type)
+            return i;
     }
 
     return {EntityType::INVALID, "INVALID"};
@@ -71,6 +71,8 @@ std::unique_ptr<Entity> EntityManager::getEntity(EntityType type) {
             return std::move(std::make_unique<Zombie>());
         case EntityType::DIRT:
             return std::move(std::make_unique<Dirt>());
+        case EntityType::HEARTH:
+            return std::move(std::make_unique<Hearth>());
         default:
             return nullptr;
     }
@@ -89,6 +91,8 @@ std::unique_ptr<PickupEntity> EntityManager::getPickupEntity(EntityType type) {
     switch (type) {
         case EntityType::APPLE:
             return std::move(std::make_unique<Apple>());
+        case EntityType::HEARTH:
+            return std::move(std::make_unique<Hearth>());
         default:
             return nullptr;
     }
@@ -108,8 +112,8 @@ std::unique_ptr<Weapon> EntityManager::getWeapon(EntityType type) {
 std::map<EntityType, int> EntityManager::createDefinitions() {
     std::map<EntityType, int> typeMap;
 
-    for (size_t i = 0; i < typeTableSize; i++) {
-        typeMap[typeTable[i].first] = i;
+    for (size_t i = 0; i < s_TypeTableSize; i++) {
+        typeMap[s_TypeTable[i].first] = (int)i;
     }
 
     return typeMap;

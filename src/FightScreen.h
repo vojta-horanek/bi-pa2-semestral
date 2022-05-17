@@ -3,28 +3,17 @@
 
 #include "GameState.h"
 #include "Screen.h"
-#include "Text.h"
 #include "entity/Monster.h"
 #include "entity/Player.h"
 #include "entity/Stats.h"
+#include "render/Text.h"
 #include <memory>
 
 class FightScreen : public Screen {
-  private:
-    bool justShown = true;
-    bool fadeFinished = false;
-    bool fighting = true;
-    bool playerTurn = true;
-    std::shared_ptr<Player> player;
-    std::shared_ptr<GameState> gameState;
-    Texture background;
-    Text m_PlayerHealthText;
-    Text m_MonsterHealthText;
-    std::unique_ptr<Stats> stats;
-
   public:
     FightScreen(std::shared_ptr<Player> player,
-                std::shared_ptr<GameState> gameState, int width, int height);
+                std::shared_ptr<GameState> gameState, int screenWidth,
+                int screenHeight);
 
     ~FightScreen() override;
 
@@ -32,9 +21,21 @@ class FightScreen : public Screen {
 
     void onEvent(SDL_Event event) override;
 
-    bool popSelf() override;
+    bool shouldPopSelf() override;
 
     void attack();
+
+  private:
+    bool m_IsJustShown = true;
+    bool m_IsFadeFinished = false;
+    bool m_IsFighting = true;
+    bool m_IsPlayerTurn = true;
+    std::shared_ptr<Player> m_Player;
+    std::unique_ptr<Stats> m_Stats;
+    std::shared_ptr<GameState> m_GameState;
+    Texture m_BackgroundTexture;
+    Text m_PlayerHealthText;
+    Text m_MonsterHealthText;
 };
 
 #endif // TPOHB_FIGHTSCREEN_H

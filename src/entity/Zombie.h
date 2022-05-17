@@ -6,7 +6,9 @@
 class Zombie : public Monster {
   public:
     Zombie();
+
     int getDamage() override;
+
     int getMaxHealth() override;
 
     EntityType getType() const noexcept override;

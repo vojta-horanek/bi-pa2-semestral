@@ -16,16 +16,42 @@
 #include <vector>
 
 class Game : public Screen {
+  public:
+    /**
+     * Creates a new game with specified attributes
+     * @param screenWidth
+     * @param screenHeight
+     * @param damage default damage of the player chosen in the game creation
+     * screen
+     * @param health health of the player chosen in the game creation screen
+     */
+    Game(int screenWidth, int screenHeight, int damage, int health);
+
+    /**
+     * Loads a game from save file
+     * @param screenWidth
+     * @param screenHeight
+     * @param saveFile path to the save file
+     */
+    Game(int screenWidth, int screenHeight, const std::string &saveFile);
+
+    bool shouldPopSelf() override;
+
+    bool shouldClearBackStack() override;
+
+    void onResume() override;
+
   private:
-    std::shared_ptr<Player> player;
-    std::unique_ptr<Inventory> inventory;
-    std::unique_ptr<Stats> stats;
-    std::shared_ptr<GameState> gameState;
-    std::shared_ptr<Map> gameMap;
+    std::shared_ptr<Player> m_Player;
+    std::unique_ptr<Inventory> m_Inventory;
+    std::unique_ptr<Stats> m_Stats;
+    std::shared_ptr<GameState> m_GameState;
+    std::shared_ptr<Map> m_GameMap;
 
-    int gameWidth, gameHeight;
-
-    std::string saveFilePath;
+    /**
+     * Width and Height of the game in blocks
+     */
+    int m_GameWidth, m_GameHeight;
 
     void onRender() override;
 
@@ -35,24 +61,14 @@ class Game : public Screen {
 
     void avoidPlayerCollision();
 
-    bool loadSave();
+    bool loadSave(const std::string &saveFile);
 
-    bool loadMap(const std::string &file);
+    bool loadMap(const std::string &mapFile);
 
     void dropWeapon();
 
-  public:
-    Game(int width, int height, int damage, int health);
-
-    Game(int width, int height, const std::string &saveFile);
-
-    bool popSelf() override;
-
-    bool clearBackStack() override;
-
-    void onResume() override;
-
-    void onCreate() override;
+    Game(int screenWidth, int screenHeight, int damage, int health,
+         const std::string &saveFile);
 };
 
 #endif // TPOHB_GAME_H

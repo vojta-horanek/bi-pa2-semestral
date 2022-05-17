@@ -3,26 +3,22 @@
 #include "../Game.h"
 #include "../resources/strings/Paths.h"
 
-Inventory::Inventory(size_t maxWidth)
-    : Entity(Texture(Paths::Bitmaps::inventory)) {
-    this->maxWidth = maxWidth;
-}
+Inventory::Inventory(int maxItems)
+    : Entity(Texture(Paths::Bitmaps::inventory)), m_MaxItems(maxItems) {}
 
 void Inventory::render(GameState &state, Vec position) {
 
-    // Draw items with background
-    size_t i;
-    for (i = 0; i < state.inventory.size(); i++) {
-        Vec newPos = position;
-        newPos.x += (int)i;
-        Entity::render(state, newPos);
-        state.inventory[i]->render(state, newPos);
+    // Draw backgrounds
+    Vec backgroundPos = position;
+    for (int i = 0; i < m_MaxItems; i++) {
+        Entity::render(state, backgroundPos);
+        backgroundPos.x++;
     }
 
-    // Draw remaining backgrounds
-    for (size_t rem = i; rem < maxWidth; rem++) {
-        Vec newPos = position;
-        newPos.x += (int)rem;
-        Entity::render(state, newPos);
+    // Draw items
+    Vec newPos = position;
+    for (int i = 0; i < (int)state.m_Inventory.size() && i <= m_MaxItems; i++) {
+        state.m_Inventory[i]->render(state, newPos);
+        newPos.x++;
     }
 }

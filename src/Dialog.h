@@ -1,16 +1,19 @@
 #ifndef TPOHB_DIALOG_H
 #define TPOHB_DIALOG_H
 
-#include "Vec.h"
+#include "render/Vec.h"
 #include <SDL2/SDL_events.h>
 
 class Dialog {
 
   public:
     virtual void onRender();
+
     virtual void onEvent(SDL_Event event) = 0;
 
     bool getVisibility() const;
+
+    virtual ~Dialog() = default;
 
   protected:
     Dialog(int screenWidth, int screenHeight);

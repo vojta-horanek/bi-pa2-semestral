@@ -3,18 +3,20 @@
 #define TPOHB_PICKUPENTITY_H
 
 #include "../GameState.h"
-#include "../Texture.h"
+#include "../render/Texture.h"
 #include "AnimatedEntity.h"
 
 class PickupEntity : public AnimatedEntity {
   private:
     void onCollision(GameState &state) override;
 
-  public:
-    PickupEntity(Texture texture, int frameCount, bool synchronized = false,
-                 int speed = 25);
+    static const int s_DefaultAnimationSpeed = 25;
 
+  public:
     explicit PickupEntity(Texture texture);
+
+    PickupEntity(Texture texture, int frameCount, bool synchronized = false,
+                 int speed = s_DefaultAnimationSpeed);
 
     virtual void onPickup(GameState &state);
 };

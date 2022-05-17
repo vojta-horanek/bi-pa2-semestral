@@ -10,10 +10,6 @@
 #include <vector>
 
 class Application {
-  private:
-    Window window;
-    std::stack<std::unique_ptr<Screen>> backstack;
-
   public:
     Application();
 
@@ -26,6 +22,10 @@ class Application {
     void navigateTo(std::unique_ptr<Screen> destination);
 
     void clearBackStack();
+
+  private:
+    Window m_Window;
+    std::stack<std::unique_ptr<Screen>> m_Backstack;
 };
 
 #endif // TPOHB_APPLICATION_H

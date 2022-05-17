@@ -1,6 +1,6 @@
 #include "MessageDialog.h"
-#include <iostream>
 #include "resources/strings/L10n.h"
+#include <iostream>
 
 MessageDialog::MessageDialog(int screenWidth, int screenHeight,
                              const std::string &text)
@@ -9,7 +9,8 @@ MessageDialog::MessageDialog(int screenWidth, int screenHeight,
 
     m_Text.setWrapWidth(m_Width - m_TextPadding);
 
-    // Change text size to wrap around dialog max size, limit the font size to 10pt at least
+    // Change text size to wrap around dialog max size, limit the font size to
+    // 10pt at least
     while (m_Text.getBoxSize().y > (m_Height - 2 * m_TextPadding) &&
            m_Text.getFontSize() >= 10) {
         m_Text.setFontSize(m_Text.getFontSize() - 1);

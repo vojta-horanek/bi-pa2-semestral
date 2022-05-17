@@ -8,8 +8,6 @@ class Apple : public PickupEntity {
   public:
     Apple();
 
-    void onPickup(GameState &state) override;
-
     EntityType getType() const noexcept override;
 };
 

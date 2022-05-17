@@ -2,11 +2,11 @@
 
 #include <fstream>
 
-const std::string SaveManager::commonSavePaths[] = {"examples/save_manual",
-                                                    "../examples/save_manual"};
+const std::string SaveManager::s_CommonSavePaths[] = {
+    "examples/save_manual", "../examples/save_manual"};
 
-const std::string SaveManager::newGamePaths[] = {"src/games/new_game_save",
-                                                 "games/new_game_save"};
+const std::string SaveManager::s_NewGamePaths[] = {
+    "src/new_games/new_game_save", "new_games/new_game_save"};
 
 bool SaveManager::fileExists(const std::string &path) {
     std::ifstream file(path);
@@ -14,19 +14,20 @@ bool SaveManager::fileExists(const std::string &path) {
 }
 
 std::string SaveManager::getSaveFilePath() {
-    for (size_t i = 0; i < sizeof(commonSavePaths) / sizeof(commonSavePaths[0]);
-         i++) {
-        if (fileExists(commonSavePaths[i]))
-            return commonSavePaths[i];
+    for (size_t i = 0;
+         i < sizeof(s_CommonSavePaths) / sizeof(s_CommonSavePaths[0]); i++) {
+        if (fileExists(s_CommonSavePaths[i]))
+            return s_CommonSavePaths[i];
     }
 
     return "";
 }
+
 std::string SaveManager::getNewGameFilePath() {
-    for (size_t i = 0; i < sizeof(newGamePaths) / sizeof(newGamePaths[0]);
+    for (size_t i = 0; i < sizeof(s_NewGamePaths) / sizeof(s_NewGamePaths[0]);
          i++) {
-        if (fileExists(newGamePaths[i]))
-            return newGamePaths[i];
+        if (fileExists(s_NewGamePaths[i]))
+            return s_NewGamePaths[i];
     }
 
     return "";
@@ -55,11 +56,11 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
                      ostream << mapFilePath << std::endl;
                  });
 
-    // Write inventory
-    if (!gameState.inventory.empty()) {
+    // Write m_Inventory
+    if (!gameState.m_Inventory.empty()) {
         writeSection(SaveParserState(SaveParserState::value_type::inventory),
                      saveFile, [&gameState, &types](std::ostream &ostream) {
-                         for (const auto &item : gameState.inventory) {
+                         for (const auto &item : gameState.m_Inventory) {
                              ostream << "ADD " << types[item->getType()]
                                      << std::endl;
                          }
@@ -67,10 +68,11 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
     }
 
     // Write weapon
-    if (gameState.weapon != nullptr) {
+    if (gameState.m_Weapon != nullptr) {
         writeSection(SaveParserState(SaveParserState::value_type::weapon),
                      saveFile, [&gameState, &types](std::ostream &ostream) {
-                         ostream << "SET " << types[gameState.weapon->getType()]
+                         ostream << "SET "
+                                 << types[gameState.m_Weapon->getType()]
                                  << std::endl;
                      });
     }
@@ -78,20 +80,21 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
     // Write player health
     writeSection(SaveParserState(SaveParserState::value_type::health), saveFile,
                  [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState.playerHealth << std::endl;
+                     ostream << "SET " << gameState.m_PlayerMaxHealth
+                             << std::endl;
                  });
 
     // Write current player health
     writeSection(SaveParserState(SaveParserState::value_type::current_health),
                  saveFile, [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState.playerCurrentHealth
+                     ostream << "SET " << gameState.m_PlayerCurrentHealth
                              << std::endl;
                  });
 
     // Write default damage
     writeSection(SaveParserState(SaveParserState::value_type::default_damage),
                  saveFile, [&gameState](std::ostream &ostream) {
-                     ostream << "SET " << gameState.playerDefaultDamage
+                     ostream << "SET " << gameState.m_PlayerDefaultDamage
                              << std::endl;
                  });
 

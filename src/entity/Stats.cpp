@@ -1,48 +1,39 @@
 #include "Stats.h"
 #include "../resources/strings/Paths.h"
 
-Stats::Stats(int maxHealth) : Entity(Texture(Paths::Bitmaps::stats)) {
-    this->maxHealth = maxHealth;
-    hearth = std::make_unique<Hearth>();
-    left = Texture(Paths::Bitmaps::stats_l);
-    right = Texture(Paths::Bitmaps::stats_r);
+Stats::Stats(int maxHearthCount) : Entity(Texture(Paths::Bitmaps::stats)) {
+    m_MaxHealthCount = maxHearthCount;
+    m_Hearth = std::make_unique<Hearth>();
+    m_BackgroundLeft = Texture(Paths::Bitmaps::stats_l);
+    m_BackgroundRight = Texture(Paths::Bitmaps::stats_r);
 }
 
 void Stats::render(GameState &state, Vec position, bool withBackground) {
-    int mappedHealth =
-        map(state.playerCurrentHealth, 0, state.playerHealth, 1, maxHealth);
-    int i;
-    for (i = 0; i < mappedHealth && i < maxHealth; i++) {
+    int mappedHealth = mapValue(state.m_PlayerCurrentHealth, 0,
+                                state.m_PlayerMaxHealth, 1, m_MaxHealthCount);
 
-        Vec pos = position.withX(i);
-
+    // Render background
+    Vec backgroundPos = position;
+    for (int i = 0; i < m_MaxHealthCount; i++) {
         if (withBackground) {
             if (i == 0) {
-                left.renderBlock(pos);
-            } else if (i == maxHealth - 1) {
-                right.renderBlock(pos);
+                m_BackgroundLeft.renderBlock(backgroundPos);
+            } else if (i == m_MaxHealthCount - 1) {
+                m_BackgroundRight.renderBlock(backgroundPos);
             } else {
-                Entity::render(state, pos);
+                Entity::render(state, backgroundPos);
             }
         }
-
-        hearth->render(state, pos);
+        backgroundPos.x++;
     }
 
-    if (withBackground) {
-        for (int j = i; j < maxHealth; j++) {
-            Vec pos = position.withX(j);
-            if (i == 0) {
-                left.renderBlock(pos);
-            } else if (i == maxHealth - 1) {
-                right.renderBlock(pos);
-            } else {
-                Entity::render(state, pos);
-            }
-        }
+    Vec hearthPos = position;
+    for (int i = 0; i < mappedHealth && i < m_MaxHealthCount; i++) {
+        m_Hearth->render(state, hearthPos);
+        hearthPos.x++;
     }
 }
 
-int Stats::map(int x, int in_min, int in_max, int out_min, int out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+int Stats::mapValue(int x, int inMin, int inMax, int outMin, int outMax) {
+    return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }

@@ -1,76 +1,76 @@
 #include "Game.h"
 
 #include "EndScreen.h"
-#include "FPSController.h"
 #include "FightScreen.h"
 #include "MessageDialog.h"
-#include "Renderer.h"
-#include "Result.h"
-#include "ResumeMenu.h"
-#include "SaveFileParser.h"
 #include "SaveManager.h"
 #include "entity/Monster.h"
+#include "menu/ResumeMenu.h"
+#include "parser/SaveFileParser.h"
+#include "render/FPSController.h"
+#include "render/Renderer.h"
+#include "utils/Result.h"
 
-Game::Game(int width, int height, int damage, int health)
-    : Screen(width, height), gameWidth(width / BLOCK_PIXELS),
-      gameHeight((height / BLOCK_PIXELS) - 1) {
-    gameState = std::make_shared<GameState>();
-    player = std::make_shared<Player>();
-    gameMap = std::make_shared<Map>();
-    inventory = std::make_unique<Inventory>(width);
-    stats = std::make_unique<Stats>(3);
+Game::Game(int screenWidth, int screenHeight, int damage, int health,
+           const std::string &saveFile)
+    : Screen(screenWidth, screenHeight),
+      m_GameWidth(screenWidth / BLOCK_PIXELS),
+      m_GameHeight((screenHeight / BLOCK_PIXELS) - 1) {
+    m_GameState = std::make_shared<GameState>();
+    m_Player = std::make_shared<Player>();
+    m_GameMap = std::make_shared<Map>();
+    m_Inventory = std::make_unique<Inventory>(screenWidth);
+    m_Stats = std::make_unique<Stats>(3);
 
-    if (saveFilePath.empty()) {
-        saveFilePath = SaveManager::getNewGameFilePath();
-    }
-
-    gameState->running = loadSave();
+    m_GameState->m_Running = loadSave(saveFile);
 
     if (damage != -1) {
-        gameState->playerDefaultDamage = (damage + 1) * 2;
+        m_GameState->m_PlayerDefaultDamage = (damage + 1) * 2;
     }
 
     if (health != -1) {
-        gameState->playerHealth = (health + 1) * 35;
-        gameState->playerCurrentHealth = gameState->playerHealth;
+        m_GameState->m_PlayerMaxHealth = (health + 1) * 35;
+        m_GameState->m_PlayerCurrentHealth = m_GameState->m_PlayerMaxHealth;
     }
 }
 
-Game::Game(int width, int height, const std::string &saveFile)
-    : Game(width, height, -1, -1) {
-    saveFilePath = saveFile;
-}
+Game::Game(int screenWidth, int screenHeight, const std::string &saveFile)
+    : Game(screenWidth, screenHeight, -1, -1, saveFile) {}
+
+Game::Game(int screenWidth, int screenHeight, int damage, int health)
+    : Game(screenWidth, screenHeight, damage, health,
+           SaveManager::getNewGameFilePath()) {}
 
 void Game::onRender() {
 
-    if (!gameState->running)
+    if (!m_GameState->m_Running)
         return;
 
-    gameMap->getCurrentSection().render(*gameState);
+    m_GameMap->getCurrentSection().render(*m_GameState);
 
-    player->render(*gameState, gameState->playerPosition);
+    m_Player->render(*m_GameState, m_GameState->m_PlayerPosition);
 
-    inventory->render(*gameState, Vec(3, gameHeight));
+    m_Inventory->render(*m_GameState, Vec(3, m_GameHeight));
 
-    stats->render(*gameState, Vec(0, gameHeight));
+    m_Stats->render(*m_GameState, Vec(0, m_GameHeight));
 }
 
 void Game::onEvent(SDL_Event event) {
-    if (!gameState->running)
+    if (!m_GameState->m_Running)
         return;
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
             case SDLK_UP:
-                player->setDirection(0, -1);
+                m_Player->setDirection(0, -1);
                 break;
             case SDLK_DOWN:
-                player->setDirection(0, 1);
+                m_Player->setDirection(0, 1);
                 break;
             case SDLK_LEFT:
-                player->setDirection(-1, 0);
+                m_Player->setDirection(-1, 0);
                 break;
             case SDLK_RIGHT:
-                player->setDirection(1, 0);
+                m_Player->setDirection(1, 0);
                 break;
         }
     } else if (event.type == SDL_KEYUP) {
@@ -82,8 +82,8 @@ void Game::onEvent(SDL_Event event) {
                 nextTurn();
                 break;
             case SDLK_ESCAPE:
-                navigationDestination = std::make_unique<ResumeMenu>(
-                    width, height, gameState, gameMap);
+                m_NavigationDestination = std::make_unique<ResumeMenu>(
+                    m_ScreenWidth, m_ScreenHeight, m_GameState, m_GameMap);
                 break;
             case SDLK_q:
                 dropWeapon();
@@ -92,22 +92,24 @@ void Game::onEvent(SDL_Event event) {
     }
 }
 
-bool Game::loadMap(const std::string &file) {
+bool Game::loadMap(const std::string &mapFile) {
     try {
-        gameMap = Map::loadFromFile(file, *gameState, gameWidth, gameHeight);
+        m_GameMap =
+            Map::loadFromFile(mapFile, *m_GameState, m_GameWidth, m_GameHeight);
         return true;
     } catch (std::invalid_argument &ex) {
-        showDialog(std::make_unique<MessageDialog>(width, height, ex.what()));
+        showDialog(std::make_unique<MessageDialog>(m_ScreenWidth,
+                                                   m_ScreenHeight, ex.what()));
         std::cerr << ex.what() << std::endl;
         return false;
     }
 }
 
-bool Game::loadSave() {
+bool Game::loadSave(const std::string &saveFile) {
 
     SaveFileParser saveFileParser;
 
-    Result saveFileResult = saveFileParser.loadSaveFromFile(saveFilePath);
+    Result saveFileResult = saveFileParser.loadSaveFromFile(saveFile);
 
     if (saveFileResult.isError) {
         std::cerr << saveFileResult.errorText << std::endl;
@@ -118,84 +120,86 @@ bool Game::loadSave() {
         return false;
     }
 
-    gameState->playerHealth = saveFileParser.getPlayerHealth();
-    gameState->playerCurrentHealth = saveFileParser.getPlayerCurrentHealth();
-    gameState->playerDefaultDamage = saveFileParser.getPlayerDefaultDamage();
+    m_GameState->m_PlayerMaxHealth = saveFileParser.getPlayerHealth();
+    m_GameState->m_PlayerCurrentHealth =
+        saveFileParser.getPlayerCurrentHealth();
+    m_GameState->m_PlayerDefaultDamage =
+        saveFileParser.getPlayerDefaultDamage();
 
-    gameState->inventory = saveFileParser.getInventory();
-    gameState->weapon = saveFileParser.getWeapon();
+    m_GameState->m_Inventory = saveFileParser.getInventory();
+    m_GameState->m_Weapon = saveFileParser.getWeapon();
     return true;
 }
 
 void Game::dropWeapon() {
 
-    if (gameState->weapon != nullptr) {
-        gameState->weapon->unsync();
-        gameMap->getCurrentSection().set(gameState->playerPosition,
-                                         std::move(gameState->weapon));
+    if (m_GameState->m_Weapon != nullptr) {
+        m_GameState->m_Weapon->unSync();
+        m_GameMap->getCurrentSection().set(m_GameState->m_PlayerPosition,
+                                           std::move(m_GameState->m_Weapon));
     }
 }
 
 void Game::nextTurn() {
     avoidPlayerCollision();
-    player->onTurn(*gameState, gameMap->getCurrentSection());
+    m_Player->onTurn(*m_GameState, m_GameMap->getCurrentSection());
 
-    gameMap->getCurrentSection().onTurn(*gameState);
+    m_GameMap->getCurrentSection().onTurn(*m_GameState);
 
-    if (gameState->fight != nullptr) {
-        navigationDestination =
-            std::make_unique<FightScreen>(player, gameState, width, height);
+    if (m_GameState->m_Monster != nullptr) {
+        m_NavigationDestination = std::make_unique<FightScreen>(
+            m_Player, m_GameState, m_ScreenWidth, m_ScreenHeight);
     }
 
-    if (gameState->won) {
-        navigationDestination =
-            std::make_unique<EndScreen>(true, width, height);
+    if (m_GameState->m_Won) {
+        m_NavigationDestination =
+            std::make_unique<EndScreen>(true, m_ScreenWidth, m_ScreenHeight);
     }
 }
 
 void Game::avoidPlayerCollision() {
-    Vec playerNexPos = player->getNextPosition(gameState->playerPosition);
-    if (gameMap->getCurrentSection().isEdge(playerNexPos)) {
+    Vec playerNexPos = m_Player->getNextPosition(m_GameState->m_PlayerPosition);
+    if (m_GameMap->getCurrentSection().isEdge(playerNexPos)) {
 
-        Vec direction = player->getDirection();
+        Vec direction = m_Player->getDirection();
 
-        player->setDirection(0, 0);
+        m_Player->setDirection(0, 0);
 
-        if (gameMap->tryNavigateToSection(direction)) {
+        if (m_GameMap->tryNavigateToSection(direction)) {
             if (direction.x != 0) {
                 int newX = 0;
                 if (direction.x < 0) {
                     // Going from left screen to right screen
-                    newX = gameWidth - 1;
+                    newX = m_GameWidth - 1;
                 }
-                gameState->playerPosition =
-                    Vec(newX, gameState->playerPosition.y);
+                m_GameState->m_PlayerPosition =
+                    Vec(newX, m_GameState->m_PlayerPosition.y);
             } else if (direction.y != 0) {
                 int newY = 0;
                 if (direction.y < 0) {
                     // Going from bottom screen to top screen
-                    newY = gameHeight - 1;
+                    newY = m_GameHeight - 1;
                 }
-                gameState->playerPosition =
-                    Vec(gameState->playerPosition.x, newY);
+                m_GameState->m_PlayerPosition =
+                    Vec(m_GameState->m_PlayerPosition.x, newY);
             }
         }
 
-    } else if (gameMap->getCurrentSection().collideWith(playerNexPos,
-                                                        *gameState)) {
-        player->setDirection(0, 0);
+    } else if (m_GameMap->getCurrentSection().collideWith(playerNexPos,
+                                                          *m_GameState)) {
+        m_Player->setDirection(0, 0);
     }
 }
 
-bool Game::popSelf() { return !gameState->running && m_Dialog == nullptr; }
+bool Game::shouldPopSelf() {
+    return !m_GameState->m_Running && m_Dialog == nullptr;
+}
 
-bool Game::clearBackStack() { return false; }
+bool Game::shouldClearBackStack() { return false; }
 
 void Game::onResume() {
-    if (gameState->playerCurrentHealth <= 0) {
-        navigationDestination =
-            std::make_unique<EndScreen>(false, width, height);
+    if (m_GameState->m_PlayerCurrentHealth <= 0) {
+        m_NavigationDestination =
+            std::make_unique<EndScreen>(false, m_ScreenWidth, m_ScreenHeight);
     }
 }
-
-void Game::onCreate() {}

@@ -3,56 +3,57 @@
 #include "entity/MovingEntity.h"
 #include <algorithm>
 
-MapSection::MapSection(int width, int height,
+MapSection::MapSection(int blocksWidth, int blocksHeight,
                        std::unique_ptr<Entity> background) {
-    this->width = width;
-    this->height = height;
+    this->m_BlocksWidth = blocksWidth;
+    this->m_BlocksHeight = blocksHeight;
     backgroundEntity = std::move(background);
-    this->entities.reserve(height);
+    this->m_Entities.reserve(blocksHeight);
 }
 
 void MapSection::render(GameState &state) {
 
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
+    for (int x = 0; x < m_BlocksWidth; x++) {
+        for (int y = 0; y < m_BlocksHeight; y++) {
             if (backgroundEntity != nullptr) {
                 backgroundEntity->render(state, Vec(x, y));
             }
-            if (entities[y][x] != nullptr) {
-                entities[y][x]->render(state, Vec(x, y));
+            if (m_Entities[y][x] != nullptr) {
+                m_Entities[y][x]->render(state, Vec(x, y));
             }
         }
     }
 
-    for (const auto &entity : movingEntities) {
-        entity->render(state, entity->position);
+    for (const auto &entity : m_MovingEntities) {
+        entity->render(state, entity->m_Position);
     }
 }
 
 void MapSection::onTurn(GameState &state) {
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            if (entities[y][x] != nullptr && entities[y][x]->removeOnNextTurn) {
-                entities[y][x] = nullptr;
+    for (int x = 0; x < m_BlocksWidth; x++) {
+        for (int y = 0; y < m_BlocksHeight; y++) {
+            if (m_Entities[y][x] != nullptr &&
+                m_Entities[y][x]->m_RemoveOnNextTurn) {
+                m_Entities[y][x] = nullptr;
             }
         }
     }
 
-    for (const auto &entity : movingEntities) {
+    for (const auto &entity : m_MovingEntities) {
         entity->onTurn(state, *this);
     }
 
-    movingEntities.erase(std::remove_if(movingEntities.begin(),
-                                        movingEntities.end(),
-                                        [](const auto &entity) {
-                                            return entity->removeOnNextTurn;
-                                        }),
-                         movingEntities.end());
+    m_MovingEntities.erase(std::remove_if(m_MovingEntities.begin(),
+                                          m_MovingEntities.end(),
+                                          [](const auto &entity) {
+                                              return entity->m_RemoveOnNextTurn;
+                                          }),
+                           m_MovingEntities.end());
 }
 
 bool MapSection::isEdge(Vec position) const {
-    return position.x < 0 || position.x >= width || position.y >= height ||
-           position.y < 0;
+    return position.x < 0 || position.x >= m_BlocksWidth ||
+           position.y >= m_BlocksHeight || position.y < 0;
 }
 
 bool MapSection::collideWith(Vec position, GameState &gameState,
@@ -60,20 +61,20 @@ bool MapSection::collideWith(Vec position, GameState &gameState,
     Entity *atPosition = get(position);
     if (atPosition == nullptr)
         return false;
-    if (isPlayer && atPosition->collisionType != Entity::Collision::NONE)
+    if (isPlayer && atPosition->m_CollisionType != Entity::Collision::NONE)
         atPosition->onCollision(gameState);
-    return atPosition->collisionType == Entity::Collision::HARD;
+    return atPosition->m_CollisionType == Entity::Collision::HARD;
 }
 
 void MapSection::set(Vec at, std::unique_ptr<Entity> entity) {
-    entities[at.y][at.x] = std::move(entity);
+    m_Entities[at.y][at.x] = std::move(entity);
 }
 
-Entity *MapSection::get(Vec at) const { return entities[at.y][at.x].get(); }
+Entity *MapSection::get(Vec at) const { return m_Entities[at.y][at.x].get(); }
 
 bool MapSection::isMovingEntity(Vec position) const {
-    for (const auto &item : movingEntities) {
-        if (item->position == position)
+    for (const auto &item : m_MovingEntities) {
+        if (item->m_Position == position)
             return true;
     }
     return false;
@@ -85,7 +86,7 @@ void MapSection::writeToStream(std::ostream &stream,
     stream << "SECTION " << sectionPosition << " "
            << types.find(backgroundEntity->getType())->second << std::endl;
 
-    for (const auto &row : entities) {
+    for (const auto &row : m_Entities) {
         for (const auto &entity : row) {
             if (entity == nullptr) {
                 stream << types.find(EntityType::VOID)->second << " ";
@@ -102,8 +103,8 @@ void MapSection::writeToStream(std::ostream &stream,
 void MapSection::writeMovingEntities(std::ostream &stream,
                                      const std::map<EntityType, int> &types,
                                      Vec sectionPosition) const {
-    for (const auto &entity : movingEntities) {
-        stream << "ADD " << entity->position << " " << sectionPosition << " "
+    for (const auto &entity : m_MovingEntities) {
+        stream << "ADD " << entity->m_Position << " " << sectionPosition << " "
                << types.find(entity->getType())->second << std::endl;
     }
 }
