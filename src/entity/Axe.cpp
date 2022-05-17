@@ -7,9 +7,4 @@ Axe::Axe()
 
 int Axe::getDamage() { return 15; }
 
-void Axe::onPickup(GameState &state) {
-    Weapon::onPickup(state);
-    state.weapon = std::make_unique<Axe>();
-}
-
 EntityType Axe::getType() const noexcept { return EntityType::AXE; }

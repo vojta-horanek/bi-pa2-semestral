@@ -39,6 +39,11 @@ void AnimatedEntity::syncWith(AnimatedEntity &other) {
     this->frame = other.frame;
 }
 
+void AnimatedEntity::unsync() {
+    this->synchronized = false;
+    this->frame = 0;
+}
+
 void AnimatedEntity::onCollision(GameState &state) {
     Entity::onCollision(state);
 }

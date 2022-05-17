@@ -40,6 +40,8 @@ class AnimatedEntity : public Entity {
      */
     void syncWith(AnimatedEntity &other);
 
+    void unsync();
+
     void onCollision(GameState &state) override;
 };
 

@@ -8,8 +8,6 @@ class Sword : public Weapon {
   public:
     Sword();
 
-    void onPickup(GameState &state) override;
-
     int getDamage() override;
 
     EntityType getType() const noexcept override;

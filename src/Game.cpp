@@ -85,6 +85,9 @@ void Game::onEvent(SDL_Event event) {
                 navigationDestination = std::make_unique<ResumeMenu>(
                     width, height, gameState, gameMap);
                 break;
+            case SDLK_q:
+                dropWeapon();
+                break;
         }
     }
 }
@@ -122,6 +125,15 @@ bool Game::loadSave() {
     gameState->inventory = saveFileParser.getInventory();
     gameState->weapon = saveFileParser.getWeapon();
     return true;
+}
+
+void Game::dropWeapon() {
+
+    if (gameState->weapon != nullptr) {
+        gameState->weapon->unsync();
+        gameMap->getCurrentSection().set(gameState->playerPosition,
+                                         std::move(gameState->weapon));
+    }
 }
 
 void Game::nextTurn() {

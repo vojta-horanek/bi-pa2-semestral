@@ -39,6 +39,8 @@ class Game : public Screen {
 
     bool loadMap(const std::string &file);
 
+    void dropWeapon();
+
   public:
     Game(int width, int height, int damage, int health);
 

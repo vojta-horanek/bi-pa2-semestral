@@ -9,7 +9,6 @@ class Axe : public Weapon {
   public:
     Axe();
 
-    void onPickup(GameState &state) override;
     int getDamage() override;
 
     EntityType getType() const noexcept override;
