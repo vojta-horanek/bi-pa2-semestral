@@ -10,4 +10,4 @@ class MenuHelp : public MenuItem {
     Item getType() override;
 };
 
-#endif // TPOHB_MENULOAD_H
+#endif // TPOHB_MENUHELP_H

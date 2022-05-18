@@ -111,9 +111,9 @@ bool Game::loadSave(const std::string &saveFile) {
 
     Result saveFileResult = saveFileParser.loadSaveFromFile(saveFile);
 
-    if (saveFileResult.isError) {
-        std::cerr << saveFileResult.errorText << std::endl;
-        showDialog(std::make_unique<MessageDialog>(m_ScreenWidth, m_ScreenHeight, saveFileResult.errorText));
+    if (saveFileResult.m_isError) {
+        std::cerr << saveFileResult.m_ErrorText << std::endl;
+        showDialog(std::make_unique<MessageDialog>(m_ScreenWidth, m_ScreenHeight, saveFileResult.m_ErrorText));
         return false;
     }
 
@@ -142,7 +142,7 @@ void Game::dropWeapon() {
 }
 
 void Game::nextTurn() {
-    avoidPlayerCollision();
+    playerCollision();
     m_Player->onTurn(*m_GameState, m_GameMap->getCurrentSection());
 
     m_GameMap->getCurrentSection().onTurn(*m_GameState);
@@ -158,7 +158,7 @@ void Game::nextTurn() {
     }
 }
 
-void Game::avoidPlayerCollision() {
+void Game::playerCollision() {
     Vec playerNexPos = m_Player->getNextPosition(m_GameState->m_PlayerPosition);
     if (m_GameMap->getCurrentSection().isEdge(playerNexPos)) {
 

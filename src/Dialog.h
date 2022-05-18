@@ -4,13 +4,23 @@
 #include "render/Vec.h"
 #include <SDL2/SDL_events.h>
 
+/**
+ * Base class for a dialog
+ */
 class Dialog {
 
   public:
+    /**
+     * Render dialog background based on it's size
+     */
     virtual void onRender();
 
     virtual void onEvent(SDL_Event event) = 0;
 
+    /**
+     *
+     * @return whether this dialog should continue to be visible
+     */
     bool getVisibility() const;
 
     virtual ~Dialog() = default;

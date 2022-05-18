@@ -14,20 +14,18 @@ bool SaveManager::fileExists(const std::string &path) {
 }
 
 std::string SaveManager::getSaveFilePath() {
-    for (size_t i = 0;
-         i < sizeof(s_CommonSavePaths) / sizeof(s_CommonSavePaths[0]); i++) {
-        if (fileExists(s_CommonSavePaths[i]))
-            return s_CommonSavePaths[i];
+    for (const auto & s_CommonSavePath : s_CommonSavePaths) {
+        if (fileExists(s_CommonSavePath))
+            return s_CommonSavePath;
     }
 
     return "";
 }
 
 std::string SaveManager::getNewGameFilePath() {
-    for (size_t i = 0; i < sizeof(s_NewGamePaths) / sizeof(s_NewGamePaths[0]);
-         i++) {
-        if (fileExists(s_NewGamePaths[i]))
-            return s_NewGamePaths[i];
+    for (const auto & s_NewGamePath : s_NewGamePaths) {
+        if (fileExists(s_NewGamePath))
+            return s_NewGamePath;
     }
 
     return "";
@@ -105,8 +103,8 @@ Result SaveManager::saveGame(const std::string &saveFilePath,
 }
 
 void SaveManager::writeSection(
-    SaveParserState section, std::ostream &output,
-    std::function<void(std::ostream &ostream)> writeFun) {
+    const SaveParserState& section, std::ostream &output,
+    const std::function<void(std::ostream &ostream)>& writeFun) {
     const std::string &sectionName = section.toString();
     output << sectionName << std::endl;
     writeFun(output);

@@ -28,11 +28,11 @@ void Renderer::render(SDL_Texture *texture, const Rect &sourceRect,
                       const Rect &destinationRect) const {
     assert(m_Renderer != nullptr);
 
-    SDL_Rect src{sourceRect.position.x, sourceRect.position.y,
-                 sourceRect.size.x, sourceRect.size.y};
+    SDL_Rect src{sourceRect.m_Position.x, sourceRect.m_Position.y,
+                 sourceRect.m_Size.x, sourceRect.m_Size.y};
 
-    SDL_Rect dst{destinationRect.position.x, destinationRect.position.y,
-                 destinationRect.size.x, destinationRect.size.y};
+    SDL_Rect dst{destinationRect.m_Position.x, destinationRect.m_Position.y,
+                 destinationRect.m_Size.x, destinationRect.m_Size.y};
 
     SDL_RenderCopy(m_Renderer, texture, &src, &dst);
 }
@@ -40,8 +40,8 @@ void Renderer::render(SDL_Texture *texture, const Rect &sourceRect,
 void Renderer::render(SDL_Texture *texture, const Rect &destinationRect) const {
     assert(m_Renderer != nullptr);
 
-    SDL_Rect dst{destinationRect.position.x, destinationRect.position.y,
-                 destinationRect.size.x, destinationRect.size.y};
+    SDL_Rect dst{destinationRect.m_Position.x, destinationRect.m_Position.y,
+                 destinationRect.m_Size.x, destinationRect.m_Size.y};
 
     SDL_RenderCopy(m_Renderer, texture, nullptr, &dst);
 }
@@ -52,8 +52,8 @@ void Renderer::render(SDL_Texture *texture) const {
 }
 
 void Renderer::drawRectangle(const Rect &destination, bool fill) const {
-    SDL_Rect dest{destination.position.x, destination.position.y,
-                  destination.size.x, destination.size.y};
+    SDL_Rect dest{destination.m_Position.x, destination.m_Position.y,
+                  destination.m_Size.x, destination.m_Size.y};
     if (fill)
         SDL_RenderFillRect(m_Renderer, &dest);
     else

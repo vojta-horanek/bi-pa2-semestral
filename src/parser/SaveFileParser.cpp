@@ -55,22 +55,22 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         }
     } else if (m_CurrentState == SaveParserState::value_type::health) {
         auto setHealth = readIntCommand(line, "SET");
-        if (setHealth.first.isError || setHealth.second < 0)
+        if (setHealth.first.m_isError || setHealth.second < 0)
             return setHealth.first;
         m_PlayerMaxHealth = setHealth.second;
     } else if (m_CurrentState == SaveParserState::value_type::current_health) {
         auto setHealth = readIntCommand(line, "SET");
-        if (setHealth.first.isError || setHealth.second < 0)
+        if (setHealth.first.m_isError || setHealth.second < 0)
             return setHealth.first;
         m_PlayerCurrentHealth = setHealth.second;
     } else if (m_CurrentState == SaveParserState::value_type::default_damage) {
         auto defaultDamage = readIntCommand(line, "SET");
-        if (defaultDamage.first.isError || defaultDamage.second < 0)
+        if (defaultDamage.first.m_isError || defaultDamage.second < 0)
             return defaultDamage.first;
         m_PlayerDefaultDamage = defaultDamage.second;
     } else if (m_CurrentState == SaveParserState::value_type::weapon) {
         auto weaponSet = readIntCommand(line, "SET");
-        if (weaponSet.first.isError)
+        if (weaponSet.first.m_isError)
             return weaponSet.first;
 
         auto it = m_Types.find(weaponSet.second);
@@ -99,7 +99,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         m_MapFilePath = line;
     } else if (m_CurrentState == SaveParserState::value_type::inventory) {
         auto inventoryAdd = readIntCommand(line, "ADD");
-        if (inventoryAdd.first.isError)
+        if (inventoryAdd.first.m_isError)
             return inventoryAdd.first;
 
         auto it = m_Types.find(inventoryAdd.second);
@@ -177,11 +177,11 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
 
         auto result = parseNextLine(line);
 
-        if (result.isError) {
+        if (result.m_isError) {
             std::cerr << "Error while parsing " << fileName << ". " << std::endl
                       << "Occurred on line " << lineNum
                       << " with error:" << std::endl
-                      << "\t" << result.errorText << std::endl
+                      << "\t" << result.m_ErrorText << std::endl
                       << "The invalid line:" << std::endl
                       << "\t" << line << std::endl;
             isError = true;
@@ -194,10 +194,10 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
 
     Result parsingResult = areAllValuesSet();
 
-    if (parsingResult.isError)
+    if (parsingResult.m_isError)
         return Result::error(
             "Some required values were not set in the save file: " +
-            parsingResult.errorText);
+            parsingResult.m_ErrorText);
 
     return Result::success();
 }

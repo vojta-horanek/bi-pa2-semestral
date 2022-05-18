@@ -56,7 +56,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
 
     if (m_CurrentState == MapParserState::value_type::player) {
         auto result = readSetCommand(line);
-        if (result.first.isError)
+        if (result.first.m_isError)
             return result.first;
 
         if (m_CurrentSectionIt == m_Map->m_Sections.end()) {
@@ -74,12 +74,12 @@ Result MapFileParser::parseNextLine(const std::string &line) {
     } else if (m_CurrentState == MapParserState::value_type::default_section) {
 
         auto result = readSetCommand(line);
-        if (result.first.isError)
+        if (result.first.m_isError)
             return result.first;
 
-        m_Map->currentSection = m_Map->m_Sections.find(result.second);
+        m_Map->m_CurrentSectionIt = m_Map->m_Sections.find(result.second);
 
-        if (m_Map->currentSection == m_Map->m_Sections.end()) {
+        if (m_Map->m_CurrentSectionIt == m_Map->m_Sections.end()) {
             std::stringstream str;
             str << "Cannot find section with position " << result.second;
             return Result::error(str.str());
@@ -188,7 +188,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         std::tie(result, position, section, entityIdentifier) =
             readMonsterAddCommand(line);
 
-        if (result.isError)
+        if (result.m_isError)
             return result;
 
         auto thisSection = m_Map->m_Sections.find(section);
@@ -263,7 +263,7 @@ Result MapFileParser::areAllValuesSet() const {
         return Result::error("No map sections defined");
     }
 
-    if (m_Map->currentSection == m_Map->m_Sections.end()) {
+    if (m_Map->m_CurrentSectionIt == m_Map->m_Sections.end()) {
         return Result::error("A default section has not been set");
     }
 

@@ -46,27 +46,26 @@ bool ResumeMenu::shouldClearBackStack() { return m_GoToMainMenu; }
 void ResumeMenu::onEscapePressed() { m_IsUserInMenu = false; }
 
 void ResumeMenu::saveGame() {
-    SaveManager manager;
     std::string saveFilePath = SaveManager::getSaveFilePath();
     std::string mapFilePath = saveFilePath + "_map";
-    Result saveResult = manager.saveGame(saveFilePath, mapFilePath, *m_GameState);
-    if (saveResult.isError) {
-        std::cerr << "Failed while saving the game: " << saveResult.errorText
+    Result saveResult = SaveManager::saveGame(saveFilePath, mapFilePath, *m_GameState);
+    if (saveResult.m_isError) {
+        std::cerr << "Failed while saving the game: " << saveResult.m_ErrorText
                   << std::endl;
         showDialog(std::make_unique<MessageDialog>(
             m_ScreenWidth, m_ScreenHeight,
-            "Failed while saving the game: " + saveResult.errorText));
+            "Failed while saving the game: " + saveResult.m_ErrorText));
 
         return;
     }
 
     Result mapResult = m_Map->saveToFile(mapFilePath, *m_GameState);
-    if (mapResult.isError) {
-        std::cerr << "Failed while saving the game: " << mapResult.errorText
+    if (mapResult.m_isError) {
+        std::cerr << "Failed while saving the game: " << mapResult.m_ErrorText
                   << std::endl;
         showDialog(std::make_unique<MessageDialog>(
             m_ScreenWidth, m_ScreenHeight,
-            "Failed while saving the game: " + mapResult.errorText));
+            "Failed while saving the game: " + mapResult.m_ErrorText));
         return;
     }
 

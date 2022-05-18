@@ -5,6 +5,9 @@
 #include "render/Text.h"
 #include <SDL2/SDL_events.h>
 
+/**
+ * Dialog with a message that is dismissible by any key press
+ */
 class MessageDialog : public Dialog {
   public:
     MessageDialog(int screenWidth, int screenHeight, const std::string &text);

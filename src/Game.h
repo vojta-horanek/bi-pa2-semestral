@@ -53,18 +53,46 @@ class Game : public Screen {
      */
     int m_BlocksWidth, m_BlocksHeight;
 
+    /**
+     * Called when the game should render
+     */
     void onRender() override;
 
+    /**
+     * Called when an event occurs
+     * @param event
+     */
     void onEvent(SDL_Event event) override;
 
+    /**
+     * Called when a player finishes their turn
+     */
     void nextTurn();
 
-    void avoidPlayerCollision();
+    /**
+     * Avoids player collision if necessary.
+     * Calls collision methods on entities.
+     * Navigates to a different map section if needed.
+     */
+    void playerCollision();
 
+    /**
+     * Loads a save from the save file
+     * @param saveFile
+     * @return true if successful, false otherwise
+     */
     bool loadSave(const std::string &saveFile);
 
+    /**
+     * Loads a map from the map file
+     * @param mapFile
+     * @return true if successful, false otherwise
+     */
     bool loadMap(const std::string &mapFile);
 
+    /**
+     * Called when player attempts to drop their weapon
+     */
     void dropWeapon();
 
     Game(int screenWidth, int screenHeight, int damage, int health,

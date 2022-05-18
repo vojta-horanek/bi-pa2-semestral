@@ -3,15 +3,15 @@
 
 #include <string>
 
-struct StringUtils {
+namespace StringUtils {
     // trim from start (in place)
-    static void ltrim(std::string &s);
+    void ltrim(std::string &s);
 
     // trim from end (in place)
-    static void rtrim(std::string &s);
+    void rtrim(std::string &s);
 
     // trim from both ends (in place)
-    static void trim(std::string &s);
-};
+    void trim(std::string &s);
+}
 
 #endif // TPOHB_STRINGUTILS_H

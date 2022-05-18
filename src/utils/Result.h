@@ -3,9 +3,13 @@
 
 #include <string>
 
+/**
+ * A result class. A result can either be success, without the error text,
+ * or error, with the error text.
+ */
 struct Result {
-    bool isError;
-    std::string errorText;
+    bool m_isError;
+    std::string m_ErrorText;
 
     Result() = delete;
 

@@ -11,6 +11,9 @@
 #include <ostream>
 #include <string>
 
+/**
+ * Class used for creating new entities of specified type
+ */
 class EntityManager {
   private:
     const static std::pair<EntityType, const std::string> s_TypeTable[];

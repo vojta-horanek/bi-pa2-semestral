@@ -58,19 +58,45 @@ class MapSection {
      */
     void render(GameState &state);
 
+    /**
+     * Should be called when the player finishes their turn
+     * @param state
+     */
     void onTurn(GameState &state);
 
+    /**
+     * Return true if the position is the edge of the map section
+     * @param position
+     * @return
+     */
     bool isEdge(Vec position) const;
 
     bool collideWith(Vec position, GameState &gameState,
                      bool isPlayer = true) const;
 
+    /**
+     * Return true if a moving entity is at the specified position
+     * @param position
+     * @return
+     */
     bool isMovingEntity(Vec position) const;
 
+    /**
+     * Writes this map section to stream
+     * @param stream the stream to write to
+     * @param types entity types definition
+     * @param sectionPosition the position of this section in the map
+     */
     void writeToStream(std::ostream &stream,
                        const std::map<EntityType, int> &types,
                        Vec sectionPosition) const;
 
+    /**
+     * Writes a list of moving entities from this section to the stream
+     * @param stream the stream to write to
+     * @param types entity types definition
+     * @param sectionPosition the position of this section in the map
+     */
     void writeMovingEntities(std::ostream &stream,
                              const std::map<EntityType, int> &types,
                              Vec sectionPosition) const;

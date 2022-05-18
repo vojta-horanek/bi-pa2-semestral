@@ -7,12 +7,7 @@
 #include <string>
 
 class Window {
-  private:
-    SDL_Window *window = nullptr;
-
-    Vec m_Size;
-
-  public:
+public:
     explicit Window(const std::string &title);
 
     ~Window();
@@ -22,6 +17,12 @@ class Window {
     SDL_Window *getWindow() const;
 
     Vec getSize() const;
+
+private:
+    SDL_Window *m_Window = nullptr;
+
+    Vec m_Size;
+
 };
 
 #endif // TPOHB_WINDOW_H

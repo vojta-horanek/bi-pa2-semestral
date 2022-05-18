@@ -4,8 +4,8 @@
 #include "Vec.h"
 
 struct Rect {
-    Vec position;
-    Vec size;
+    Vec m_Position;
+    Vec m_Size;
 };
 
 #endif // TPOHB_RECT_H

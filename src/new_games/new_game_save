@@ -14,8 +14,8 @@ END DEFINE
 ; Path/s to a map file. The first file that exists is going to be used
 MAPFILE
 new_game_map
-games/new_game_map
-src/games/new_game_map
+new_games/new_game_map
+src/new_games/new_game_map
 END MAPFILE
 
 ; Inventory can consist of pick-up able items
