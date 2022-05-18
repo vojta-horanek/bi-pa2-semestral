@@ -19,6 +19,8 @@ build:
     expire_in: 1 week
 test:
     stage: test
+    before_script:
+      - apt update && apt -y install make autoconf libsdl2-dev libsdl2-ttf-dev doxygen zip
     script:
       - make clean
       - make test -j4
