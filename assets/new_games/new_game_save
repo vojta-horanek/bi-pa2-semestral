@@ -16,7 +16,7 @@ END DEFINE
 MAPFILE
 new_game_map
 new_games/new_game_map
-src/new_games/new_game_map
+assets/new_games/new_game_map
 END MAPFILE
 
 ; Maximum player health

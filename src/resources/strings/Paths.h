@@ -2,7 +2,7 @@
 #define TPOHB_PATHS_H
 
 #ifndef RESOURCES_PATH
-#define RESOURCES_PATH "resources/"
+#define RESOURCES_PATH "../assets/"
 #endif
 
 #define BITMAPS_PATH RESOURCES_PATH "bitmaps/"
