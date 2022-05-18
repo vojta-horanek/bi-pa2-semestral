@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
 
 image: gcc
 
@@ -16,4 +17,9 @@ build:
       - horanvoj
       - horanvoj.zip
     expire_in: 1 week
+test:
+    stage: test
+    script:
+      - make clean
+      - make test
 
