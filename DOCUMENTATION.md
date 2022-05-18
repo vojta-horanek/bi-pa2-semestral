@@ -78,6 +78,6 @@ Většinu textur jsem vytvořil sám.
 Vyjímky:
 
 * https://betterttv.com/emotes/5b1740221c5a6065a7bad4b5
-* ikona hráče od Jovana Láníka, zdroj ze soukromé zprávy
+* ikona hráče od Jovana Laníka, zdroj ze soukromé zprávy
 * pozadí z: https://itch.io/game-assets/tag-pixel-art
 * font: https://managore.itch.io/m5x7

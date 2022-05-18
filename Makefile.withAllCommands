@@ -14,7 +14,7 @@ DEPS = $(patsubst src/%.cpp, build/%.dep, ${SOURCES})
 
 .PHONY: all compile run valgrind doc clean count zip
 
-all: compilemak doc
+all: compile doc
 
 test: FLAGS += -DTEST
 test: compile run
