@@ -2,8 +2,7 @@
 
 #include <fstream>
 
-const std::string SaveManager::s_CommonSavePaths[] = {
-        "examples/save_manual", "../examples/save_manual"};
+const std::string SaveManager::s_CommonSavePaths[] = {"save_manual"};
 
 const std::string SaveManager::s_NewGamePaths[] = {
         "assets/new_games/new_game_save", "new_games/new_game_save"};

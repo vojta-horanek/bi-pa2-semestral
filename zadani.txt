@@ -68,3 +68,13 @@ Polymorfismus využívám hojně pro rendrování všech entit na obrazovku. Ka�
 přes jednoho až více sub-entit, které jim přidají různé možnosti (animace, entita, co může hráč zvednout, pohybující se entita…).
 Ve hře je využit polymorfismus i jinde, na graf tříd se lze podívat pomocí make doc, jelikož v projektu je nastaven Doxygen.
 Momentálně projekt neobsahuje moc dokumentace, ta ale ještě přibude.
+
+Zdroje assetů
+-------------
+
+Většinu textur jsem vytvořil sám.
+Vyjímky:
+    * https://betterttv.com/emotes/5b1740221c5a6065a7bad4b5
+    * ikona hráče od Jovana Láníka, zdroj ze soukromé zprávy
+    * pozadí z: https://itch.io/game-assets/tag-pixel-art
+    * font: https://managore.itch.io/m5x7

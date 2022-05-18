@@ -12,9 +12,9 @@ class Text {
   public:
     Text();
 
-    explicit Text(const std::string &text);
+    explicit Text(std::string text);
 
-    Text(const std::string &text, int fontSize);
+    Text(std::string text, int fontSize);
 
     ~Text();
 

@@ -5,35 +5,40 @@
 #include "Renderer.h"
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <utility>
 
 Text::Text() : m_FontTexture(nullptr), m_FontSize(s_DefaultFontSize) {}
 
-Text::Text(const std::string &text, int fontSize)
-    : m_Text(text), m_FontSize(fontSize) {
+Text::Text(std::string text, int fontSize)
+        : m_Text(std::move(text)), m_FontSize(fontSize) {
 
     swapTexture();
 }
 
-Text::Text(const std::string &text) : Text(text, s_DefaultFontSize) {}
+Text::Text(std::string text) : Text(std::move(text), s_DefaultFontSize) {}
 
 Text::~Text() {
-    if (m_FontTexture != nullptr)
+    if (m_FontTexture != nullptr) {
+        std::cout << m_FontTexture << " D" << std::endl;
         SDL_DestroyTexture(m_FontTexture);
+    }
     m_FontTexture = nullptr;
 }
 
 Text::Text(Text &&other) noexcept
-    : m_Text(other.m_Text), m_FontTexture(other.m_FontTexture),
-      m_Color(other.m_Color), m_BoxSize(other.m_BoxSize),
-      m_FontSize(other.m_FontSize), m_WrapWidth(other.m_WrapWidth) {
+        : m_Text(other.m_Text), m_FontTexture(other.m_FontTexture),
+          m_Color(other.m_Color), m_BoxSize(other.m_BoxSize),
+          m_FontSize(other.m_FontSize), m_WrapWidth(other.m_WrapWidth) {
     other.m_FontTexture = nullptr;
 }
 
 Text &Text::operator=(Text &&other) noexcept {
     if (&other == this)
         return *this;
-    if (m_FontTexture != nullptr)
+    if (m_FontTexture != nullptr) {
+        std::cout << m_FontTexture << " D" << std::endl;
         SDL_DestroyTexture(m_FontTexture);
+    }
 
     m_FontTexture = other.m_FontTexture;
     m_Text = std::move(other.m_Text);
@@ -101,8 +106,10 @@ void Text::swapTexture() {
         std::cerr << "Failed while creating font m_Texture: " << TTF_GetError()
                   << std::endl;
 
-    if (m_FontTexture != nullptr)
+    if (m_FontTexture != nullptr) {
+        std::cout << m_FontTexture << " D" << std::endl;
         SDL_DestroyTexture(m_FontTexture);
+    }
 
     m_FontTexture = newFontTexture;
 }
@@ -119,6 +126,9 @@ SDL_Texture *Text::createTexture() {
     if (surface == nullptr)
         return nullptr;
 
+    std::cout << surface << " C" << std::endl;
+
+
     SDL_Texture *fontTexture = Renderer::getInstance().createTexture(surface);
 
     if (fontTexture == nullptr)
@@ -128,6 +138,7 @@ SDL_Texture *Text::createTexture() {
     m_BoxSize.y = surface->h;
 
     SDL_FreeSurface(surface);
+    std::cout << surface << " D" << std::endl;
 
     return fontTexture;
 }
@@ -167,7 +178,7 @@ bool Text::initTTF() {
 }
 
 void Text::destroyTTF() {
-    for (const auto &[_, font] : s_Fonts)
+    for (const auto &[_, font]: s_Fonts)
         TTF_CloseFont(font);
 
     s_Fonts.clear();

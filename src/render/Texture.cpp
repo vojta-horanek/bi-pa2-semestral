@@ -31,11 +31,14 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
 
     // Otherwise, create the m_Texture
     SDL_Surface *surface = SDL_LoadBMP(path.c_str());
+
     if (surface == nullptr) {
         std::cerr << L10n::cannotLoadBitmap << " " << path.c_str() << " "
                   << SDL_GetError() << std::endl;
         return nullptr;
     }
+    std::cout << surface << " C" << std::endl;
+
 
     if (useWhiteAsAlpha) {
         SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr),
@@ -50,6 +53,8 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
         return nullptr;
     }
     SDL_FreeSurface(surface);
+    std::cout << surface << " D" << std::endl;
+
 
     s_TextureStore[std::make_pair(path, useWhiteAsAlpha)] = texture;
 
@@ -84,9 +89,12 @@ void Texture::render(Vec position, int scale) const {
 }
 
 void Texture::clearStore() {
-    for (const auto &item : s_TextureStore)
-        if (item.second != nullptr)
+    for (const auto &item: s_TextureStore)
+        if (item.second != nullptr) {
+            std::cout << item.second << " D" << std::endl;
+
             SDL_DestroyTexture(item.second);
+        }
 
     s_TextureStore.clear();
 }

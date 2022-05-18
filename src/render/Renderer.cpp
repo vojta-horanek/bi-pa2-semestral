@@ -1,12 +1,17 @@
 #include "Renderer.h"
 #include <cassert>
 #include <memory>
+#include <iostream>
 
 std::unique_ptr<Renderer> Renderer::instance = nullptr;
 
 Renderer::Renderer() = default;
 
-Renderer::~Renderer() { SDL_DestroyRenderer(m_Renderer); }
+Renderer::~Renderer() {
+
+    std::cout << m_Renderer << " D" << std::endl;
+    SDL_DestroyRenderer(m_Renderer);
+}
 
 void Renderer::createRenderer(const Window &window) {
     if (m_Renderer != nullptr)
@@ -14,6 +19,7 @@ void Renderer::createRenderer(const Window &window) {
     m_Renderer = SDL_CreateRenderer(window.getWindow(), -1,
                                     SDL_RENDERER_ACCELERATED |
                                     SDL_RENDERER_PRESENTVSYNC);
+    std::cout << m_Renderer << " C" << std::endl;
     SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 }
 
@@ -65,7 +71,9 @@ void Renderer::clear() const { SDL_RenderClear(m_Renderer); }
 void Renderer::present() const { SDL_RenderPresent(m_Renderer); }
 
 SDL_Texture *Renderer::createTexture(SDL_Surface *surface) const {
-    return SDL_CreateTextureFromSurface(m_Renderer, surface);
+    auto p = SDL_CreateTextureFromSurface(m_Renderer, surface);
+    std::cout << p << " C" << std::endl;
+    return p;
 }
 
 void Renderer::selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const {
