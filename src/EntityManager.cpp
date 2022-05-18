@@ -11,6 +11,8 @@
 #include "entity/Tree.h"
 #include "entity/Zombie.h"
 #include "entity/GoldenApple.h"
+#include "entity/Boss.h"
+#include "entity/Dirt.h"
 #include <map>
 
 const std::pair<EntityType, const std::string> EntityManager::s_TypeTable[] = {
@@ -22,8 +24,10 @@ const std::pair<EntityType, const std::string> EntityManager::s_TypeTable[] = {
         {EntityType::BRICK,        "BRICK"},
         {EntityType::GRASS,        "GRASS"},
         {EntityType::ZOMBIE,       "ZOMBIE"},
+        {EntityType::BOSS,         "BOSS"},
         {EntityType::HEARTH,       "HEARTH"},
-        {EntityType::GOLDEN_APPLE, "GOLDEN_APPLE"}};
+        {EntityType::GOLDEN_APPLE, "GOLDEN_APPLE"},
+        {EntityType::DIRT,         "DIRT"}};
 
 const size_t EntityManager::s_TypeTableSize =
         sizeof(s_TypeTable) / sizeof(s_TypeTable[0]);
@@ -76,8 +80,12 @@ std::unique_ptr<Entity> EntityManager::getEntity(EntityType type) {
             return std::move(std::make_unique<Grass>());
         case EntityType::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
+        case EntityType::BOSS:
+            return std::move(std::make_unique<Boss>());
         case EntityType::HEARTH:
             return std::move(std::make_unique<Hearth>());
+        case EntityType::DIRT:
+            return std::move(std::make_unique<Dirt>());
         default:
             return nullptr;
     }
@@ -87,6 +95,8 @@ std::unique_ptr<Monster> EntityManager::getMonster(EntityType type) {
     switch (type) {
         case EntityType::ZOMBIE:
             return std::move(std::make_unique<Zombie>());
+        case EntityType::BOSS:
+            return std::move(std::make_unique<Boss>());
         default:
             return nullptr;
     }

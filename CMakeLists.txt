@@ -127,5 +127,5 @@ add_executable(
   src/FightScreen.h
   src/MapSection.h
   src/MessageDialog.h
-        src/parser/SaveParserState.h src/test/tests.cpp)
+        src/parser/SaveParserState.h src/test/tests.cpp src/entity/Boss.cpp src/entity/Boss.h src/entity/Dirt.cpp src/entity/Dirt.h)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})

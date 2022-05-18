@@ -1,4 +1,5 @@
-; Definition of entities
+; Definition of entitiessrc/new_games/new_game_map
+
 ; A void entity is an empty space
 DEFINE
 0 VOID
@@ -17,12 +18,6 @@ new_game_map
 new_games/new_game_map
 src/new_games/new_game_map
 END MAPFILE
-
-; Inventory can consist of pick-up able items
-INVENTORY
-ADD 2
-ADD 2
-END INVENTORY
 
 ; Maximum player health
 HEALTH

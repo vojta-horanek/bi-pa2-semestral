@@ -9,6 +9,8 @@ class Apple : public PickupEntity {
     Apple();
 
     EntityType getType() const noexcept override;
+
+    void onPickup(GameState &state) override;
 };
 
 #endif // TPOHB_APPLE_H

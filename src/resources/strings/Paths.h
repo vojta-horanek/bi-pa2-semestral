@@ -37,6 +37,8 @@ static constexpr str menu_backdrop = BITMAPS_PATH "menu-backdrop.bmp";
 static constexpr str screen_won = BITMAPS_PATH "screen-won.bmp";
 static constexpr str screen_lost = BITMAPS_PATH "screen-lost.bmp";
 static constexpr str golden_apple = BITMAPS_PATH "golden-apple.bmp";
+static constexpr str boss = BITMAPS_PATH "boss.bmp";
+static constexpr str dirt = BITMAPS_PATH "dirt.bmp";
 } // namespace Bitmaps
 namespace Fonts {
 static constexpr str pixel = FONTS_PATH "pixel.ttf";

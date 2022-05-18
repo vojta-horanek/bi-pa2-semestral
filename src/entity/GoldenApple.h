@@ -9,6 +9,8 @@ class GoldenApple : public PickupEntity {
     GoldenApple();
 
     EntityType getType() const noexcept override;
+
+    void onPickup(GameState &state) override;
 };
 
 #endif // TPOHB_GOLDENAPPLE_H

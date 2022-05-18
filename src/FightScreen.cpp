@@ -91,6 +91,7 @@ void FightScreen::onEvent(SDL_Event event) {
                 } else if (m_IsJustShown) {
                     m_IsJustShown = false;
                     m_IsPlayerTurn = rand() % 2;
+                    attack();
                 }
                 break;
         }

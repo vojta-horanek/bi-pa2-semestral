@@ -11,6 +11,7 @@ enum class EntityType {
     BRICK,
     GRASS,
     ZOMBIE,
+    BOSS,
     HEARTH,
     INVALID,
     DIRT

@@ -1,4 +1,5 @@
-; Definition of entities
+; Definition of entitiessrc/new_games/new_game_map
+
 ; A void entity is an empty space
 DEFINE
 0 VOID
@@ -13,19 +14,10 @@ END DEFINE
 
 ; Path/s to a map file. The first file that exists is going to be used
 MAPFILE
-examples/map
+new_game_map
+new_games/new_game_map
+src/new_games/new_game_map
 END MAPFILE
-
-; Inventory can consist of pick-up able items
-INVENTORY
-ADD 2
-ADD 2
-END INVENTORY
-
-; Players weapon
-WEAPON
-SET 3
-END WEAPON
 
 ; Maximum player health
 HEALTH
@@ -34,7 +26,7 @@ END HEALTH
 
 ; Current player health
 CURRENT_HEALTH
-SET 100
+SET 255
 END CURRENT_HEALTH
 
 ; Default damage of the player
