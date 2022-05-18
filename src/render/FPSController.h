@@ -8,12 +8,12 @@
  */
 class FPSController {
 
-public:
+  public:
     static void renderStart();
 
     static void renderEnd();
 
-private:
+  private:
     static const Uint32 FPS = 60;
     static const Uint32 s_DelayTicks = 1000 / FPS;
     inline static Uint32 s_StartTicks;

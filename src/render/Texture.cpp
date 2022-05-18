@@ -91,7 +91,7 @@ void Texture::render(Vec position, int scale) const {
 }
 
 void Texture::clearStore() {
-    for (const auto &item: s_TextureStore)
+    for (const auto &item : s_TextureStore)
         if (item.second != nullptr) {
 #ifdef MEM
             std::cout << item.second << " D" << std::endl;

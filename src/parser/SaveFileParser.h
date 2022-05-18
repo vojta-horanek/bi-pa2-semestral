@@ -12,7 +12,7 @@
 #include "SaveParserState.h"
 
 class SaveFileParser {
-public:
+  public:
     SaveFileParser();
 
     Result loadSaveFromFile(const std::string &fileName);
@@ -29,7 +29,7 @@ public:
 
     std::unique_ptr<Weapon> getWeapon();
 
-private:
+  private:
     SaveParserState m_CurrentState;
 
     std::string m_MapFilePath;

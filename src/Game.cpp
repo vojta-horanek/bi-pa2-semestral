@@ -94,8 +94,8 @@ void Game::onEvent(SDL_Event event) {
 
 bool Game::loadMap(const std::string &mapFile) {
     try {
-        m_GameMap =
-            Map::loadFromFile(mapFile, *m_GameState, m_BlocksWidth, m_BlocksHeight);
+        m_GameMap = Map::loadFromFile(mapFile, *m_GameState, m_BlocksWidth,
+                                      m_BlocksHeight);
         return true;
     } catch (std::invalid_argument &ex) {
         showDialog(std::make_unique<MessageDialog>(m_ScreenWidth,
@@ -113,7 +113,8 @@ bool Game::loadSave(const std::string &saveFile) {
 
     if (saveFileResult.m_isError) {
         std::cerr << saveFileResult.m_ErrorText << std::endl;
-        showDialog(std::make_unique<MessageDialog>(m_ScreenWidth, m_ScreenHeight, saveFileResult.m_ErrorText));
+        showDialog(std::make_unique<MessageDialog>(
+            m_ScreenWidth, m_ScreenHeight, saveFileResult.m_ErrorText));
         return false;
     }
 

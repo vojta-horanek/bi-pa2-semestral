@@ -2,7 +2,8 @@
 #define TPOHB_CONSTANTS_H
 
 inline static const int REAL_PIXEL_SIZE =
-    5; // A scaling constant indicating how real pixels are scaled across the screen
+    5; // A scaling constant indicating how real pixels are scaled across the
+       // screen
 inline static const int BLOCK_SIZE =
     16; // The width and height of a single block
 

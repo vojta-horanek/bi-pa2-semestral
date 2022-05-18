@@ -7,7 +7,7 @@
 #include <string>
 
 class Window {
-public:
+  public:
     explicit Window(const std::string &title);
 
     ~Window();
@@ -18,11 +18,10 @@ public:
 
     Vec getSize() const;
 
-private:
+  private:
     SDL_Window *m_Window = nullptr;
 
     Vec m_Size;
-
 };
 
 #endif // TPOHB_WINDOW_H

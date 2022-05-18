@@ -35,37 +35,39 @@ Result Map::saveToFile(const std::string &path, const GameState &gameState) {
     std::map<EntityType, int> types = EntityManager::createDefinitions();
 
     // Write definitions
-    writeFileSection(MapParserState(MapParserState::value_type::define), saveFile,
-                     [&types](std::ostream &ostream) {
+    writeFileSection(MapParserState(MapParserState::value_type::define),
+                     saveFile, [&types](std::ostream &ostream) {
                          EntityManager::printDefinitions(types, ostream);
                      });
 
     // Write sections
-    writeFileSection(MapParserState(MapParserState::value_type::sections), saveFile,
-                     [&](std::ostream &ostream) {
-                         for (const auto &[position, section]: m_Sections) {
+    writeFileSection(MapParserState(MapParserState::value_type::sections),
+                     saveFile, [&](std::ostream &ostream) {
+                         for (const auto &[position, section] : m_Sections) {
                              section.writeToStream(ostream, types, position);
                          }
                      });
 
     // Write default section
-    writeFileSection(MapParserState(MapParserState::value_type::default_section),
-                     saveFile, [&](std::ostream &ostream) {
-                ostream << "SET " << m_CurrentSectionIt->first << std::endl;
-            });
+    writeFileSection(
+        MapParserState(MapParserState::value_type::default_section), saveFile,
+        [&](std::ostream &ostream) {
+            ostream << "SET " << m_CurrentSectionIt->first << std::endl;
+        });
 
     // Write player postion
-    writeFileSection(MapParserState(MapParserState::value_type::player), saveFile,
-                     [&gameState](std::ostream &ostream) {
+    writeFileSection(MapParserState(MapParserState::value_type::player),
+                     saveFile, [&gameState](std::ostream &ostream) {
                          ostream << "SET " << gameState.m_PlayerPosition
                                  << std::endl;
                      });
 
     // Write monsters
-    writeFileSection(MapParserState(MapParserState::value_type::monsters), saveFile,
-                     [&](std::ostream &ostream) {
-                         for (const auto &[position, section]: m_Sections) {
-                             section.writeMovingEntities(ostream, types, position);
+    writeFileSection(MapParserState(MapParserState::value_type::monsters),
+                     saveFile, [&](std::ostream &ostream) {
+                         for (const auto &[position, section] : m_Sections) {
+                             section.writeMovingEntities(ostream, types,
+                                                         position);
                          }
                      });
 

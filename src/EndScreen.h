@@ -5,7 +5,7 @@
 #include "render/Texture.h"
 
 class EndScreen : public Screen {
-public:
+  public:
     EndScreen(bool hasWon, int screenWidth, int screenHeight);
 
     void onEvent(SDL_Event event) override;
@@ -14,10 +14,9 @@ public:
 
     bool shouldClearBackStack() override;
 
-private:
+  private:
     Texture m_BackgroundTexture;
     bool m_IsVisible = true;
-
 };
 
 #endif // TPOHB_ENDSCREEN_H

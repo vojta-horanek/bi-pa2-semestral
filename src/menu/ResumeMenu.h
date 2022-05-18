@@ -7,7 +7,7 @@
 #include <memory>
 
 class ResumeMenu : public Menu {
-public:
+  public:
     ResumeMenu(int width, int height);
 
     ResumeMenu(int width, int height, std::shared_ptr<GameState> gameState,
@@ -15,7 +15,7 @@ public:
 
     bool shouldClearBackStack() override;
 
-private:
+  private:
     bool m_GoToMainMenu = false;
     std::shared_ptr<GameState> m_GameState;
     std::shared_ptr<Map> m_Map;
@@ -25,8 +25,6 @@ private:
     void onEscapePressed() override;
 
     void saveGame();
-
-
 };
 
 #endif // TPOHB_RESUMEMENU_H

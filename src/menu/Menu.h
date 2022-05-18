@@ -10,14 +10,14 @@
 #include <vector>
 
 class Menu : public Screen {
-public:
+  public:
     void onEvent(SDL_Event event) override;
 
     void onRender() override;
 
     bool shouldPopSelf() override;
 
-protected:
+  protected:
     Menu(int screenWidth, int screenHeight);
 
     bool m_IsUserInMenu = true;
@@ -30,10 +30,9 @@ protected:
 
     virtual int getItemsTopPadding() const;
 
-private:
+  private:
     int m_ActiveItemIndex = 0;
     Texture m_BackdropTexture;
-
 };
 
 #endif // TPOHB_MENU_H

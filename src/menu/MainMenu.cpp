@@ -55,4 +55,6 @@ void MainMenu::onRender() {
                            m_TitleText.getBoxSize().y / 2));
 }
 
-int MainMenu::getItemsTopPadding() const { return m_TitleText.getBoxSize().y / 2; }
+int MainMenu::getItemsTopPadding() const {
+    return m_TitleText.getBoxSize().y / 2;
+}

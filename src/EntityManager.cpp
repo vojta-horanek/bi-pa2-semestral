@@ -2,39 +2,39 @@
 
 #include "entity/Apple.h"
 #include "entity/Axe.h"
+#include "entity/Boss.h"
 #include "entity/Bricks.h"
+#include "entity/Dirt.h"
 #include "entity/Entity.h"
+#include "entity/GoldenApple.h"
 #include "entity/Grass.h"
 #include "entity/Hearth.h"
 #include "entity/Monster.h"
 #include "entity/Sword.h"
 #include "entity/Tree.h"
 #include "entity/Zombie.h"
-#include "entity/GoldenApple.h"
-#include "entity/Boss.h"
-#include "entity/Dirt.h"
 #include <map>
 
 const std::pair<EntityType, const std::string> EntityManager::s_TypeTable[] = {
-        {EntityType::VOID,         "VOID"},
-        {EntityType::TREE,         "TREE"},
-        {EntityType::APPLE,        "APPLE"},
-        {EntityType::SWORD,        "SWORD"},
-        {EntityType::AXE,          "AXE"},
-        {EntityType::BRICK,        "BRICK"},
-        {EntityType::GRASS,        "GRASS"},
-        {EntityType::ZOMBIE,       "ZOMBIE"},
-        {EntityType::BOSS,         "BOSS"},
-        {EntityType::HEARTH,       "HEARTH"},
-        {EntityType::GOLDEN_APPLE, "GOLDEN_APPLE"},
-        {EntityType::DIRT,         "DIRT"}};
+    {EntityType::VOID, "VOID"},
+    {EntityType::TREE, "TREE"},
+    {EntityType::APPLE, "APPLE"},
+    {EntityType::SWORD, "SWORD"},
+    {EntityType::AXE, "AXE"},
+    {EntityType::BRICK, "BRICK"},
+    {EntityType::GRASS, "GRASS"},
+    {EntityType::ZOMBIE, "ZOMBIE"},
+    {EntityType::BOSS, "BOSS"},
+    {EntityType::HEARTH, "HEARTH"},
+    {EntityType::GOLDEN_APPLE, "GOLDEN_APPLE"},
+    {EntityType::DIRT, "DIRT"}};
 
 const size_t EntityManager::s_TypeTableSize =
-        sizeof(s_TypeTable) / sizeof(s_TypeTable[0]);
+    sizeof(s_TypeTable) / sizeof(s_TypeTable[0]);
 
 std::pair<EntityType, const std::string>
 EntityManager::findType(const std::string &name) {
-    for (const auto &i: s_TypeTable) {
+    for (const auto &i : s_TypeTable) {
         if (i.second == name)
             return i;
     }
@@ -44,7 +44,7 @@ EntityManager::findType(const std::string &name) {
 
 std::pair<EntityType, const std::string>
 EntityManager::findType(EntityType type) {
-    for (const auto &i: s_TypeTable) {
+    for (const auto &i : s_TypeTable) {
         if (i.first == type)
             return i;
     }
@@ -130,7 +130,7 @@ std::map<EntityType, int> EntityManager::createDefinitions() {
     std::map<EntityType, int> typeMap;
 
     for (size_t i = 0; i < s_TypeTableSize; i++) {
-        typeMap[s_TypeTable[i].first] = (int) i;
+        typeMap[s_TypeTable[i].first] = (int)i;
     }
 
     return typeMap;
@@ -139,7 +139,7 @@ std::map<EntityType, int> EntityManager::createDefinitions() {
 void EntityManager::printDefinitions(const std::map<EntityType, int> &types,
                                      std::ostream &outStream) {
 
-    for (const auto &item: types) {
+    for (const auto &item : types) {
         outStream << item.second << " " << getString(item.first) << std::endl;
     }
 }

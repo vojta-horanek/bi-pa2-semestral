@@ -6,8 +6,8 @@
 #include "entity/Bricks.h"
 #include "entity/Entity.h"
 #include "entity/Grass.h"
-#include "entity/MovingEntity.h"
 #include "entity/Monster.h"
+#include "entity/MovingEntity.h"
 #include "entity/Sword.h"
 #include "entity/Tree.h"
 #include "render/Vec.h"
@@ -23,7 +23,8 @@ class MapSection {
     int m_BlocksWidth;
     int m_BlocksHeight;
     /**
-     * A 2D vector holding all the non movable entities to be rendered and interacted with.
+     * A 2D vector holding all the non movable entities to be rendered and
+     * interacted with.
      */
     std::vector<std::vector<std::unique_ptr<Entity>>> m_Entities;
 
@@ -103,8 +104,8 @@ class MapSection {
 
   private:
     /**
-     * A background entity is an entity that is implicitly drawn under any other entity.
-     * It cannot be interacted with (e.g. no collision, pickup etc...)
+     * A background entity is an entity that is implicitly drawn under any other
+     * entity. It cannot be interacted with (e.g. no collision, pickup etc...)
      */
     std::unique_ptr<Entity> m_BackgroundEntity = nullptr;
 };

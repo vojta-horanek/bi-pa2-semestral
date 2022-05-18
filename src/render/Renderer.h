@@ -7,8 +7,8 @@
 #include <memory>
 
 class Renderer {
-    
-public:
+
+  public:
     ~Renderer();
 
     static Renderer &getInstance();
@@ -32,7 +32,7 @@ public:
 
     SDL_Texture *createTexture(SDL_Surface *surface) const;
 
-private:
+  private:
     static std::unique_ptr<Renderer> instance;
     SDL_Renderer *m_Renderer = nullptr;
 

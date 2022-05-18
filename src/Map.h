@@ -38,7 +38,8 @@ class Map {
     MapSection &getCurrentSection();
 
     /**
-     * Tries to navigate the player to a different section based on their direction
+     * Tries to navigate the player to a different section based on their
+     * direction
      * @param playerDirection
      * @return true if navigation succeeded, else otherwise
      */
@@ -61,19 +62,20 @@ class Map {
      * @return a shared pointer to the map object
      */
     static std::shared_ptr<Map> loadFromFile(const std::string &fileName,
-                                             GameState &gameState, int blocksWidth,
-                                             int blocksHeight);
+                                             GameState &gameState,
+                                             int blocksWidth, int blocksHeight);
 
   private:
     /**
      * Writes a section in file.
      * @param section the section to write
      * @param output the stream to write to
-     * @param writeFun a function invoked between the begging and end of the section
+     * @param writeFun a function invoked between the begging and end of the
+     * section
      */
-    static void
-    writeFileSection(const MapParserState &section, std::ostream &output,
-                     const std::function<void(std::ostream &ostream)> &writeFun);
+    static void writeFileSection(
+        const MapParserState &section, std::ostream &output,
+        const std::function<void(std::ostream &ostream)> &writeFun);
 };
 
 #endif // TPOHB_MAP_H

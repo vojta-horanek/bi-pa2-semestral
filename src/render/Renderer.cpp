@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include <cassert>
-#include <memory>
 #include <iostream>
+#include <memory>
 
 std::unique_ptr<Renderer> Renderer::instance = nullptr;
 
@@ -20,7 +20,7 @@ void Renderer::createRenderer(const Window &window) {
         return;
     m_Renderer = SDL_CreateRenderer(window.getWindow(), -1,
                                     SDL_RENDERER_ACCELERATED |
-                                    SDL_RENDERER_PRESENTVSYNC);
+                                        SDL_RENDERER_PRESENTVSYNC);
 #ifdef MEM
     std::cout << m_Renderer << " C" << std::endl;
 #endif

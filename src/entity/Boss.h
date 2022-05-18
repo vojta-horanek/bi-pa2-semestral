@@ -1,11 +1,10 @@
 #ifndef TPOHB_BOSS_H
 #define TPOHB_BOSS_H
 
-
 #include "Monster.h"
 
 class Boss : public Monster {
-public:
+  public:
     Boss();
 
     int getDamage() override;
@@ -15,5 +14,4 @@ public:
     EntityType getType() const noexcept override;
 };
 
-
-#endif //TPOHB_BOSS_H
+#endif // TPOHB_BOSS_H

@@ -17,7 +17,7 @@ const std::pair<MapParserState::value_type, const std::string>
         {value_type::monsters, "MONSTERS"}};
 
 const size_t MapParserState::M_StateTableSize =
-        sizeof(m_StateTable) / sizeof(m_StateTable[0]);
+    sizeof(m_StateTable) / sizeof(m_StateTable[0]);
 
 std::string MapParserState::toString() const {
     auto optValue = findValue(m_Value, m_StateTable, M_StateTableSize);

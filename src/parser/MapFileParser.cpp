@@ -110,7 +110,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
 
         auto insert = m_Map->m_Sections.emplace(
-            Vec(x, y), MapSection(m_BlocksWidth, m_BlocksHeight, std::move(backgroundEntity)));
+            Vec(x, y), MapSection(m_BlocksWidth, m_BlocksHeight,
+                                  std::move(backgroundEntity)));
 
         if (!insert.second) {
             return Result::error("Could not create a section");
@@ -135,9 +136,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         while (std::getline(lineStream, entityString, ' ')) {
 
             if (entityRowCount == m_CurrentSectionIt->second.m_BlocksWidth) {
-                return Result::error(
-                    "Unexpected entity, width exceeded: " +
-                    entityString);
+                return Result::error("Unexpected entity, width exceeded: " +
+                                     entityString);
             }
 
             int entityIdentifier = -1;

@@ -5,10 +5,10 @@
 #include "render/Renderer.h"
 #include "render/Text.h"
 #include "resources/strings/L10n.h"
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <stack>
 #include <stdexcept>
-#include <SDL2/SDL_ttf.h>
 
 Application::Application() : m_Window(Window(L10n::appName)) {
 
@@ -21,11 +21,13 @@ Application::Application() : m_Window(Window(L10n::appName)) {
     Renderer::getInstance().createRenderer(m_Window);
 
     if (!Text::initTTF()) {
-        std::cerr << L10n::cannotInitializeTTF << " " << TTF_GetError() << std::endl;
+        std::cerr << L10n::cannotInitializeTTF << " " << TTF_GetError()
+                  << std::endl;
         return;
     }
 
-    m_Backstack.emplace(std::make_unique<MainMenu>(m_Window.getSize().x, m_Window.getSize().y));
+    m_Backstack.emplace(
+        std::make_unique<MainMenu>(m_Window.getSize().x, m_Window.getSize().y));
 }
 
 Application::~Application() {

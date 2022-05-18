@@ -10,7 +10,7 @@
 Text::Text() : m_FontTexture(nullptr), m_FontSize(s_DefaultFontSize) {}
 
 Text::Text(std::string text, int fontSize)
-        : m_Text(std::move(text)), m_FontSize(fontSize) {
+    : m_Text(std::move(text)), m_FontSize(fontSize) {
 
     swapTexture();
 }
@@ -28,9 +28,9 @@ Text::~Text() {
 }
 
 Text::Text(Text &&other) noexcept
-        : m_Text(other.m_Text), m_FontTexture(other.m_FontTexture),
-          m_Color(other.m_Color), m_BoxSize(other.m_BoxSize),
-          m_FontSize(other.m_FontSize), m_WrapWidth(other.m_WrapWidth) {
+    : m_Text(other.m_Text), m_FontTexture(other.m_FontTexture),
+      m_Color(other.m_Color), m_BoxSize(other.m_BoxSize),
+      m_FontSize(other.m_FontSize), m_WrapWidth(other.m_WrapWidth) {
     other.m_FontTexture = nullptr;
 }
 
@@ -187,7 +187,7 @@ bool Text::initTTF() {
 }
 
 void Text::destroyTTF() {
-    for (const auto &[_, font]: s_Fonts)
+    for (const auto &[_, font] : s_Fonts)
         TTF_CloseFont(font);
 
     s_Fonts.clear();

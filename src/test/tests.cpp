@@ -1,11 +1,11 @@
-#include <iostream>
 #include <cassert>
+#include <iostream>
 
-#include "../Map.h"
-#include "../utils/Constants.h"
-#include "../Window.h"
 #include "../Application.h"
+#include "../Map.h"
+#include "../Window.h"
 #include "../parser/SaveFileParser.h"
+#include "../utils/Constants.h"
 
 bool mapTest(const std::string &path) {
     GameState gs;
@@ -28,7 +28,6 @@ bool saveTest(const std::string &path) {
 
     return mapTest(saveFileParser.getMapFilePath());
 }
-
 
 void testMaps() {
     assert(!mapTest(""));
@@ -69,7 +68,6 @@ int main(int argc, char **argv) {
     std::cout << "Testing maps." << std::endl;
     testMaps();
     std::cout << "OK" << std::endl;
-
 
     std::cout << "Testing saves." << std::endl;
     testSaves();

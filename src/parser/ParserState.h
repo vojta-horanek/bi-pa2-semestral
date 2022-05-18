@@ -36,7 +36,7 @@ template <typename Value> class ParserState {
 
     virtual std::string toString() const = 0;
 
-protected:
+  protected:
     Value m_Value = Value::none;
 
     static std::optional<Value>
@@ -59,7 +59,6 @@ protected:
         }
         return {};
     }
-
 };
 
 #endif // TPOHB_PARSERSTATE_H

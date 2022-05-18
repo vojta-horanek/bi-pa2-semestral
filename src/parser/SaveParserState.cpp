@@ -19,7 +19,7 @@ const std::pair<SaveParserState::value_type, const std::string>
         {value_type::none, "NONE"}};
 
 const size_t SaveParserState::m_StateTableSize =
-        sizeof(m_StateTable) / sizeof(m_StateTable[0]);
+    sizeof(m_StateTable) / sizeof(m_StateTable[0]);
 
 std::string SaveParserState::toString() const {
     auto optValue = findValue(m_Value, m_StateTable, m_StateTableSize);

@@ -2,7 +2,8 @@
 #include "../render/Renderer.h"
 #include "../resources/strings/Paths.h"
 
-Menu::Menu(int screenWidth, int screenHeight) : Screen(screenWidth, screenHeight) {
+Menu::Menu(int screenWidth, int screenHeight)
+    : Screen(screenWidth, screenHeight) {
     m_BackdropTexture = Texture(Paths::Bitmaps::menu_backdrop);
 }
 

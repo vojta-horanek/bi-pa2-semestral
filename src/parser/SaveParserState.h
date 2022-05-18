@@ -17,7 +17,7 @@ enum class SaveParserStateValue {
 };
 
 class SaveParserState : public ParserState<SaveParserStateValue> {
-public:
+  public:
     SaveParserState();
 
     explicit SaveParserState(value_type value);
@@ -26,7 +26,7 @@ public:
 
     static SaveParserState fromString(const std::string &str);
 
-private:
+  private:
     static const std::pair<value_type, const std::string> m_StateTable[];
     static const size_t m_StateTableSize;
 };
