@@ -10,7 +10,8 @@ namespace L10n_en {
 static constexpr str appName = "The planet of Hieronymus Bosch";
 static constexpr str pressKeyToHide = "Press any key to hide...";
 static constexpr str appNameShort = "TPOHB";
-static constexpr str cannotInitializeSDL = "SDL Could not be initialized!";
+static constexpr str cannotInitializeSDL = "SDL could not be initialized!";
+static constexpr str cannotInitializeTTF = "TTF could not be initialized!";
 static constexpr str cannotLoadBitmap = "Could not load bitmap from!";
 static constexpr str unknownError = "Unknown error occured";
 static constexpr str createCharacter =
@@ -38,6 +39,8 @@ static constexpr str resume = "Resume";
 static constexpr str quit = "Quit";
 static constexpr str helpText =
     "Arrow keys: movement\nQ: drop weapon\nSpace/Enter: attack (in fight)";
+static constexpr str saved = "Saved";
+static constexpr str failedSaving = "Failed while saving the game: ";
 
 } // namespace L10n_en
 

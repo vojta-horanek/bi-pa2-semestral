@@ -5,6 +5,7 @@
 #include "../utils/Constants.h"
 #include "../Window.h"
 #include "../Application.h"
+#include "../parser/SaveFileParser.h"
 
 bool mapTest(const std::string &path) {
     GameState gs;
@@ -18,11 +19,21 @@ bool mapTest(const std::string &path) {
     }
 }
 
+bool saveTest(const std::string &path) {
+    SaveFileParser saveFileParser;
+
+    Result saveFileResult = saveFileParser.loadSaveFromFile(path);
+    if (saveFileResult.m_isError)
+        return false;
+
+    return mapTest(saveFileParser.getMapFilePath());
+}
+
+
 void testMaps() {
     assert(!mapTest(""));
     assert(!mapTest("i don't exist"));
     assert(mapTest("examples/map"));
-    assert(mapTest("examples/save_manual_map"));
 
     assert(!mapTest("src/test/maps/bad_map"));
     assert(!mapTest("src/test/maps/bad_map2"));
@@ -35,6 +46,18 @@ void testMaps() {
     assert(!mapTest("src/test/maps/bad_map9"));
 }
 
+void testSaves() {
+
+    assert(!saveTest(""));
+    assert(!saveTest("i don't exist"));
+    assert(saveTest("examples/save"));
+    assert(!saveTest("src/test/saves/bad_save"));
+    assert(!saveTest("src/test/saves/bad_save2"));
+    assert(!saveTest("src/test/saves/bad_save3"));
+    assert(!saveTest("src/test/saves/bad_save4"));
+    assert(!saveTest("src/test/saves/bad_save5"));
+}
+
 #ifdef TEST
 
 int main(int argc, char **argv) {
@@ -45,10 +68,14 @@ int main(int argc, char **argv) {
 
     std::cout << "Testing maps." << std::endl;
     testMaps();
+    std::cout << "OK" << std::endl;
 
+
+    std::cout << "Testing saves." << std::endl;
+    testSaves();
+    std::cout << "OK" << std::endl;
 
     std::cout << "All test succeeded." << std::endl;
-
 }
 
 #endif

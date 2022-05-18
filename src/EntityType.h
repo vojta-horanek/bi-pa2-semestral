@@ -5,6 +5,7 @@ enum class EntityType {
     VOID,
     TREE,
     APPLE,
+    GOLDEN_APPLE,
     SWORD,
     AXE,
     BRICK,

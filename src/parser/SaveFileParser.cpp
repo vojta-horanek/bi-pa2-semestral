@@ -4,7 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
 
 SaveFileParser::SaveFileParser() = default;
 
@@ -163,7 +162,7 @@ Result SaveFileParser::areAllValuesSet() const {
 Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
     std::ifstream saveFile(fileName);
     if (!saveFile)
-        throw std::invalid_argument("Could not open file " + fileName);
+        return Result::error("Could not open file " + fileName);
 
     int lineNum = 0;
 

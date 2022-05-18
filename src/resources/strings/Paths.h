@@ -20,7 +20,6 @@ static constexpr str axe = BITMAPS_PATH "axe.bmp";
 static constexpr str player_axe = BITMAPS_PATH "player-axe.bmp";
 static constexpr str bricks = BITMAPS_PATH "bricks.bmp";
 static constexpr str grass = BITMAPS_PATH "grass.bmp";
-static constexpr str dirt = BITMAPS_PATH "dirt.bmp";
 static constexpr str hearth = BITMAPS_PATH "hearth.bmp";
 static constexpr str inventory = BITMAPS_PATH "inventory.bmp";
 static constexpr str zombie = BITMAPS_PATH "zombie.bmp";
@@ -37,6 +36,7 @@ static constexpr str fighting_background =
 static constexpr str menu_backdrop = BITMAPS_PATH "menu-backdrop.bmp";
 static constexpr str screen_won = BITMAPS_PATH "screen-won.bmp";
 static constexpr str screen_lost = BITMAPS_PATH "screen-lost.bmp";
+static constexpr str golden_apple = BITMAPS_PATH "golden-apple.bmp";
 } // namespace Bitmaps
 namespace Fonts {
 static constexpr str pixel = FONTS_PATH "pixel.ttf";

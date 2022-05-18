@@ -10,7 +10,7 @@
 
 class SaveManager {
   public:
-    static std::string getSaveFilePath();
+    static std::string getSaveFilePath(bool mustExist = true);
 
     static std::string getNewGameFilePath();
 

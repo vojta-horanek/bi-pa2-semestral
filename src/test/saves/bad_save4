@@ -1,0 +1,43 @@
+; Definition of entities
+; A void entity is an empty space
+DEFINE
+0 VOID
+1 TREE
+2 APPLE
+3 SWORD
+4 AXE
+5 BRICK
+6 GRASS
+7 ZOMBIE
+END DEFINE
+
+; Path/s to a map file. The first file that exists is going to be used
+MAPFILE
+src/test/saves/good_map
+END MAPFILE
+
+; Inventory can consist of pick-up able items
+INVENTORY
+ADD 2
+ADD 2
+END INVENTORY
+
+; Players weapon
+WEAPON
+SET 3
+END WEAPON
+
+; Maximum player health
+HEALTHa
+SET 255
+END HEALTH
+
+; Current player health
+CURRENT_HEALTH
+SET 100
+END CURRENT_HEALTH
+
+; Default damage of the player
+DEFAULT_DAMAGE
+SET 5
+END DEFAULT_DAMAGE

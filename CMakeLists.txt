@@ -52,8 +52,7 @@ add_executable(
         src/parser/MapFileParser.cpp
   src/MessageDialog.cpp
         src/render/Vec.cpp
-  src/entity/Dirt.cpp
-  src/entity/Tree.cpp
+        src/entity/Tree.cpp
         src/parser/MapParserState.cpp
         src/Window.cpp
   src/entity/Entity.cpp
@@ -124,8 +123,7 @@ add_executable(
   src/MapSection.fwd.h
         src/menu/MenuSave.h
   src/SaveManager.h
-  src/entity/Dirt.h
-  src/entity/PickupEntity.fwd.h
+        src/entity/PickupEntity.fwd.h
   src/FightScreen.h
   src/MapSection.h
   src/MessageDialog.h
