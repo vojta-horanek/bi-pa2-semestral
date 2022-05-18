@@ -9,8 +9,8 @@ build:
   before_script:
     - apt update && apt -y install make autoconf libsdl2-dev libsdl2-ttf-dev doxygen zip
   script:
-    - make -j4
-    - make zip
+    - make -f Makefile.withAllCommands -j4
+    - make -f Makefile.withAllCommands zip
   artifacts:
     name: "TPOHB"
     paths:
@@ -22,6 +22,6 @@ test:
     before_script:
       - apt update && apt -y install make autoconf libsdl2-dev libsdl2-ttf-dev doxygen zip
     script:
-      - make clean
-      - make test -j4
+      - make -f Makefile.withAllCommands clean
+      - make -f Makefile.withAllCommands test -j4
 

@@ -9,7 +9,9 @@ Renderer::Renderer() = default;
 
 Renderer::~Renderer() {
 
+#ifdef MEM
     std::cout << m_Renderer << " D" << std::endl;
+#endif
     SDL_DestroyRenderer(m_Renderer);
 }
 
@@ -19,7 +21,9 @@ void Renderer::createRenderer(const Window &window) {
     m_Renderer = SDL_CreateRenderer(window.getWindow(), -1,
                                     SDL_RENDERER_ACCELERATED |
                                     SDL_RENDERER_PRESENTVSYNC);
+#ifdef MEM
     std::cout << m_Renderer << " C" << std::endl;
+#endif
     SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 }
 
@@ -71,9 +75,13 @@ void Renderer::clear() const { SDL_RenderClear(m_Renderer); }
 void Renderer::present() const { SDL_RenderPresent(m_Renderer); }
 
 SDL_Texture *Renderer::createTexture(SDL_Surface *surface) const {
+#ifdef MEM
     auto p = SDL_CreateTextureFromSurface(m_Renderer, surface);
     std::cout << p << " C" << std::endl;
     return p;
+#else
+    return SDL_CreateTextureFromSurface(m_Renderer, surface);
+#endif
 }
 
 void Renderer::selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const {

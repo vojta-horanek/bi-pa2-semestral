@@ -37,8 +37,9 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
                   << SDL_GetError() << std::endl;
         return nullptr;
     }
+#ifdef MEM
     std::cout << surface << " C" << std::endl;
-
+#endif
 
     if (useWhiteAsAlpha) {
         SDL_SetColorKey(surface, SDL_GetColorKey(surface, nullptr),
@@ -53,8 +54,9 @@ SDL_Texture *Texture::create(const std::string &path, bool useWhiteAsAlpha) {
         return nullptr;
     }
     SDL_FreeSurface(surface);
+#ifdef MEM
     std::cout << surface << " D" << std::endl;
-
+#endif
 
     s_TextureStore[std::make_pair(path, useWhiteAsAlpha)] = texture;
 
@@ -91,8 +93,9 @@ void Texture::render(Vec position, int scale) const {
 void Texture::clearStore() {
     for (const auto &item: s_TextureStore)
         if (item.second != nullptr) {
+#ifdef MEM
             std::cout << item.second << " D" << std::endl;
-
+#endif
             SDL_DestroyTexture(item.second);
         }
 

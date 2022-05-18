@@ -19,7 +19,9 @@ Text::Text(std::string text) : Text(std::move(text), s_DefaultFontSize) {}
 
 Text::~Text() {
     if (m_FontTexture != nullptr) {
+#ifdef MEM
         std::cout << m_FontTexture << " D" << std::endl;
+#endif
         SDL_DestroyTexture(m_FontTexture);
     }
     m_FontTexture = nullptr;
@@ -36,7 +38,9 @@ Text &Text::operator=(Text &&other) noexcept {
     if (&other == this)
         return *this;
     if (m_FontTexture != nullptr) {
+#ifdef MEM
         std::cout << m_FontTexture << " D" << std::endl;
+#endif
         SDL_DestroyTexture(m_FontTexture);
     }
 
@@ -107,7 +111,9 @@ void Text::swapTexture() {
                   << std::endl;
 
     if (m_FontTexture != nullptr) {
+#ifdef MEM
         std::cout << m_FontTexture << " D" << std::endl;
+#endif
         SDL_DestroyTexture(m_FontTexture);
     }
 
@@ -126,8 +132,9 @@ SDL_Texture *Text::createTexture() {
     if (surface == nullptr)
         return nullptr;
 
+#ifdef MEM
     std::cout << surface << " C" << std::endl;
-
+#endif
 
     SDL_Texture *fontTexture = Renderer::getInstance().createTexture(surface);
 
@@ -138,7 +145,9 @@ SDL_Texture *Text::createTexture() {
     m_BoxSize.y = surface->h;
 
     SDL_FreeSurface(surface);
+#ifdef MEM
     std::cout << surface << " D" << std::endl;
+#endif
 
     return fontTexture;
 }
