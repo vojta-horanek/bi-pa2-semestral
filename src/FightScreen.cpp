@@ -20,15 +20,15 @@ FightScreen::FightScreen(std::shared_ptr<Player> player,
     m_PlayerHealthText.setFontSize(60);
     m_PlayerHealthText.setText(
         L10n::yourHealth +
-        std::to_string(this->m_GameState->m_PlayerCurrentHealth));
+        std::to_string(m_GameState->m_PlayerCurrentHealth));
 
     m_MonsterHealthText.setFontSize(60);
     m_MonsterHealthText.setText(
         L10n::monsterHealth +
-        std::to_string(this->m_GameState->m_Monster->m_CurrentHealth));
+        std::to_string(m_GameState->m_Monster->m_CurrentHealth));
 
-    this->m_GameState->m_Monster->onFightBegin();
-    this->m_Player->onFightBegin();
+    m_GameState->m_Monster->onFightBegin();
+    m_Player->onFightBegin();
 }
 
 void FightScreen::onRender() {

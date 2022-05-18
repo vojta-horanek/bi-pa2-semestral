@@ -6,15 +6,15 @@ std::unique_ptr<Renderer> Renderer::instance = nullptr;
 
 Renderer::Renderer() = default;
 
-Renderer::~Renderer() { SDL_DestroyRenderer(renderer); }
+Renderer::~Renderer() { SDL_DestroyRenderer(m_Renderer); }
 
 void Renderer::createRenderer(const Window &window) {
-    if (renderer != nullptr)
+    if (m_Renderer != nullptr)
         return;
-    renderer = SDL_CreateRenderer(window.getWindow(), -1,
-                                  SDL_RENDERER_ACCELERATED |
-                                      SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    m_Renderer = SDL_CreateRenderer(window.getWindow(), -1,
+                                    SDL_RENDERER_ACCELERATED |
+                                    SDL_RENDERER_PRESENTVSYNC);
+    SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 }
 
 Renderer &Renderer::getInstance() {
@@ -26,7 +26,7 @@ Renderer &Renderer::getInstance() {
 
 void Renderer::render(SDL_Texture *texture, const Rect &sourceRect,
                       const Rect &destinationRect) const {
-    assert(renderer != nullptr);
+    assert(m_Renderer != nullptr);
 
     SDL_Rect src{sourceRect.position.x, sourceRect.position.y,
                  sourceRect.size.x, sourceRect.size.y};
@@ -34,40 +34,40 @@ void Renderer::render(SDL_Texture *texture, const Rect &sourceRect,
     SDL_Rect dst{destinationRect.position.x, destinationRect.position.y,
                  destinationRect.size.x, destinationRect.size.y};
 
-    SDL_RenderCopy(renderer, texture, &src, &dst);
+    SDL_RenderCopy(m_Renderer, texture, &src, &dst);
 }
 
 void Renderer::render(SDL_Texture *texture, const Rect &destinationRect) const {
-    assert(renderer != nullptr);
+    assert(m_Renderer != nullptr);
 
     SDL_Rect dst{destinationRect.position.x, destinationRect.position.y,
                  destinationRect.size.x, destinationRect.size.y};
 
-    SDL_RenderCopy(renderer, texture, nullptr, &dst);
+    SDL_RenderCopy(m_Renderer, texture, nullptr, &dst);
 }
 
 void Renderer::render(SDL_Texture *texture) const {
-    assert(renderer != nullptr);
-    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+    assert(m_Renderer != nullptr);
+    SDL_RenderCopy(m_Renderer, texture, nullptr, nullptr);
 }
 
 void Renderer::drawRectangle(const Rect &destination, bool fill) const {
     SDL_Rect dest{destination.position.x, destination.position.y,
                   destination.size.x, destination.size.y};
     if (fill)
-        SDL_RenderFillRect(renderer, &dest);
+        SDL_RenderFillRect(m_Renderer, &dest);
     else
-        SDL_RenderDrawRect(renderer, &dest);
+        SDL_RenderDrawRect(m_Renderer, &dest);
 }
 
-void Renderer::clear() const { SDL_RenderClear(renderer); }
+void Renderer::clear() const { SDL_RenderClear(m_Renderer); }
 
-void Renderer::present() const { SDL_RenderPresent(renderer); }
+void Renderer::present() const { SDL_RenderPresent(m_Renderer); }
 
 SDL_Texture *Renderer::createTexture(SDL_Surface *surface) const {
-    return SDL_CreateTextureFromSurface(renderer, surface);
+    return SDL_CreateTextureFromSurface(m_Renderer, surface);
 }
 
 void Renderer::selectDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const {
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(m_Renderer, r, g, b, a);
 }

@@ -1,4 +1,4 @@
-# "Inspiration" taken from: https://gitlab.fit.cvut.cz/husekrad/pa2-cvika-2022/tree/master/cv10/semestralka
+# Source for base file: https://gitlab.fit.cvut.cz/husekrad/pa2-cvika-2022/tree/master/cv10/semestralka
 
 LOGIN = horanvoj
 CXX = g++
@@ -8,13 +8,16 @@ FLAGS =  $(shell pkg-config --cflags --libs sdl2) -lSDL2_ttf -DRESOURCES_PATH=\"
 ZIP = Makefile Doxyfile DOCUMENTATION.md zadani.txt prohlaseni.txt \
   .gitignore $(wildcard examples/*) $(wildcard src/*)
 
-SOURCES = $(wildcard src/*.cpp src/entity/*.cpp src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp)
+SOURCES = $(wildcard src/*.cpp src/entity/*.cpp src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp src/test/*.cpp)
 OBJECTS = $(patsubst src/%.cpp, build/%.o, ${SOURCES})
 DEPS = $(patsubst src/%.cpp, build/%.dep, ${SOURCES})
 
 .PHONY: all compile run valgrind doc clean count zip
 
-all: compile doc
+all: compile test doc
+
+test: FLAGS += -DTEST
+test: compile run
 
 compile: ${LOGIN}
 
@@ -34,7 +37,7 @@ valgrind: compile
 
 doc: doc/index.html
 
-doc/index.html: DOCUMENTATION.md Doxyfile $(wildcard src/* src/entity/* src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp)
+doc/index.html: DOCUMENTATION.md Doxyfile $(wildcard src/* src/entity/* src/menu/*.cpp src/parser/*.cpp src/render/*.cpp src/utils/*.cpp src/test/*.cpp)
 	doxygen Doxyfile
 
 count:
@@ -55,7 +58,7 @@ ${LOGIN}.zip: ${ZIP}
 	rm -rf tmp/
 
 build/%.dep: src/%.cpp src/*
-	@mkdir -p build/ build/entity build/menu build/render build/parser build/utils
+	@mkdir -p build/ build/entity build/menu build/render build/parser build/utils build/test
 	${CXX} -MM -MT $(patsubst src/%.cpp, build/%.o, $<) $< > $@
 
 include ${DEPS}

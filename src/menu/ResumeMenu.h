@@ -7,24 +7,26 @@
 #include <memory>
 
 class ResumeMenu : public Menu {
-  private:
-    bool goToMainMenu = false;
-    std::shared_ptr<GameState> gameState;
-    std::shared_ptr<Map> map;
-
-    void onItemSelected(size_t activeIndex) override;
-
-    void onEscapePressed() override;
-
-    void saveGame();
-
-  public:
+public:
     ResumeMenu(int width, int height);
 
     ResumeMenu(int width, int height, std::shared_ptr<GameState> gameState,
                std::shared_ptr<Map> map);
 
     bool shouldClearBackStack() override;
+
+private:
+    bool m_GoToMainMenu = false;
+    std::shared_ptr<GameState> m_GameState;
+    std::shared_ptr<Map> m_Map;
+
+    void onItemSelected(int activeIndex) override;
+
+    void onEscapePressed() override;
+
+    void saveGame();
+
+
 };
 
 #endif // TPOHB_RESUMEMENU_H

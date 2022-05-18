@@ -12,31 +12,7 @@
 #include "SaveParserState.h"
 
 class SaveFileParser {
-  private:
-    SaveParserState currentState;
-
-    std::string mapFilePath;
-
-    int playerHealth = -1;
-
-    int playerCurrentHealth = -1;
-
-    int playerDefaultDamage = -1;
-
-    std::vector<std::unique_ptr<PickupEntity>> inventory;
-
-    std::unique_ptr<Weapon> weapon = nullptr;
-
-    std::map<int, EntityType> types;
-
-    static std::pair<Result, int>
-    readIntCommand(const std::string &line, const std::string &expectedCommnad);
-
-    Result parseNextLine(const std::string &line);
-
-    Result areAllValuesSet() const;
-
-  public:
+public:
     SaveFileParser();
 
     Result loadSaveFromFile(const std::string &fileName);
@@ -52,6 +28,30 @@ class SaveFileParser {
     std::vector<std::unique_ptr<PickupEntity>> getInventory();
 
     std::unique_ptr<Weapon> getWeapon();
+
+private:
+    SaveParserState m_CurrentState;
+
+    std::string m_MapFilePath;
+
+    int m_PlayerMaxHealth = -1;
+
+    int m_PlayerCurrentHealth = -1;
+
+    int m_PlayerDefaultDamage = -1;
+
+    std::vector<std::unique_ptr<PickupEntity>> m_Inventory;
+
+    std::unique_ptr<Weapon> m_Weapon = nullptr;
+
+    std::map<int, EntityType> m_Types;
+
+    static std::pair<Result, int>
+    readIntCommand(const std::string &line, const std::string &expectedCommnad);
+
+    Result parseNextLine(const std::string &line);
+
+    Result areAllValuesSet() const;
 };
 
 #endif // TPOHB_SAVEFILEPARSER_H

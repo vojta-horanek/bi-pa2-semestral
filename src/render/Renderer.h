@@ -7,13 +7,8 @@
 #include <memory>
 
 class Renderer {
-  private:
-    static std::unique_ptr<Renderer> instance;
-    SDL_Renderer *renderer = nullptr;
-
-    Renderer();
-
-  public:
+    
+public:
     ~Renderer();
 
     static Renderer &getInstance();
@@ -36,6 +31,12 @@ class Renderer {
     void present() const;
 
     SDL_Texture *createTexture(SDL_Surface *surface) const;
+
+private:
+    static std::unique_ptr<Renderer> instance;
+    SDL_Renderer *m_Renderer = nullptr;
+
+    Renderer();
 };
 
 #endif // TPOHB_RENDERER_H

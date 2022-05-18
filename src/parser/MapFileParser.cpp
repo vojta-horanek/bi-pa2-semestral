@@ -13,8 +13,8 @@
 #include <utility>
 
 MapFileParser::MapFileParser(int width, int height)
-    : width(width), height(height) {
-    map = std::make_shared<Map>();
+    : m_BlocksWidth(width), m_BlocksHeight(height) {
+    m_Map = std::make_shared<Map>();
 }
 
 Result MapFileParser::parseNextLine(const std::string &line) {
@@ -26,26 +26,26 @@ Result MapFileParser::parseNextLine(const std::string &line) {
 
     MapParserState possibleNewState = MapParserState::fromString(line);
     if (possibleNewState != MapParserState::value_type::invalid) {
-        if (currentState == MapParserState::value_type::none) {
-            currentState.set(possibleNewState);
+        if (m_CurrentState == MapParserState::value_type::none) {
+            m_CurrentState.set(possibleNewState);
             return Result::success();
         } else {
             return Result::error("Unexpected state change");
         }
-    } else if (currentState == MapParserState::value_type::none) {
+    } else if (m_CurrentState == MapParserState::value_type::none) {
         return Result::error("Unexpected token");
     }
 
     // Line begins with END
     if (line.rfind("END", 0) == 0) {
         std::istringstream tmpStream(line);
-        std::string end, what, current = currentState.toString();
+        std::string end, what, current = m_CurrentState.toString();
         tmpStream >> end >> what;
         if (what == current) {
-            if (currentState == MapParserState::value_type::section) {
-                currentState.set(MapParserState::value_type::sections);
+            if (m_CurrentState == MapParserState::value_type::section) {
+                m_CurrentState.set(MapParserState::value_type::sections);
             } else {
-                currentState.reset();
+                m_CurrentState.reset();
             }
             return Result::success();
         } else {
@@ -54,38 +54,38 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         }
     }
 
-    if (currentState == MapParserState::value_type::player) {
+    if (m_CurrentState == MapParserState::value_type::player) {
         auto result = readSetCommand(line);
         if (result.first.isError)
             return result.first;
 
-        if (currentSection == map->m_Sections.end()) {
+        if (m_CurrentSectionIt == m_Map->m_Sections.end()) {
             return Result::error(
                 "No default map section has been specified yet!");
         }
 
-        if (currentSection->second.isEdge(result.second)) {
+        if (m_CurrentSectionIt->second.isEdge(result.second)) {
             std::stringstream str;
             str << "Position out of bounds: " << result.second;
             return Result::error(str.str());
         }
 
-        gameState.m_PlayerPosition = result.second;
-    } else if (currentState == MapParserState::value_type::default_section) {
+        m_GameState.m_PlayerPosition = result.second;
+    } else if (m_CurrentState == MapParserState::value_type::default_section) {
 
         auto result = readSetCommand(line);
         if (result.first.isError)
             return result.first;
 
-        map->currentSection = map->m_Sections.find(result.second);
+        m_Map->currentSection = m_Map->m_Sections.find(result.second);
 
-        if (map->currentSection == map->m_Sections.end()) {
+        if (m_Map->currentSection == m_Map->m_Sections.end()) {
             std::stringstream str;
-            str << "Cannot find section with m_Position " << result.second;
+            str << "Cannot find section with position " << result.second;
             return Result::error(str.str());
         }
 
-    } else if (currentState == MapParserState::value_type::sections) {
+    } else if (m_CurrentState == MapParserState::value_type::sections) {
 
         std::string command;
         int x, y, background = -1;
@@ -94,11 +94,11 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Invalid syntax");
         }
 
-        currentState.set(MapParserState::value_type::section);
+        m_CurrentState.set(MapParserState::value_type::section);
 
-        auto backgroundType = types.find(background);
+        auto backgroundType = m_Types.find(background);
 
-        if (backgroundType == types.end()) {
+        if (backgroundType == m_Types.end()) {
             return Result::error("Unknown entity type");
         }
 
@@ -109,23 +109,23 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error("Invalid background entity");
         }
 
-        auto insert = map->m_Sections.emplace(
-            Vec(x, y), MapSection(width, height, std::move(backgroundEntity)));
+        auto insert = m_Map->m_Sections.emplace(
+            Vec(x, y), MapSection(m_BlocksWidth, m_BlocksHeight, std::move(backgroundEntity)));
 
         if (!insert.second) {
             return Result::error("Could not create a section");
         }
 
-        currentSection = insert.first;
-    } else if (currentState == MapParserState::value_type::section) {
+        m_CurrentSectionIt = insert.first;
+    } else if (m_CurrentState == MapParserState::value_type::section) {
 
-        if (currentSection->second.m_Entities.size() ==
-            (size_t)currentSection->second.m_BlocksHeight) {
-            return Result::error("Unexpected line, m_ScreenHeight exceeded");
+        if (m_CurrentSectionIt->second.m_Entities.size() ==
+            (size_t)m_CurrentSectionIt->second.m_BlocksHeight) {
+            return Result::error("Unexpected line, height exceeded");
         }
 
         std::vector<std::unique_ptr<Entity>> row;
-        row.reserve(currentSection->second.m_BlocksWidth);
+        row.reserve(m_CurrentSectionIt->second.m_BlocksWidth);
 
         std::string entityString;
 
@@ -134,9 +134,9 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         // For every space separated string
         while (std::getline(lineStream, entityString, ' ')) {
 
-            if (entityRowCount == currentSection->second.m_BlocksWidth) {
+            if (entityRowCount == m_CurrentSectionIt->second.m_BlocksWidth) {
                 return Result::error(
-                    "Unexpected entity, m_ScreenWidth exceeded: " +
+                    "Unexpected entity, width exceeded: " +
                     entityString);
             }
 
@@ -148,8 +148,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
                 return Result::error("Invalid entity type: " + entityString);
             }
 
-            auto it = types.find(entityIdentifier);
-            if (it == types.end()) {
+            auto it = m_Types.find(entityIdentifier);
+            if (it == m_Types.end()) {
                 return Result::error("Could not find a valid entity type: " +
                                      entityString);
             } else {
@@ -160,13 +160,13 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             entityRowCount++;
         }
 
-        if (entityRowCount < width) {
+        if (entityRowCount < m_BlocksWidth) {
             return Result::error("Missing entities for a complete row!");
         }
 
-        currentSection->second.m_Entities.emplace_back(std::move(row));
+        m_CurrentSectionIt->second.m_Entities.emplace_back(std::move(row));
 
-    } else if (currentState == MapParserState::value_type::define) {
+    } else if (m_CurrentState == MapParserState::value_type::define) {
 
         int number = -1;
         std::string entityName;
@@ -175,11 +175,11 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         EntityType type = EntityManager::getType(entityName);
 
         if (type != EntityType::INVALID && number >= 0 && lineStream) {
-            types[number] = type;
+            m_Types[number] = type;
         } else {
             return Result::error("Invalid definition");
         }
-    } else if (currentState == MapParserState::value_type::monsters) {
+    } else if (m_CurrentState == MapParserState::value_type::monsters) {
         Result result = Result::error();
         Vec position;
         Vec section;
@@ -191,11 +191,11 @@ Result MapFileParser::parseNextLine(const std::string &line) {
         if (result.isError)
             return result;
 
-        auto thisSection = map->m_Sections.find(section);
+        auto thisSection = m_Map->m_Sections.find(section);
 
-        if (thisSection == map->m_Sections.end()) {
+        if (thisSection == m_Map->m_Sections.end()) {
             std::stringstream str;
-            str << "Cannot find section with m_Position " << section;
+            str << "Cannot find section with position " << section;
             return Result::error(str.str());
         }
 
@@ -205,8 +205,8 @@ Result MapFileParser::parseNextLine(const std::string &line) {
             return Result::error(str.str());
         }
 
-        auto it = types.find(entityIdentifier);
-        if (it == types.end())
+        auto it = m_Types.find(entityIdentifier);
+        if (it == m_Types.end())
             return Result::error("Could not find a valid entity type: " +
                                  std::to_string(entityIdentifier));
 
@@ -222,7 +222,7 @@ Result MapFileParser::parseNextLine(const std::string &line) {
     return Result::success();
 }
 
-GameState MapFileParser::getState() { return std::move(gameState); }
+GameState MapFileParser::getState() { return std::move(m_GameState); }
 
 std::pair<Result, Vec> MapFileParser::readSetCommand(const std::string &line) {
     std::istringstream lineStream(line);
@@ -259,16 +259,16 @@ MapFileParser::readMonsterAddCommand(const std::string &line) {
 }
 
 Result MapFileParser::areAllValuesSet() const {
-    if (map->m_Sections.empty()) {
+    if (m_Map->m_Sections.empty()) {
         return Result::error("No map sections defined");
     }
 
-    if (map->currentSection == map->m_Sections.end()) {
+    if (m_Map->currentSection == m_Map->m_Sections.end()) {
         return Result::error("A default section has not been set");
     }
 
-    if (gameState.m_PlayerPosition == Vec::max()) {
-        return Result::error("Player m_Position has not been set");
+    if (m_GameState.m_PlayerPosition == Vec::max()) {
+        return Result::error("Player position has not been set");
     }
 
     return Result::success();

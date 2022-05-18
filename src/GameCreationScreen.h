@@ -11,7 +11,7 @@
 
 class GameCreationScreen : public Screen {
   public:
-    GameCreationScreen(int width, int height);
+    GameCreationScreen(int screenWidth, int screenHeight);
 
     void onRender() override;
 

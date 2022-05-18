@@ -10,20 +10,20 @@
 #include "MenuQuit.h"
 
 MainMenu::MainMenu(int width, int height)
-    : Menu(width, height), m_Title(L10n::appNameShort, 128) {
-    m_Title.setColor(0, 0, 0);
-    m_Title.setWrapWidth(width - 40);
-    items.emplace_back(std::make_unique<MenuNew>());
+    : Menu(width, height), m_TitleText(L10n::appNameShort, 128) {
+    m_TitleText.setColor(0, 0, 0);
+    m_TitleText.setWrapWidth(width - 40);
+    m_MenuItems.emplace_back(std::make_unique<MenuNew>());
 
     if (!SaveManager::getSaveFilePath().empty())
-        items.emplace_back(std::make_unique<MenuLoad>());
+        m_MenuItems.emplace_back(std::make_unique<MenuLoad>());
 
-    items.emplace_back(std::make_unique<MenuHelp>());
-    items.emplace_back(std::make_unique<MenuQuit>());
+    m_MenuItems.emplace_back(std::make_unique<MenuHelp>());
+    m_MenuItems.emplace_back(std::make_unique<MenuQuit>());
 }
 
-void MainMenu::onItemSelected(size_t activeIndex) {
-    auto type = items[activeIndex]->getType();
+void MainMenu::onItemSelected(int activeIndex) {
+    auto type = m_MenuItems[activeIndex]->getType();
     switch (type) {
         case MenuItem::Item::NEW:
             m_NavigationDestination = std::make_unique<GameCreationScreen>(
@@ -34,7 +34,7 @@ void MainMenu::onItemSelected(size_t activeIndex) {
                 m_ScreenWidth, m_ScreenHeight, SaveManager::getSaveFilePath());
             break;
         case MenuItem::Item::QUIT:
-            userInMenu = false;
+            m_IsUserInMenu = false;
             break;
         case MenuItem::Item::HELP:
             showDialog(std::make_unique<MessageDialog>(
@@ -51,8 +51,8 @@ void MainMenu::onEscapePressed() {
 void MainMenu::onRender() {
     Menu::onRender();
     // Render game title
-    m_Title.render(Vec(m_ScreenWidth / 2 - m_Title.getBoxSize().x / 2,
-                       m_Title.getBoxSize().y / 2));
+    m_TitleText.render(Vec(m_ScreenWidth / 2 - m_TitleText.getBoxSize().x / 2,
+                           m_TitleText.getBoxSize().y / 2));
 }
 
-int MainMenu::getItemsTopPadding() const { return m_Title.getBoxSize().y / 2; }
+int MainMenu::getItemsTopPadding() const { return m_TitleText.getBoxSize().y / 2; }

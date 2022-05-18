@@ -17,11 +17,7 @@ enum class SaveParserStateValue {
 };
 
 class SaveParserState : public ParserState<SaveParserStateValue> {
-  private:
-    static const std::pair<value_type, const std::string> typeTable[];
-    static const size_t typeTableSize;
-
-  public:
+public:
     SaveParserState();
 
     explicit SaveParserState(value_type value);
@@ -29,6 +25,10 @@ class SaveParserState : public ParserState<SaveParserStateValue> {
     std::string toString() const override;
 
     static SaveParserState fromString(const std::string &str);
+
+private:
+    static const std::pair<value_type, const std::string> m_StateTable[];
+    static const size_t m_StateTableSize;
 };
 
 #endif // TPOHB_SAVEPARSERSTATE_H

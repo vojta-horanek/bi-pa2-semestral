@@ -120,7 +120,7 @@ std::shared_ptr<Map> Map::loadFromFile(const std::string &fileName,
     // Update game state values
     gameState.m_PlayerPosition = newGameState.m_PlayerPosition;
 
-    return parser.map;
+    return parser.m_Map;
 }
 
 void Map::writeSection(

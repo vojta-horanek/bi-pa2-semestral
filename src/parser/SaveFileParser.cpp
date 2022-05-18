@@ -1,5 +1,4 @@
 #include "SaveFileParser.h"
-#include "../EntityManager.h"
 #include "../utils/StringUtils.h"
 #include <cassert>
 #include <fstream>
@@ -7,7 +6,7 @@
 #include <sstream>
 #include <stdexcept>
 
-SaveFileParser::SaveFileParser() {}
+SaveFileParser::SaveFileParser() = default;
 
 Result SaveFileParser::parseNextLine(const std::string &line) {
 
@@ -18,23 +17,23 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
 
     SaveParserState possibleNewState = SaveParserState::fromString(line);
     if (possibleNewState != SaveParserState::value_type::invalid) {
-        if (currentState == SaveParserState::value_type::none) {
-            currentState.set(possibleNewState);
+        if (m_CurrentState == SaveParserState::value_type::none) {
+            m_CurrentState.set(possibleNewState);
             return Result::success();
         } else {
             return Result::error("Unexpected state change");
         }
-    } else if (currentState == SaveParserState::value_type::none) {
+    } else if (m_CurrentState == SaveParserState::value_type::none) {
         return Result::error("Unexpected token");
     }
 
     // Line begins with END
     if (line.rfind("END", 0) == 0) {
         std::istringstream tmpStream(line);
-        std::string end, what, current = currentState.toString();
+        std::string end, what, current = m_CurrentState.toString();
         tmpStream >> end >> what;
         if (what == current) {
-            currentState.reset();
+            m_CurrentState.reset();
             return Result::success();
         } else {
             return Result::error("Was in " + current + " but tried to end " +
@@ -42,7 +41,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         }
     }
 
-    if (currentState == SaveParserState::value_type::define) {
+    if (m_CurrentState == SaveParserState::value_type::define) {
         int number = -1;
         std::string entityName;
 
@@ -50,33 +49,33 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
         EntityType type = EntityManager::getType(entityName);
 
         if (type != EntityType::INVALID && number >= 0 && lineStream) {
-            types[number] = type;
+            m_Types[number] = type;
         } else {
             return Result::error("Invalid definition");
         }
-    } else if (currentState == SaveParserState::value_type::health) {
+    } else if (m_CurrentState == SaveParserState::value_type::health) {
         auto setHealth = readIntCommand(line, "SET");
         if (setHealth.first.isError || setHealth.second < 0)
             return setHealth.first;
-        playerHealth = setHealth.second;
-    } else if (currentState == SaveParserState::value_type::current_health) {
+        m_PlayerMaxHealth = setHealth.second;
+    } else if (m_CurrentState == SaveParserState::value_type::current_health) {
         auto setHealth = readIntCommand(line, "SET");
         if (setHealth.first.isError || setHealth.second < 0)
             return setHealth.first;
-        playerCurrentHealth = setHealth.second;
-    } else if (currentState == SaveParserState::value_type::default_damage) {
+        m_PlayerCurrentHealth = setHealth.second;
+    } else if (m_CurrentState == SaveParserState::value_type::default_damage) {
         auto defaultDamage = readIntCommand(line, "SET");
         if (defaultDamage.first.isError || defaultDamage.second < 0)
             return defaultDamage.first;
-        playerDefaultDamage = defaultDamage.second;
-    } else if (currentState == SaveParserState::value_type::weapon) {
+        m_PlayerDefaultDamage = defaultDamage.second;
+    } else if (m_CurrentState == SaveParserState::value_type::weapon) {
         auto weaponSet = readIntCommand(line, "SET");
         if (weaponSet.first.isError)
             return weaponSet.first;
 
-        auto it = types.find(weaponSet.second);
+        auto it = m_Types.find(weaponSet.second);
 
-        if (it == types.end())
+        if (it == m_Types.end())
             return Result::error("Invalid entity type: " +
                                  std::to_string(weaponSet.second));
 
@@ -86,9 +85,9 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
             return Result::error("Entity is not a weapon: " +
                                  std::to_string(weaponSet.second));
 
-        weapon = std::move(weaponEntity);
-    } else if (currentState == SaveParserState::value_type::mapfile) {
-        if (!mapFilePath.empty())
+        m_Weapon = std::move(weaponEntity);
+    } else if (m_CurrentState == SaveParserState::value_type::mapfile) {
+        if (!m_MapFilePath.empty())
             return Result::success();
 
         std::ifstream mapFile(line);
@@ -97,15 +96,15 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
                       << "` does not exist. Trying next one." << std::endl;
             return Result::success();
         }
-        mapFilePath = line;
-    } else if (currentState == SaveParserState::value_type::inventory) {
+        m_MapFilePath = line;
+    } else if (m_CurrentState == SaveParserState::value_type::inventory) {
         auto inventoryAdd = readIntCommand(line, "ADD");
         if (inventoryAdd.first.isError)
             return inventoryAdd.first;
 
-        auto it = types.find(inventoryAdd.second);
+        auto it = m_Types.find(inventoryAdd.second);
 
-        if (it == types.end())
+        if (it == m_Types.end())
             return Result::error("Invalid entity type: " +
                                  std::to_string(inventoryAdd.second));
 
@@ -115,7 +114,7 @@ Result SaveFileParser::parseNextLine(const std::string &line) {
             return Result::error("Entity is not a pickup entity: " +
                                  std::to_string(inventoryAdd.second));
 
-        inventory.emplace_back(std::move(pickupEntity));
+        m_Inventory.emplace_back(std::move(pickupEntity));
     }
 
     return Result::success();
@@ -142,19 +141,19 @@ SaveFileParser::readIntCommand(const std::string &line,
 
 Result SaveFileParser::areAllValuesSet() const {
 
-    if (mapFilePath.empty())
+    if (m_MapFilePath.empty())
         return Result::error("No valid map file path set");
 
-    if (playerHealth == -1)
+    if (m_PlayerMaxHealth == -1)
         return Result::error("Player health not set");
 
-    if (playerCurrentHealth == -1)
+    if (m_PlayerCurrentHealth == -1)
         return Result::error("Current player health not set");
 
-    if (playerDefaultDamage == -1)
+    if (m_PlayerDefaultDamage == -1)
         return Result::error("Player default damage not set");
 
-    if (playerCurrentHealth > playerHealth)
+    if (m_PlayerCurrentHealth > m_PlayerMaxHealth)
         return Result::error(
             "Players current health cannot be higher than their maxium health");
 
@@ -204,24 +203,24 @@ Result SaveFileParser::loadSaveFromFile(const std::string &fileName) {
 }
 
 std::string SaveFileParser::getMapFilePath() const {
-    assert(!mapFilePath.empty());
-    return mapFilePath;
+    assert(!m_MapFilePath.empty());
+    return m_MapFilePath;
 }
 
-int SaveFileParser::getPlayerHealth() const { return playerHealth; }
+int SaveFileParser::getPlayerHealth() const { return m_PlayerMaxHealth; }
 
 int SaveFileParser::getPlayerCurrentHealth() const {
-    return playerCurrentHealth;
+    return m_PlayerCurrentHealth;
 }
 
 int SaveFileParser::getPlayerDefaultDamage() const {
-    return playerDefaultDamage;
+    return m_PlayerDefaultDamage;
 }
 
 std::vector<std::unique_ptr<PickupEntity>> SaveFileParser::getInventory() {
-    return std::move(inventory);
+    return std::move(m_Inventory);
 }
 
 std::unique_ptr<Weapon> SaveFileParser::getWeapon() {
-    return std::move(weapon);
+    return std::move(m_Weapon);
 }

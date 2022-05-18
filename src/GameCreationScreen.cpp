@@ -5,8 +5,8 @@
 #include "resources/strings/L10n.h"
 #include "resources/strings/Paths.h"
 
-GameCreationScreen::GameCreationScreen(int width, int height)
-    : Screen(width, height), m_HelpText(L10n::createCharacter),
+GameCreationScreen::GameCreationScreen(int screenWidth, int screenHeight)
+    : Screen(screenWidth, screenHeight), m_HelpText(L10n::createCharacter),
       m_TitleText(L10n::createNewGame),
       m_ContinueText(L10n::toContinuePressEnter),
       m_BackgroundTexture(Paths::Bitmaps::menu_backdrop) {
@@ -14,11 +14,11 @@ GameCreationScreen::GameCreationScreen(int width, int height)
     m_TitleText.setColor(0, 0, 0);
     m_TitleText.setFontSize(34);
     m_HelpText.setFontSize(26);
-    m_HelpText.setWrapWidth(width - m_Padding * 3);
-    m_AvailablePointsText.setWrapWidth(width - m_Padding * 3);
+    m_HelpText.setWrapWidth(screenWidth - m_Padding * 3);
+    m_AvailablePointsText.setWrapWidth(screenWidth - m_Padding * 3);
     m_AvailablePointsText.setFontSize(26);
     m_ContinueText.setFontSize(30);
-    m_ContinueText.setWrapWidth(width - m_Padding * 3);
+    m_ContinueText.setWrapWidth(screenWidth - m_Padding * 3);
 
     m_Attributes.push_back(
         Attribute{Text(), L10n::health, 0, AttributeType::HEALTH});
@@ -27,7 +27,7 @@ GameCreationScreen::GameCreationScreen(int width, int height)
         Attribute{Text(), L10n::damage, 0, AttributeType::DAMAGE});
 
     for (auto &attribute : m_Attributes) {
-        attribute.m_Text.setWrapWidth(width - m_Padding * 3);
+        attribute.m_Text.setWrapWidth(screenWidth - m_Padding * 3);
         attribute.m_Text.setFontSize(40);
     }
 

@@ -5,20 +5,22 @@
 #include "Menu.h"
 
 class MainMenu : public Menu {
-  private:
-    Text m_Title;
-
-    void onItemSelected(size_t activeIndex) override;
-
-    void onEscapePressed() override;
-
-  protected:
-    int getItemsTopPadding() const override;
-
-  public:
+public:
     MainMenu(int width, int height);
 
     void onRender() override;
+
+protected:
+    int getItemsTopPadding() const override;
+
+private:
+    Text m_TitleText;
+
+    void onItemSelected(int activeIndex) override;
+
+    void onEscapePressed() override;
+
+
 };
 
 #endif // TPOHB_MAINMENU_H

@@ -6,7 +6,7 @@
 Window::Window(const std::string &title) {
     m_Size = Vec(WINDOW_WIDTH * BLOCK_PIXELS, WINDOW_HEIGHT * BLOCK_PIXELS);
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, m_Size.x, m_Size.y, 0);
+                              SDL_WINDOWPOS_CENTERED, m_Size.x, m_Size.y, SDL_WINDOW_HIDDEN);
 }
 
 Window::~Window() {

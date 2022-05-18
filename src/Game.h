@@ -51,7 +51,7 @@ class Game : public Screen {
     /**
      * Width and Height of the game in blocks
      */
-    int m_GameWidth, m_GameHeight;
+    int m_BlocksWidth, m_BlocksHeight;
 
     void onRender() override;
 

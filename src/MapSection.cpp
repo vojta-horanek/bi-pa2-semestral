@@ -5,18 +5,18 @@
 
 MapSection::MapSection(int blocksWidth, int blocksHeight,
                        std::unique_ptr<Entity> background) {
-    this->m_BlocksWidth = blocksWidth;
-    this->m_BlocksHeight = blocksHeight;
-    backgroundEntity = std::move(background);
-    this->m_Entities.reserve(blocksHeight);
+    m_BlocksWidth = blocksWidth;
+    m_BlocksHeight = blocksHeight;
+    m_BackgroundEntity = std::move(background);
+    m_Entities.reserve(blocksHeight);
 }
 
 void MapSection::render(GameState &state) {
 
     for (int x = 0; x < m_BlocksWidth; x++) {
         for (int y = 0; y < m_BlocksHeight; y++) {
-            if (backgroundEntity != nullptr) {
-                backgroundEntity->render(state, Vec(x, y));
+            if (m_BackgroundEntity != nullptr) {
+                m_BackgroundEntity->render(state, Vec(x, y));
             }
             if (m_Entities[y][x] != nullptr) {
                 m_Entities[y][x]->render(state, Vec(x, y));
@@ -84,7 +84,7 @@ void MapSection::writeToStream(std::ostream &stream,
                                const std::map<EntityType, int> &types,
                                Vec sectionPosition) const {
     stream << "SECTION " << sectionPosition << " "
-           << types.find(backgroundEntity->getType())->second << std::endl;
+           << types.find(m_BackgroundEntity->getType())->second << std::endl;
 
     for (const auto &row : m_Entities) {
         for (const auto &entity : row) {

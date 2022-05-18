@@ -14,8 +14,8 @@
 Game::Game(int screenWidth, int screenHeight, int damage, int health,
            const std::string &saveFile)
     : Screen(screenWidth, screenHeight),
-      m_GameWidth(screenWidth / BLOCK_PIXELS),
-      m_GameHeight((screenHeight / BLOCK_PIXELS) - 1) {
+      m_BlocksWidth(screenWidth / BLOCK_PIXELS),
+      m_BlocksHeight((screenHeight / BLOCK_PIXELS) - 1) {
     m_GameState = std::make_shared<GameState>();
     m_Player = std::make_shared<Player>();
     m_GameMap = std::make_shared<Map>();
@@ -50,9 +50,9 @@ void Game::onRender() {
 
     m_Player->render(*m_GameState, m_GameState->m_PlayerPosition);
 
-    m_Inventory->render(*m_GameState, Vec(3, m_GameHeight));
+    m_Inventory->render(*m_GameState, Vec(3, m_BlocksHeight));
 
-    m_Stats->render(*m_GameState, Vec(0, m_GameHeight));
+    m_Stats->render(*m_GameState, Vec(0, m_BlocksHeight));
 }
 
 void Game::onEvent(SDL_Event event) {
@@ -95,7 +95,7 @@ void Game::onEvent(SDL_Event event) {
 bool Game::loadMap(const std::string &mapFile) {
     try {
         m_GameMap =
-            Map::loadFromFile(mapFile, *m_GameState, m_GameWidth, m_GameHeight);
+            Map::loadFromFile(mapFile, *m_GameState, m_BlocksWidth, m_BlocksHeight);
         return true;
     } catch (std::invalid_argument &ex) {
         showDialog(std::make_unique<MessageDialog>(m_ScreenWidth,
@@ -113,6 +113,7 @@ bool Game::loadSave(const std::string &saveFile) {
 
     if (saveFileResult.isError) {
         std::cerr << saveFileResult.errorText << std::endl;
+        showDialog(std::make_unique<MessageDialog>(m_ScreenWidth, m_ScreenHeight, saveFileResult.errorText));
         return false;
     }
 
@@ -170,7 +171,7 @@ void Game::avoidPlayerCollision() {
                 int newX = 0;
                 if (direction.x < 0) {
                     // Going from left screen to right screen
-                    newX = m_GameWidth - 1;
+                    newX = m_BlocksWidth - 1;
                 }
                 m_GameState->m_PlayerPosition =
                     Vec(newX, m_GameState->m_PlayerPosition.y);
@@ -178,7 +179,7 @@ void Game::avoidPlayerCollision() {
                 int newY = 0;
                 if (direction.y < 0) {
                     // Going from bottom screen to top screen
-                    newY = m_GameHeight - 1;
+                    newY = m_BlocksHeight - 1;
                 }
                 m_GameState->m_PlayerPosition =
                     Vec(m_GameState->m_PlayerPosition.x, newY);

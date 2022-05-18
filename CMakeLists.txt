@@ -55,8 +55,7 @@ add_executable(
   src/entity/Dirt.cpp
   src/entity/Tree.cpp
         src/parser/MapParserState.cpp
-        src/render/Rect.cpp
-  src/Window.cpp
+        src/Window.cpp
   src/entity/Entity.cpp
   src/entity/Weapon.cpp
   src/MapSection.cpp
@@ -130,5 +129,5 @@ add_executable(
   src/FightScreen.h
   src/MapSection.h
   src/MessageDialog.h
-        src/parser/SaveParserState.h)
+        src/parser/SaveParserState.h src/test/tests.cpp)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})

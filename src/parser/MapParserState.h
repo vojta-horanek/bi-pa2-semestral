@@ -16,8 +16,8 @@ enum class MapParserStateValue {
 
 class MapParserState : public ParserState<MapParserStateValue> {
   private:
-    static const std::pair<value_type, const std::string> typeTable[];
-    static const size_t typeTableSize;
+    static const std::pair<value_type, const std::string> m_StateTable[];
+    static const size_t M_StateTableSize;
 
   public:
     MapParserState();
